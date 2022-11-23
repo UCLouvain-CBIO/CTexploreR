@@ -1,0 +1,54 @@
+Package: CTexploreR
+Title: Explores Cancer Testis Genes
+Version: 0.1.0
+Authors@R:
+    c(person(given = "Axelle",
+           family = "Loriot",
+           role = c("aut", "cre"),
+           email = "axelle.loriot@uclouvain.be",
+	         comment = c(ORCID = "0000-0002-5288-8561")),
+      person(given = "Julie",
+           family = "Devis",
+           role = c("aut"),
+           email = "julie.devis@student.uclouvain.be"),
+      person(given = "Anna",
+           family = "Diacofotaki",
+           role = c("aut"),
+           email = "anna.diacofotaki@uclouvain.be"),
+      person(given = "Charles",
+           family = "De Smet",
+           role = c("aut"),
+           email = "charles.desmet@uclouvain.be"),
+      person(given = "Laurent",
+           family = "Gatto",
+           role = c("aut"),
+           email = "laurent.gatto@uclouvain.be",
+           comment = c(ORCID = "0000-0002-1520-2268")))
+Description: a package that re-defines the list of CT genes based on publicly available 
+  RNAseq databases (GTEx, CCLE and TCGA) and summarises their main characteristics. Several 
+  visualisation functions allow to explore their expression in different types of tissues and 
+  cancer cells, or to inspect the methylation status of their promoters in normal tissues.
+License: Artistic-2.0
+Encoding: UTF-8
+LazyData: true
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.2.1
+Depends:
+    R (>= 3.5)
+Imports:
+    BiocGenerics,
+    ComplexHeatmap,
+    grid,
+    SummarizedExperiment,
+    GenomicRanges,
+    IRanges,
+    dplyr,
+    tidyr,
+    magrittr,
+    tibble,
+    DESeq2,
+    ggplot2,
+    grDevices,
+    stats,
+    circlize,
+    ggrepel
