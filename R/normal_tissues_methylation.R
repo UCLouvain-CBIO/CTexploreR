@@ -1,18 +1,20 @@
-#' Promoter methylation of Cancer-Testis genes in normal tissues
+#' Cytosine methylation of Cancer-Testis promoters in normal tissues
 #'
-#' @description Plots a heatmap of Promoter methylation of a Cancer-Testis (CT)
-#' gene in normal tissues
+#' @description Plots a heatmap of cytosine methylation of a Cancer-Testis (CT)
+#' promoter in normal tissues
 #'
 #' @param database CT_methylation_in_tissues
 #'
-#' @param gene name of selected CT gene
+#' @param gene Name of selected CT gene
 #'
-#' @param nt_up number of nucleotides upstream the TSS to analyse (1000 by default)
+#' @param nt_up Number of nucleotides upstream the TSS to analyse
+#' (1000 by default)
 #'
-#' @param nt_down number of nucleotides downstream the TSS to analyse (200 by default)
+#' @param nt_down Number of nucleotides downstream the TSS to analyse
+#' (200 by default)
 #'
-#' @return heatmap of Promoter methylation of a Cancer-Testis (CT) gene in normal tissues.
-#' Methylation values are returned invisibly.
+#' @return Heatmap of cytosine methylation of a Cancer-Testis (CT) promoter in
+#' normal tissues. Methylation values are returned invisibly.
 #'
 #' @export
 #'
@@ -62,14 +64,16 @@ normal_tissues_methylation <- function(database, gene, nt_up = NULL, nt_down = N
   if (strand == 1) {
     promoter_gr <- GRanges(seqnames = paste0("chr", chr),
                            strand = '+',
-                           ranges = IRanges(start = TSS - nt_up, end = TSS + nt_down))
+                           ranges = IRanges(start = TSS - nt_up,
+                                            end = TSS + nt_down))
     promoter_gr$TSS <- TSS
   }
 
   if (strand == -1) {
     promoter_gr <- GRanges(seqnames = paste0("chr", chr),
                            strand = '-',
-                           ranges = IRanges(start = TSS - nt_down, end = TSS + nt_up))
+                           ranges = IRanges(start = TSS - nt_down,
+                                            end = TSS + nt_up))
     promoter_gr$TSS <- TSS
   }
 
@@ -82,7 +86,9 @@ normal_tissues_methylation <- function(database, gene, nt_up = NULL, nt_down = N
       mutate(relative_pos = case_when(strand == 1 ~ CG_pos - TSS,
                                       strand == -1 ~ TSS - CG_pos)) %>%
       dplyr::select(CG_pos, relative_pos, colnames(promoter_methylation)) %>%
-      pivot_longer(!c(CG_pos, relative_pos), names_to = "cell", values_to = "met") %>%
+      pivot_longer(!c(CG_pos, relative_pos),
+                   names_to = "cell",
+                   values_to = "met") %>%
       dplyr::select(-CG_pos) %>%
       pivot_wider(names_from = relative_pos, values_from = met))
 
@@ -90,9 +96,10 @@ normal_tissues_methylation <- function(database, gene, nt_up = NULL, nt_down = N
   rownames(mat) <- methylation_individual_CpG$cell
 
   h <- Heatmap(mat,
-               name=paste0('methylation'),
+               name = paste0('Methylation'),
                col = colorRamp2(c(1:100),
-                                colorRampPalette(c("moccasin","dodgerblue4"))(100)),
+                                colorRampPalette(c("moccasin","dodgerblue4"))
+                                (100)),
                na_col = "gray80",
                column_title = paste0(gene, " (TSS chr", chr, ":", TSS, ")"),
                cluster_rows = FALSE,
