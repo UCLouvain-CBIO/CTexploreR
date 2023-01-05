@@ -35,19 +35,25 @@
 #' - Cell lines metadata are stored in colData
 #'
 #' @details The RowData contains
-#' - a column `percent_of_positive_CCLE_cell_lines` that gives the
-#' percent of CCLE cell lines (all cell lines combined) expressing
+#' - A column `percent_of_positive_CCLE_cell_lines` that gives the
+#' percentage of CCLE cell lines (all cell lines combined) expressing
 #' the gene at a highly level (TPM >= 10).
-#' - a column `percent_of_negative_CCLE_cell_lines` that gives the percent
+#' - A column `percent_of_negative_CCLE_cell_lines` that gives the percent
 #' of CCLE cell lines (all cell lines combined) in which genes are
 #' completely repressed (TPM < 0.1)
-#' - a column `CCLE_category` gives the category ("activated",
+#' - A column `max_TPM_in_CCLE` that gives the maximal expression (in TPM) found
+#' in all cell lines.
+#' - A column `CCLE_category` gives the category ("activated",
 #' "not_activated", "leaky") assigned to each gene.
 #' "activated" category corresponds to genes expressed in at least
 #' one cell line and repressed in at least 20% of cell lines.
+#' "not_activated" category corresponds to genes repressed in at least
+#' 20% of cell lines and expressed in no cell lines.
+#' "leaky" category corresponds to genes repressed in less than 20%
+#' of cell lines.
 #'
-#' @source TPM values downloaded using depmap bioconductor package.
-#' (see inst/scripts/make_CCLE_data.R for details)
+#' @source TPM values downloaded using depmap bioconductor package
+#' (see inst/scripts/make_CCLE_data.R for details).
 "CCLE_data"
 
 #' Gene expression values in normal tissues with or without multimapping
