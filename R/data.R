@@ -56,28 +56,32 @@
 #' (see inst/scripts/make_CCLE_data.R for details).
 "CCLE_data"
 
-#' Gene expression values in normal tissues with or without multimapping
+#' Gene expression values in normal tissues with or without allowing multimapping
 #'
 #' @description Gene expression values (TPM) in a set of normal tissues
 #' obtained by counting or not multi-mapped reads. Many CT genes belong to gene
 #' families from which members have identical or nearly identical sequences.
 #' Some CT can only be detected in RNAseq data in which multimapping reads are
-#' not discared.
+#' not discarded.
 #'
 #' @format A SummarizedExperiment object with 24359 rows and 18 columns
 #' - Rows correspond to genes (ensembl_gene_id)
-#' - Columns correspond to normal tissues
-#' - `TPM_no_multimapping` assay gives TPM expression values obtained
-#' when discarding multimapped reads
-#' - `TPM_with_multimapping` assay gives TPM expression values obtained
-#' by counting multimapped reads
+#' - Columns correspond to normal tissues.
+#' - First assay, `TPM_no_multimapping`, gives TPM expression values obtained
+#' when discarding multimapped reads.
+#' - Second assay, `TPM_with_multimapping`, gives TPM expression values obtained
+#' by counting multimapped reads.
 #'
 #' @details A column named `multimapping_analysis` has been added to the
 #' rowData. It summarizes the testis specificity analysis of genes flagged
-#' as "lowly_expressed" in GTEX_data.
+#' as "lowly_expressed" in GTEX_data. Genes are considered "testis_specific" when,
+#' with multimapping allowed, they are detectable in testis (TPM >= 1),
+#' their TPM value has increased compared to without multimapping (ratio > 5),
+#' and their TPM value is at least 10 times higher in testis than in
+#' any other somatic tissue.
 #'
-#' @source RNAseq fastq files were downloaded from Encode database.
-#' (see inst/scripts/make_normal_tissues_multimapping.R for details)
+#' @source RNAseq fastq files were downloaded from Encode database
+#' (see inst/scripts/make_normal_tissues_multimapping.R for details).
 "normal_tissues_multimapping_data"
 
 #' RNseq expression values and differential expression analysis of
