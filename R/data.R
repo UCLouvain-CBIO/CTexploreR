@@ -2,8 +2,8 @@
 #'
 #' @description Gene expression data in normal tissues from GTEX database.
 #'
-#' @format A `SummarizedExperiment` object with 24359 rows and 30 columns
-#' - Rows correspond to genes (ensembl_gene_id)
+#' @format A `SummarizedExperiment` object with 24359 rows and 32 columns
+#' - Rows correspond to genes (ensembl_gene_id as rownames)
 #' - Columns correspond to tissues
 #' - Expression data from the assay are TPM values
 #'
@@ -15,13 +15,13 @@
 #' - A column named `TPM_testis` giving the expression level in testis.
 #' - A column named `max_TPM_somatic` giving the maximum expression level
 #' found in a somatic tissue.
-#' - A column named `q75_TPM_somatic` giving the quantile 75% expression level
-#' found in a somatic tissue.
+#' - A column named `q75_TPM_somatic` giving the 75% quantile of the expression
+#' level found in a somatic tissue.
 #'
 #' @source Downloaded from
 #' https://storage.googleapis.com/gtex_analysis_v8/rna_seq_data/GTEx_Analysis_2017-06-05_v8_RNASeQCv1.1.9_gene_median_tpm.gct.gz.
 #' Some categories of tissues were pooled (mean expression values are
-#' given in pooled tissues). (see inst/scripts/make_GTEX_data.R for details)
+#' given in pooled tissues) (see inst/scripts/make_GTEX_data.R for details).
 "GTEX_data"
 
 #' Genes expression data in CCLE

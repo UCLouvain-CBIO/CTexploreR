@@ -8,7 +8,7 @@ library(biomaRt)
 bfc <- BiocFileCache(cache = "/home/users/aloriot/.cache/BiocFileCache",
                      ask = FALSE)
 
-if (length(bfcquery(bfc, "GTEX")$rid) == 0 ) {
+if (length(bfcquery(bfc, "GTEX")$rid) == 0) {
   url <- "https://storage.googleapis.com/gtex_analysis_v8/rna_seq_data/GTEx_Analysis_2017-06-05_v8_RNASeQCv1.1.9_gene_median_tpm.gct.gz"
   bfcadd(bfc, "GTEX", fpath = url)
 }
@@ -20,7 +20,7 @@ GTEX_data <- as_tibble(read.table(bfc[[bfcquery(bfc, "GTEX")$rid]],
 ## Clean and simplify GTEX data
 ##########################################################################
 
-## Add external_gene_name to Gtex database based on ensembl_gene_id
+## Add external_gene_name to GTEX database based on ensembl_gene_id
 ## (Gene named given in `Description` column is not always external_gene_name)
 ## ! external_gene_names are sometimes associated to several ensembl_gene_id !
 ## To keep the more relevant external_gene_names, select the ones associated
@@ -38,30 +38,37 @@ transcripts_infos <- as_tibble(biomaRt::getBM(attributes = attributes_vector,
 canonical_transcripts <- transcripts_infos %>%
   dplyr::filter(transcript_is_canonical == 1) %>%
   dplyr::filter(external_transcript_name != "") %>%
-  dplyr::filter(chromosome_name %in% c(1:22, "X", "Y", "MT")) %>% # no transcripts on assembly patches
-  dplyr::filter(transcript_biotype == "protein_coding" | transcript_biotype == "lncRNA")
+  dplyr::filter(chromosome_name %in% c(1:22, "X", "Y", "MT")) %>%
+  # no transcripts on assembly patches
+  dplyr::filter(transcript_biotype == "protein_coding" |
+                  transcript_biotype == "lncRNA")
 
 GTEX_data <- GTEX_data %>%
   dplyr::select(-Description) %>%
   dplyr::rename(ensembl_gene_id = Name) %>%
   dplyr::mutate(ensembl_gene_id = sub(pattern = ".\\d+$",
-                                      x = ensembl_gene_id, replacement = '')) %>%
+                                      x = ensembl_gene_id,
+                                      replacement = '')) %>%
   left_join(canonical_transcripts %>%
               dplyr::select(ensembl_gene_id, external_gene_name)) %>%
   dplyr::filter(!is.na(external_gene_name))
 
 ## Clean tissue names
 ## Pool same categories of tissues and calculate mean of TPM in pooled tissues
+
 GTEX_data <- GTEX_data %>%
-  dplyr::rename("Small Intestine...Terminal.Ileum" = "Small.Intestine...Terminal.Ileum") %>%
+  dplyr::rename("Small Intestine...Terminal Ileum" =
+                  "Small.Intestine...Terminal.Ileum") %>%
   dplyr::rename("Salivary Gland" = "Minor.Salivary.Gland") %>%
   dplyr::rename("Adrenal Gland" = "Adrenal.Gland") %>%
   dplyr::rename("Blood" = "Whole.Blood") %>%
   dplyr::rename("Fallopian Tube" = "Fallopian.Tube") %>%
   dplyr::rename("Fibroblasts" = "Cells...Cultured.fibroblasts") %>%
   dplyr::rename("Lymphocytes_EBV" = "Cells...EBV.transformed.lymphocytes") %>%
-  pivot_longer(names_to = "tissue", values_to = "tpm", -c(ensembl_gene_id, external_gene_name)) %>%
-  dplyr::mutate(tissue = sub(pattern = "\\.\\.\\..*$", x = tissue, replacement = '')) %>%
+  pivot_longer(names_to = "tissue", values_to = "tpm",
+               -c(ensembl_gene_id, external_gene_name)) %>%
+  dplyr::mutate(tissue = sub(pattern = "\\.\\.\\..*$",
+                             x = tissue, replacement = '')) %>%
   dplyr::group_by(ensembl_gene_id, tissue) %>%
   dplyr::mutate(TPM = mean(tpm)) %>%
   dplyr::select(-tpm) %>%
@@ -79,10 +86,12 @@ GTEX_data <- GTEX_data %>%
 ##########################################################################
 
 GTEX_data <- GTEX_data %>%
-  dplyr::select("ensembl_gene_id", "external_gene_name", "Testis", "Ovary", everything()) %>%
+  dplyr::select("ensembl_gene_id", "external_gene_name", "Testis",
+                "Ovary", everything()) %>%
   rowwise() %>%
   dplyr::mutate(max_TPM_somatic = max(c_across(c(Adipose:Vagina)))) %>%
-  dplyr::mutate(q75_TPM_somatic = quantile(c_across(c(Adipose:Vagina)), 0.75)) %>%
+  dplyr::mutate(q75_TPM_somatic = quantile(c_across(c(Adipose:Vagina)),
+                                           0.75)) %>%
   dplyr::mutate(ratio_testis_somatic = Testis / max_TPM_somatic) %>%
   ungroup()
 
@@ -121,11 +130,13 @@ GTEX_data <- GTEX_data %>%
 GTEX_data[is.na(GTEX_data$GTEX_category), "GTEX_category"] <- "other"
 
 Gtex_mat <- as.matrix(GTEX_data %>%
-                        dplyr::select(-c(ensembl_gene_id, external_gene_name, max_TPM_somatic,
-                                         q75_TPM_somatic, ratio_testis_somatic, GTEX_category)))
+                        dplyr::select(-c(ensembl_gene_id, external_gene_name,
+                                         max_TPM_somatic, q75_TPM_somatic,
+                                         ratio_testis_somatic, GTEX_category)))
 rownames(Gtex_mat) <- GTEX_data$ensembl_gene_id
 rowdata <- as.data.frame(GTEX_data %>%
-                           dplyr::select(c(ensembl_gene_id, external_gene_name, GTEX_category, Testis,
+                           dplyr::select(c(ensembl_gene_id, external_gene_name,
+                                           GTEX_category, Testis,
                                            max_TPM_somatic, q75_TPM_somatic)) %>%
                            dplyr::rename(TPM_testis = Testis))
 rownames(rowdata) <- rowdata$ensembl_gene_id
