@@ -84,16 +84,16 @@
 #' (see inst/scripts/make_normal_tissues_multimapping.R for details).
 "normal_tissues_multimapping_data"
 
-#' RNseq expression values and differential expression analysis of
-#' genes in cell lines treated or not with a demethylating agent.
+#' Genes differential expression analysis (with RNAseq expression values)
+#' in cell lines treated or not with a demethylating agent.
 #'
 #' @description Gene expression values in a set of cell lines treated
 #' or not with 5-Aza-2′-Deoxycytidine (DAC), a demethylating agent.
 #'
 #' @format A SummarizedExperiment object with 24359 rows and 32 columns
-#' - Rows correspond to genes (ensembl reference)
+#' - Rows correspond to genes (ensembl_gene_id)
 #' - Columns correspond to samples
-#' - Expression data are normalised counts log-transformed (log1p)
+#' - Expression data are normalised log-transformed counts (log1p)
 #' - The colData contains the SRA references from which fastq files
 #' were downloaded
 #' - Results of a differential expression evaluating the DAC treatment

@@ -1,4 +1,4 @@
-## code to prepare `DAC_treated_cells` dataset goes here
+## Code to prepare `DAC_treated_cells` dataset goes here
 
 library(tidyverse)
 library(DESeq2)
@@ -28,7 +28,7 @@ log1p_transformed <- log1p(counts(dds, normalize = TRUE))
 ## DESeq2 results
 ## Analyse separately each cell line
 cell_line <- unique(coldata$cell)[1]
-coldata_by_cell_line <- coldata[coldata$cell == cell_line,]
+coldata_by_cell_line <- coldata[coldata$cell == cell_line, ]
 dds <- DESeqDataSetFromMatrix(countData = raw_counts[, coldata_by_cell_line$sample],
                               colData = coldata_by_cell_line,
                               design = ~ treatment)
@@ -55,9 +55,9 @@ names(res_all) <- c("ensembl_gene_id", "external_gene_name",
 
 
 
-for(cell_line in unique(coldata$cell)[-1]){
+for(cell_line in unique(coldata$cell)[-1]) {
 
-  coldata_by_cell_line <- coldata[coldata$cell == cell_line,]
+  coldata_by_cell_line <- coldata[coldata$cell == cell_line, ]
   dds <- DESeqDataSetFromMatrix(countData = raw_counts[, coldata_by_cell_line$sample],
                                 colData = coldata_by_cell_line,
                                 design = ~ treatment)
@@ -84,11 +84,13 @@ for(cell_line in unique(coldata$cell)[-1]){
   res_all <- left_join(res_all, res)
 }
 
-res_all$sign <- res_all %>% dplyr::select(starts_with("sign")) %>% rowSums()
+res_all$sign <- res_all %>%
+  dplyr::select(starts_with("sign")) %>%
+  rowSums()
 
 ## Tag genes significantly induced in at least one cell line
 res_all <- res_all %>%
-  mutate(induced = ifelse(sign >=1, "induced", "not_induced"))
+  mutate(induced = ifelse(sign >= 1, "induced", "not_induced"))
 
 res_all <- as.data.frame(res_all)
 rownames(res_all) <- res_all$ensembl_gene_id
