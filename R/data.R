@@ -204,11 +204,11 @@
 #' - Columns correspond to samples
 #' - Methylation data from the assay are Beta values
 #' - Clinical information are stored in colData
-#' - probe information (hg38 coordinates) are stored in RowData
+#' - Probe information (hg38 coordinates) are stored in rowRanges
 #'
 #' @source SKCM, LUAD, LUSC, COAD, ESCA, BRCA and HNSC methylation data were
 #' downloaded with TCGAbiolinks and subsetted to select probes located in CT genes
-#' promoter regions (see inst/scripts/make_TCGA_CT_methylation.R for details)
+#' promoter regions (see inst/scripts/make_TCGA_CT_methylation.R for details).
 "TCGA_CT_methylation"
 
 #' CT genes description table
