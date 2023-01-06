@@ -107,22 +107,22 @@
 #' SRA reference of samples are stored in the colData.
 "DAC_treated_cells"
 
-#' RNseq expression values (multi-mapping was allowed) and differential
-#' expression analysis of genes in cell lines treated or not with a
-#' demethylating agent.
+#' Genes differential expression analysis (with RNAseq expression values where
+#' multi-mapping was allowed) in cell lines treated or not with a demethylating
+#' agent.
 #'
 #' @description Gene expression values in a set of cell lines treated
 #' or not with 5-Aza-2′-Deoxycytidine (DAC), a demethylating agent.
 #' Many CT genes belong to gene families from which members have
 #' identical or nearly identical sequences. Some CT can only be detected
-#' in RNAseq data in which multimapping reads are not discared.
+#' in RNAseq data in which multimapping reads are not discarded.
 #'
 #' @format A SummarizedExperiment object with 24359 rows and 32 columns
-#' - Rows correspond to genes (ensembl_gene_id)
-#' - Columns correspond to samples
-#' - Expression data are normalised counts log-transformed (log1p)
+#' - Rows correspond to genes (ensembl_gene_id).
+#' - Columns correspond to samples.
+#' - Expression data are normalised log-transformed counts (log1p).
 #' - The colData contains the SRA references from which fastq files
-#' were downloaded
+#' were downloaded.
 #' - Results of a differential expression evaluating the DAC treatment
 #' effect are stored in the rowData.
 #'
