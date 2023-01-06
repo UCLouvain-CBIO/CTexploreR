@@ -177,10 +177,11 @@
 
 #' Gene expression in TCGA samples
 #'
-#' @description Gene expression data in TCGA samples (tumor and peritumoral samples)
+#' @description Gene expression data in TCGA samples
+#' (tumor and peritumoral samples).
 #'
 #' @format A SummarizedExperiment object with 24350 rows and 4087 columns
-#' - Rows correspond to CT genes (ensembl reference)
+#' - Rows correspond to CT genes (ensembl_gene_id)
 #' - Columns correspond to samples
 #' - Expression data from the assay are TPM values
 #' - Clinical information are stored in colData
@@ -189,8 +190,8 @@
 #' @source SKCM, LUAD, LUSC, COAD, ESCA, BRCA and HNSC expression data were downloaded
 #' with TCGAbiolinks. Global hypomethylation levels from paper `DNA methylation
 #' loss promotes immune evasion of tumours with high mutation and copy number load`
-#' from Jang et al., Nature Commun 2019 were added to colData.
-#' (see inst/scripts/make_TCGA_TPM.R for details)
+#' from Jang et al., Nature Commun 2019 were added to colData
+#' (see inst/scripts/make_TCGA_TPM.R for details).
 "TCGA_TPM"
 
 #' Methylation of CT promoters in TCGA samples

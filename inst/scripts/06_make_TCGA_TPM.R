@@ -1,4 +1,4 @@
-## code to prepare `TCGA_TPM` dataset goes here
+## Code to prepare `TCGA_TPM` dataset goes here
 
 library("TCGAbiolinks")
 library("tidyverse")
@@ -11,10 +11,11 @@ bfc <- BiocFileCache(cache = "/home/users/aloriot/.cache/BiocFileCache",
                      ask = FALSE)
 
 # Load and save TCGA expression data
-for(tumor_code in c("SKCM", "LUAD", "LUSC", "COAD", "ESCA", "BRCA", "HNSC")) {
+for(tumor_code in c("SKCM", "LUAD", "LUSC", "COAD", "ESCA",
+                    "BRCA", "HNSC")) {
 
   rname <- paste0("TCGA_", tumor_code, "_STAR")
-  if(length(bfcquery(bfc, rname)$rid) == 0 ){
+  if(length(bfcquery(bfc, rname)$rid) == 0) {
 
     savepath <- bfcnew(bfc, rname, ext=".RData")
 
@@ -52,7 +53,7 @@ prepare_data <- function(tum) {
 
   ## Remove duplicated ensembl ref associated to PAR_Y, and duplicated genes
   data <- data[grep("_PAR_", x = rownames(data), invert = TRUE, value = TRUE), ]
-  data <- data[rowData(data)$gene_id[!duplicated(rowData(data)$gene_name)],]
+  data <- data[rowData(data)$gene_id[!duplicated(rowData(data)$gene_name)], ]
   ## Keep only genes present in Gtex data
   rownames(data) <- substr(rownames(data), 1, 15)
   data <- data[rownames(data) %in% rownames(GTEX_data), ]
@@ -139,47 +140,50 @@ TCGA_TPM <- SummarizedExperiment(assays = list(TPM = TPM),
                                  colData = coldata)
 
 # Add frequencies of activation (TPM >= TPM_thr) of each gene in all types of tumor samples.
-tumors_only <- TCGA_TPM[ , colData(TCGA_TPM)$shortLetterCode != 'NT']
+tumors_only <- TCGA_TPM[, colData(TCGA_TPM)$shortLetterCode != 'NT']
 TPM_thr <- 10
 binary <- ifelse(assay(tumors_only) >= TPM_thr, 1, 0)
 tmp <- rowSums(binary) / ncol(binary) * 100
 tmp <- enframe(tmp, name = "ensembl_gene_id", value = "percent_pos_tum")
-rowdata <- rowdata %>% left_join(tmp)
+rowdata <- rowdata %>%
+  left_join(tmp)
 
 # Estimate the percent of tumors in which genes are repressed (TPM < TPM_low_thr)
 TPM_low_thr <- 0.1
 binary <- ifelse(assay(tumors_only) <= TPM_low_thr, 1, 0)
 tmp <- rowSums(binary) / ncol(binary) * 100
 tmp <- enframe(tmp, name = "ensembl_gene_id", value = "percent_neg_tum")
-rowdata <- rowdata %>% left_join(tmp)
+rowdata <- rowdata %>%
+  left_join(tmp)
 
 rowdata$max_TPM_in_TCGA <- rowMax(assay(tumors_only))
 
-# # Add mean expression level of each gene in all positive tumors (TPM >= TPM_thr).
+# Add mean expression level of each gene in all positive tumors (TPM >= TPM_thr).
 # assay(tumors_only)[assay(tumors_only) < TPM_thr] <- NA
-# #tmp <- rowMeans(assay(tumors_only), na.rm = TRUE)
+# tmp <- rowMeans(assay(tumors_only), na.rm = TRUE)
 # tmp <- rowMedians(assay(tumors_only), na.rm = TRUE)
-# #rowData(TCGA_TPM)$mean_TPM_in_pos_tum <- tmp
+# rowData(TCGA_TPM)$mean_TPM_in_pos_tum <- tmp
 # rowData(TCGA_TPM)$median_TPM_in_pos_tum <- tmp
 
-# # Add frequencies of expression (TPM >= TPM_thr) of each gene in all types of normal samples.
+# Add frequencies of expression (TPM >= TPM_thr) of each gene in all types of
+# normal samples.
 # normal_only <- TCGA_TPM[ , colData(TCGA_TPM)$shortLetterCode == 'NT']
 # TPM_thr <- 3
 # binary <- ifelse(assay(normal_only) >= TPM_thr, 1, 0)
 # tmp <- rowSums(binary) / ncol(binary) * 100
 # rowData(TCGA_TPM)$percent_pos_NT <- tmp
 #
-# # Estimate the percent of normal tissues in which genes are repressed (TPM < TPM_low_thr)
+# Estimate the percent of normal tissues in which genes are repressed (TPM < TPM_low_thr)
 # TPM_low_thr <- 0.1
 # binary <- ifelse(assay(normal_only) <= TPM_low_thr, 1, 0)
 # tmp <- rowSums(binary) / ncol(binary) * 100
 # rowData(TCGA_TPM)$percent_neg_NT <- tmp
 
-# # Add mean expression level of each gene in all positive NT (TPM >= TPM_thr).
+# Add mean expression level of each gene in all positive NT (TPM >= TPM_thr).
 # assay(normal_only)[assay(normal_only) < TPM_thr] <- NA
-# #tmp <- rowMeans(assay(normal_only), na.rm = TRUE)
+# tmp <- rowMeans(assay(normal_only), na.rm = TRUE)
 # tmp <- rowMedians(assay(normal_only), na.rm = TRUE)
-# #rowData(TCGA_TPM)$mean_TPM_in_pos_NT <- tmp
+# rowData(TCGA_TPM)$mean_TPM_in_pos_NT <- tmp
 # rowData(TCGA_TPM)$median_TPM_in_pos_NT <- tmp
 
 rowdata <-rowdata %>%
