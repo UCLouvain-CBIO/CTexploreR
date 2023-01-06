@@ -221,64 +221,67 @@
 #'
 #' @details CT_genes characteristics column:
 #' - Column `family` gives the gene family name.
-#' - Column `X_linked` classifies genes in "X-linked" or "not_X_linked"
+#' - Column `X_linked` classifies genes in "chrX" or "not_chrX".
 #' - Column `GTEX_category` gives the category ("testis_specific",
 #' "testis_preferential" or "lowly_expressed") assigned to each gene
-#' using GTEx database
+#' using GTEx database.
 #' - Column `TPM_testis` gives the gene expression level in testis
-#' (using GTEX database)
+#' (using GTEX database).
 #' - Column `max_TPM_somatic` gives the maximum expression level
-#' found in a somatic tissue (using GTEX database)
-#' - Column `q75_TPM_somatic` gives the quantile 75% expression level
-#' found in a somatic tissue (using GTEX database)
+#' found in a somatic tissue (using GTEX database).
+#' - Column `q75_TPM_somatic` gives the 75% quantile expression level
+#' found in a somatic tissue (using GTEX database).
 #' - Column `multimapping_analysis` informs if the gene was found to
 #' be testis-specific when multi-mapped reads were counted for gene
-#' expression in normal tissues
+#' expression in normal tissues ("not_analysed" or "testis_specific").
 #' - Column `testis_specificity` gives the testis-specificity of genes
-#' assigned to each gene using `GTEX_category` and `multimapping_analysis`.
-#' - Column `percent_of_positive_CCLE_cell_lines` gives the percent of
+#' assigned to each gene using `GTEX_category` and `multimapping_analysis`
+#' ("testis_specific" or "testis_preferential").
+#' - Column `percent_of_positive_CCLE_cell_lines` gives the percentage of
 #' CCLE cancer cell lines in which genes are expressed (genes were
-#' considered as expressed if TPM >= 10)
-#' - Column `percent_of_negative_CCLE_cell_lines` gives the percent of
-#' CCLE cancer cell lines in which genes are repressed (TPM <= 0.1)
+#' considered as expressed if TPM >= 10).
+#' - Column `percent_of_negative_CCLE_cell_lines` gives the percentage of
+#' CCLE cancer cell lines in which genes are repressed (TPM <= 0.1).
 #' - Column `max_TPM_in_CCLE` gives the highest expression level of genes
 #' in CCLE cell lines.
 #' - Column `CCLE_category` gives the category assigned to each gene
 #' using CCLE data. "Activated" category corresponds to genes expressed
-#' in at least one cell line (TPM >= 10) and repressed in at least 20% of cell lines
-#' - Column `percent_pos_tum` gives the percent of
-#' TCGA cancer samples in which genes are expressed (genes were
-#' considered as expressed if TPM >= 10)
-#' - Column `percent_neg_tum` gives the percent of
-#' TCGA cancer samples in which genes are repressed (TPM <= 0.1)
+#' in at least one cell line (TPM >= 10) and repressed in at least 20% of
+#' cell lines.
+#' - Column `percent_pos_tum` gives the percentage of TCGA cancer samples in
+#' which genes are expressed (genes were considered as expressed if TPM >= 10).
+#' - Column `percent_neg_tum` gives the percentage of TCGA cancer samples in
+#' which genes are repressed (TPM <= 0.1).
 #' - Column `max_TPM_in_TCGA` gives the highest expression level of genes
-#' in TCGA cancer sample
+#' in TCGA cancer sample.
 #' - Column `TCGA_category` gives the category assigned to each gene
-#' using TCGA data. "Activated" category corresponds to genes expressed
-#' in at least one tumor (TPM >= 10) and repressed in at least 20% of samples
+#' using TCGA data. "activated" category corresponds to genes expressed
+#' in at least one tumor (TPM >= 10) and repressed in at least 20% of samples.
 #' - Column `DAC` summarises the results ("induced" or "not_induced") of a
 #' differential expression evaluating gene induction upon DAC treatment
-#' in a series of cell lines
+#' in a series of cell lines.
 #' - Column `methylation_in_tissues` summarises the analysis of gene
 #' promoter methylation in somatic and germline normal tissues
-#' ("methylated_in_somatic_unmethylated_in_germline", "methylated_in_somatic_and_germline"
-#' or "unmethylated_in_somatic")
+#' ("methylated_in_somatic_unmethylated_in_germline",
+#' "methylated_in_somatic_and_germline" or "unmethylated_in_somatic").
 #' - Column `regulation` summarises the regulation category ("methylation"
 #' or "not_methylation") that was assigned to genes based on DAC induction
-#' and on promoter methylation levels in normal tissues (when available)
-#' - Column `met_exp_corr_TCGA` gives the coefficient correlation between promoter
-#' methylation and expression in TCGA samples
+#' and on promoter methylation levels in normal tissues (when available).
+#' - Column `met_exp_corr_TCGA` gives the correlation coefficient between
+#' promoter methylation and expression in TCGA samples.
 #' - Column named `CpG_density`, gives the density of CpG within each promoter
-#' (number of CpG / promoter length * 100)
+#' (number of CpG / promoter length * 100).
 #' - Column `CpG_promoter` classifies the promoters according to their
 #' CpG densities: "CpG_low" (CpG_density < 2), "CpG_intermediate"
-#' (CpG_density >= 2 & CpG_density < 4), and "CpG_high (CpG_density >= 4)
-#' - Columns `external_transcript_name`, `ensembl_transcript_id`, `chromosome_name`,
-#' `strand`, `transcription_start_site`, `transcript_length` and `transcript_biotype`
-#' give the references and informations about the most biologically relevant transcript
-#' associated to each gene.
-#' - Columns `oncogene` and `tumor_suppressor` informs if oncogenic and tumor-suppressor
-#' functions have been associated to genes (source: [Cancermine](http://bionlp.bcgsc.ca/cancermine/))
+#' (CpG_density >= 2 & CpG_density < 4), and "CpG_high" (CpG_density >= 4).
+#' - Columns `external_transcript_name`, `ensembl_transcript_id`,
+#' `chromosome_name`, `strand`, `transcription_start_site`,
+#' `transcript_length` and `transcript_biotype` give the references and
+#' informations about the most biologically relevant transcript associated to
+#' each gene.
+#' - Columns `oncogene` and `tumor_suppressor` informs if oncogenic and
+#' tumor-suppressor functions have been associated to genes
+#' (source: [Cancermine](http://bionlp.bcgsc.ca/cancermine/)).
 #'
 #' @source (see inst/scripts/make_CT_genes.R for details)
 "CT_genes"
