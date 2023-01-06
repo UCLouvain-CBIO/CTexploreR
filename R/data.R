@@ -134,18 +134,18 @@
 #' SRA reference of samples are stored in the colData.
 "DAC_treated_cells_multimapping"
 
-#' Promoter methylation of Cancer-Testis Genes in normal tissues
+#' Cancer-Testis Genes’ promoters methylation in normal tissues
 #'
 #' @description Methylation values of CpG located within Cancer-Testis
-#' (CT) promoters in a set of normal tissues
+#' (CT) promoters in a set of normal tissues.
 #'
 #' @format A RangedSummarizedExperiment object with 53578 rows and 14 columns
 #' - Rows correspond to CpG positions (located within CT genes promoters)
 #' - Columns correspond to normal tissues
 #' - Methylation values from WGBS data
 #'
-#' @source WGBS methylation data was downloaded from Encode and from GEO databases.
-#' (see inst/scripts/make_CT_methylation_in_tissues.R for details)
+#' @source WGBS methylation data was downloaded from Encode and from GEO databases
+#' (see inst/scripts/make_CT_methylation_in_tissues.R for details).
 "CT_methylation_in_tissues"
 
 #' Promoter mean methylation of Cancer Testis Genes in normal tissues
