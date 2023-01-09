@@ -68,7 +68,8 @@ DAC_induction <- function(database, genes = NULL) {
   rownames(df_col) <- rownames(colData(data))
   df_col <- df_col[order(df_col$cell, df_col$treatment), ]
 
-  column_ha_cell <- HeatmapAnnotation(cell = df_col$cell,border = TRUE)
+  column_ha_cell <- HeatmapAnnotation(cell = df_col$cell,
+                                      border = TRUE)
 
   column_ha_treatment <- HeatmapAnnotation(
     treatment = df_col$treatment,
