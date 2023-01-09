@@ -21,19 +21,12 @@
 #' @importFrom circlize colorRamp2
 #'
 #' @examples
-#' GTEX_expression(database = GTEX_data)
-#' GTEX_expression(database = GTEX_data, genes = c("MAGEA1", "MAGEA3"),
-#' units = "log_TPM")
-GTEX_expression <- function(database, genes = NULL, units = "TPM") {
+#' GTEX_expression(units = "log_TPM")
+#' GTEX_expression(genes = c("MAGEA1", "MAGEA3"), units = "log_TPM")
+GTEX_expression <- function(genes = NULL, units = "TPM", database = GTEX_data) {
 
-  if (missing(database)) {
-    stop("Database must be specified!")
-  }
-
-  if (!missing(database)) {
-    mat <- assay(database)
-    rownames(mat) <- rowData(database)$external_gene_name
-  }
+  mat <- assay(database)
+  rownames(mat) <- rowData(database)$external_gene_name
 
   if (is.null(genes)) {
     mat <- mat[CT_genes$external_gene_name, ]
