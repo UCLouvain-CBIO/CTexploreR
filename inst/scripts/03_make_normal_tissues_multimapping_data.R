@@ -1,4 +1,4 @@
-## code to prepare `normal_tissues_multimapping_data` dataset goes here
+## Code to prepare `normal_tissues_multimapping_data` dataset goes here
 
 library("tidyverse")
 library("SummarizedExperiment")
@@ -41,7 +41,7 @@ load("../../data/GTEX_data.rda")
 ## (multi-mapping reads are counted).
 
 #################################################################################
-## Data generated without allowing multi-maping
+## Data generated without allowing multi-mapping
 #################################################################################
 
 load("../../../CTdata/inst/extdata/normal_tissues_RNAseq_coldata.rda")
@@ -49,8 +49,9 @@ load("../../../CTdata/inst/extdata/normal_tissues_RNAseq_raw_counts.rda")
 
 ## TPM normalisation
 ## Keep only genes present in GTEx database
-gene_lengths <- read_table("../../../CTdata/inst/extdata/adrenal_gland_featurecounts.tsv",
-           skip = 1) %>%
+gene_lengths <-
+  read_table("../../../CTdata/inst/extdata/adrenal_gland_featurecounts.tsv",
+             skip = 1) %>%
   dplyr::select(Geneid, Length)
 x1 <- raw_counts / gene_lengths$Length * 1000
 total <- colSums(x1)
@@ -65,18 +66,18 @@ TPM_matrix_no_multimapping <- as_tibble(x1, rownames = "Geneid") %>%
   dplyr::rename(ensembl_gene_id = Geneid) %>%
   right_join(as_tibble(rowData(GTEX_data)) %>%
                dplyr::select(ensembl_gene_id, external_gene_name)) %>%
-  dplyr::select(ensembl_gene_id,  external_gene_name, everything())
+  dplyr::select(ensembl_gene_id, external_gene_name, everything())
 
 mat_no_multimapping <- as.matrix(TPM_matrix_no_multimapping[, -c(1:2)])
 rownames(mat_no_multimapping) <- TPM_matrix_no_multimapping$ensembl_gene_id
 
 #################################################################################
-## Data generated when allowing multimapping
+## Data generated when allowing multi-mapping
 #################################################################################
 
 load(file = "../../../CTdata/inst/extdata/normal_tissues_RNAseq_raw_counts_multiM.rda")
 
-## normalise in TPM
+## Normalise in TPM
 ## Keep only genes present in GTEx database
 x1 <- raw_counts_with_MP / gene_lengths$Length * 1000
 total <- colSums(x1)
@@ -89,8 +90,9 @@ TPM_matrix_with_multimapping <- as_tibble(x1, rownames = "Geneid") %>%
   dplyr::select(Geneid, sample, TPM) %>%
   spread(sample, TPM) %>%
   dplyr::rename(ensembl_gene_id = Geneid) %>%
-  right_join(as_tibble(rowData(GTEX_data)) %>% dplyr::select(ensembl_gene_id, external_gene_name)) %>%
-  dplyr::select(ensembl_gene_id,  external_gene_name, everything())
+  right_join(as_tibble(rowData(GTEX_data)) %>%
+               dplyr::select(ensembl_gene_id, external_gene_name)) %>%
+  dplyr::select(ensembl_gene_id, external_gene_name, everything())
 
 mat_with_multimapping <- as.matrix(TPM_matrix_with_multimapping[, -c(1:2)])
 rownames(mat_with_multimapping) <- TPM_matrix_with_multimapping$ensembl_gene_id
@@ -99,7 +101,7 @@ rownames(mat_with_multimapping) <- TPM_matrix_with_multimapping$ensembl_gene_id
 ## Assess testis-specificity of genes flagged as "lowly_expressed" in
 ## GTEX_category from GTEX_data (when their TPM < 1 in testis)
 ##########################################################################
-## Many Cancer-Germline genes belong to gene families from which members
+## Many Cancer-Testis genes belong to gene families from which members
 ## have identical or nearly identical sequences. This is likely the reason
 ## why these genes are not detected in GTEx database, as GTEX processing
 ## pipeline specifies that overlapping intervals between genes are excluded
@@ -108,14 +110,15 @@ rownames(mat_with_multimapping) <- TPM_matrix_with_multimapping$ensembl_gene_id
 ## could however be assessed by comparing expression values obtained by
 ## counting or not multi-mapped reads in a set of normal tissues.
 ## Some of these genes are indeed only detected when multimapping reads are
-## not discared.
+## not discarded.
 ## Genes flagged as "testis_specific" in `multimapping_analysis` column must be
 ## detectable in testis (TPM >= 1) when multimapping is allowed, their TPM
 ## value must have increased when multimapping is allowed (ratio > 5), and
 ## these genes must also have a TPM value (obtained by allowing multimapping)
 ## at least 10 times higher in testis than in any other somatic tissue.
 
-ratio_multi_not_multi <- as_tibble(mat_no_multimapping, rownames = "ensembl_gene_id") %>%
+ratio_multi_not_multi <- as_tibble(mat_no_multimapping,
+                                   rownames = "ensembl_gene_id") %>%
   dplyr::select(ensembl_gene_id, testis) %>%
   dplyr::rename(TPM_testis_no_multi = testis) %>%
   left_join(as_tibble(mat_with_multimapping, rownames = "ensembl_gene_id") %>%
@@ -123,7 +126,8 @@ ratio_multi_not_multi <- as_tibble(mat_no_multimapping, rownames = "ensembl_gene
               dplyr::rename(TPM_testis_when_multi = testis)) %>%
   mutate(ratio = TPM_testis_when_multi / TPM_testis_no_multi)
 
-max_in_somatic <- rowMax(mat_with_multimapping[, -which(colnames(mat_with_multimapping) == "testis")])
+max_in_somatic <- rowMax(
+  mat_with_multimapping[, -which(colnames(mat_with_multimapping) == "testis")])
 max_not_testis <- tibble(ensembl_gene_id = rownames(mat_with_multimapping),
                          max_in_somatic = max_in_somatic)
 
@@ -133,12 +137,16 @@ genes_testis_specific_in_multimapping <- ratio_multi_not_multi %>%
   left_join(as_tibble(rowData(GTEX_data))) %>%
   mutate(multimapping_analysis = case_when(
     GTEX_category != "lowly_expressed" ~ "not_analysed",
-    GTEX_category == "lowly_expressed" & TPM_testis_when_multi >= 1 & ratio >= 5 & ratio_testis_other >= 10 ~ "testis_specific",
-    GTEX_category == "lowly_expressed" & (TPM_testis_when_multi < 1 | ratio < 5 | ratio_testis_other < 10) ~ "not_testis_specific"))
+    GTEX_category == "lowly_expressed" & TPM_testis_when_multi >= 1 &
+      ratio >= 5 & ratio_testis_other >= 10 ~ "testis_specific",
+    GTEX_category == "lowly_expressed" &
+      (TPM_testis_when_multi < 1 | ratio < 5 | ratio_testis_other < 10) ~ "not_testis_specific"))
 
-rowdata <- tibble(ensembl_gene_id = TPM_matrix_with_multimapping$ensembl_gene_id,
-                    external_gene_name = TPM_matrix_with_multimapping$external_gene_name) %>%
-  left_join(genes_testis_specific_in_multimapping %>% dplyr::select(ensembl_gene_id, multimapping_analysis))
+rowdata <-
+  tibble(ensembl_gene_id = TPM_matrix_with_multimapping$ensembl_gene_id,
+         external_gene_name = TPM_matrix_with_multimapping$external_gene_name) %>%
+  left_join(genes_testis_specific_in_multimapping %>%
+              dplyr::select(ensembl_gene_id, multimapping_analysis))
 
 
 #################################################################################

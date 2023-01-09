@@ -1,4 +1,4 @@
-## code to prepare `CCLE_data` dataset goes here
+## Code to prepare `CCLE_data` dataset goes here
 
 library(tidyverse)
 library(SummarizedExperiment)
@@ -8,12 +8,12 @@ library(biomaRt)
 bfc <- BiocFileCache(cache = "/home/users/aloriot/.cache/BiocFileCache",
                      ask = FALSE)
 
-if (length(bfcquery(bfc, "CCLE_data")$rid) == 0 ) {
+if (length(bfcquery(bfc, "CCLE_data")$rid) == 0) {
   url <- "https://ndownloader.figshare.com/files/34989922"
   bfcadd(bfc, "CCLE_data", fpath = url)
 }
 
-if (length(bfcquery(bfc, "CCLE_cell_metadata")$rid) == 0 ) {
+if (length(bfcquery(bfc, "CCLE_cell_metadata")$rid) == 0) {
   url <- "https://ndownloader.figshare.com/files/35020903"
   bfcadd(bfc, "CCLE_cell_metadata", fpath = url)
 }
@@ -36,7 +36,7 @@ coldata <- CCLE_metadata %>%
   filter(!is.na(stripped_cell_line_name)) %>%
   as.data.frame()
 
-## keep cancer types with more than 30 cell lines
+## Keep cancer types with more than 30 cell lines
 tumor_types <- coldata %>%
   dplyr::group_by(type) %>%
   dplyr::summarize(n = n()) %>%
@@ -54,8 +54,10 @@ TPM <- CCLE_full_data %>%
   dplyr::select(-gene) %>%
   filter(DepMap_ID %in% coldata$DepMap_ID) %>%
   filter(ensembl_gene_id %in% rownames(GTEX_data)) %>%
-  left_join(as_tibble(rowData(GTEX_data)) %>% dplyr::select(ensembl_gene_id, external_gene_name)) %>%
-  left_join(coldata %>% dplyr::select(DepMap_ID, stripped_cell_line_name)) %>%
+  left_join(as_tibble(rowData(GTEX_data)) %>%
+              dplyr::select(ensembl_gene_id, external_gene_name)) %>%
+  left_join(coldata %>%
+              dplyr::select(DepMap_ID, stripped_cell_line_name)) %>%
   dplyr::select(-DepMap_ID) %>%
   pivot_wider(names_from = stripped_cell_line_name, values_from = expression)
 
@@ -68,12 +70,13 @@ rownames(TPM_mat) <- TPM %>%
 ## Values are in log2(TPM + 1), convert to TPM
 TPM_mat <- 2^(TPM_mat) - 1
 
-# Estimate frequencies of activation of each CG gene
+# Estimate frequencies of activation of each CT gene
 # in all selected cell lines.
 # Gene considered as "activated" if TPM >= TPM_thr
 TPM_thr <- 10
 activation_frequencies <- tibble(ensembl_gene_id = rownames(TPM_mat)) %>%
-  left_join(as_tibble(rowData(GTEX_data)) %>% dplyr::select(ensembl_gene_id, external_gene_name))
+  left_join(as_tibble(rowData(GTEX_data)) %>%
+              dplyr::select(ensembl_gene_id, external_gene_name))
 binary <- ifelse(TPM_mat >= TPM_thr, 1, 0)
 tmp <- rowSums(binary) / ncol(binary) * 100
 tmp <- enframe(tmp, name = "ensembl_gene_id",
@@ -94,18 +97,21 @@ max_TPM <- tibble(ensembl_gene_id = rownames(TPM_mat),
 
 rowdata <- left_join(activation_frequencies, repression_frequencies) %>%
   left_join(max_TPM) %>%
-  mutate(percent_of_positive_CCLE_cell_lines = round(percent_of_positive_CCLE_cell_lines, 1)) %>%
-  mutate(percent_of_negative_CCLE_cell_lines = round(percent_of_negative_CCLE_cell_lines, 1)) %>%
-  mutate(CCLE_category = case_when(is.na(percent_of_positive_CCLE_cell_lines) ~ "not_in_CCLE",
-                                   percent_of_negative_CCLE_cell_lines < 20 ~ "leaky",
-                                   percent_of_negative_CCLE_cell_lines >= 20 &
-                                     percent_of_positive_CCLE_cell_lines > 0 ~ "activated",
-                                   percent_of_negative_CCLE_cell_lines >= 20 &
-                                     percent_of_positive_CCLE_cell_lines == 0 ~ "not_activated"))
+  mutate(percent_of_positive_CCLE_cell_lines =
+           round(percent_of_positive_CCLE_cell_lines, 1)) %>%
+  mutate(percent_of_negative_CCLE_cell_lines =
+           round(percent_of_negative_CCLE_cell_lines, 1)) %>%
+  mutate(CCLE_category =
+           case_when(is.na(percent_of_positive_CCLE_cell_lines) ~ "not_in_CCLE",
+                     percent_of_negative_CCLE_cell_lines < 20 ~ "leaky",
+                     percent_of_negative_CCLE_cell_lines >= 20 &
+                       percent_of_positive_CCLE_cell_lines > 0 ~ "activated",
+                     percent_of_negative_CCLE_cell_lines >= 20 &
+                       percent_of_positive_CCLE_cell_lines == 0 ~ "not_activated"))
 
 CCLE_data <- SummarizedExperiment(assays = list(TPM = TPM_mat),
                                   rowData = rowdata,
-                                  colData = coldata[colnames(TPM_mat),])
+                                  colData = coldata[colnames(TPM_mat), ])
 
 usethis::use_data(CCLE_data, overwrite = TRUE)
 

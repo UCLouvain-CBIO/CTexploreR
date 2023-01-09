@@ -8,7 +8,7 @@
 #'
 #' @param database normal_tissues_multimapping_data
 #'
-#' @param genes genes selected (all CT genes by default)
+#' @param genes Genes selected (all CT genes by default)
 #'
 #' @param multimapping Set to TRUE or FALSE to specify if returned expression
 #' values must take into account or not multi-mapped reads
@@ -20,19 +20,19 @@
 #' RNAseq data from a set of normal tissues were downloaded from Encode.
 #' (see inst/scripts/make_CT_normal_tissues_multimapping.R for fastq references)
 #' Fastq files were processed using a standard RNAseq pipeline including
-## [FastQC](https://www.bioinformatics.babraham.ac.uk/projects/fastqc/) for the
-## quality control of the raw data, and
-## [trimmomatic](http://www.usadellab.org/cms/?page=trimmomatic)
-## to remove low quality reads and trim the adapter from the sequences.
-## [hisat2](https://ccb.jhu.edu/software/hisat2/index.shtml) was used to align
-## reads to grch38 genome.
-## [featurecounts](https://rdrr.io/bioc/Rsubread/man/featureCounts.html) was used
-## to assign reads to genes using Homo_sapiens.GRCh38.105.gtf.
-
-## Two different pipelines were run in order to remove or not multi-mapping reads.
-## When multimapping was allowed, hisat2 was run with -k 20 parameter (reports
-## up to 20 alignments per read), and featurecounts was run with -M parameter
-## (multi-mapping reads are counted).
+#' [FastQC](https://www.bioinformatics.babraham.ac.uk/projects/fastqc/) for the
+#' quality control of the raw data, and
+#' [trimmomatic](http://www.usadellab.org/cms/?page=trimmomatic)
+#' to remove low quality reads and trim the adapter from the sequences.
+#' [hisat2](https://ccb.jhu.edu/software/hisat2/index.shtml) was used to align
+#' reads to grch38 genome.
+#' [featurecounts](https://rdrr.io/bioc/Rsubread/man/featureCounts.html) was used
+#' to assign reads to genes using Homo_sapiens.GRCh38.105.gtf.
+#'
+#' Two different pipelines were run in order to remove or not multi-mapping reads.
+#' When multimapping was allowed, hisat2 was run with -k 20 parameter (reports
+#' up to 20 alignments per read), and featurecounts was run with -M parameter
+#' (multi-mapping reads are counted).
 #'
 #' @return A heatmap of selected gene expression values (TPM) in a set of
 #' normal tissues calculated by counting or discarding multi-mapped reads.
@@ -52,7 +52,9 @@
 #' normal_tissue_expression_multimapping(database = normal_tissues_multimapping_data,
 #' genes = c("GAGE13", "CT45A6", "NXF2", "SSX2", "CTAG1A", "MAGEA3", "MAGEA6"),
 #' multimapping = TRUE)
-normal_tissue_expression_multimapping <- function(database, genes = NULL, multimapping = NULL, units = "TPM") {
+normal_tissue_expression_multimapping <- function(database, genes = NULL,
+                                                  multimapping = NULL,
+                                                  units = "TPM") {
 
   if (missing(database)) {
     stop("Database must be specified!")
@@ -78,13 +80,14 @@ normal_tissue_expression_multimapping <- function(database, genes = NULL, multim
   rownames(mat) <- rowData(data)$external_gene_name
 
   if (is.null(genes)) {
-    mat <- mat[CT_genes$external_gene_name,]
+    mat <- mat[CT_genes$external_gene_name, ]
   }
 
   if (!is.null(genes)) {
-    if (!all(genes %in% rownames(mat))) { ## Warning !
+    if (!all(genes %in% rownames(mat))) {
       message("Check gene name(s)!\n")
-      message(paste0(genes[!genes %in% rownames(mat)], " is not in the database.\n"))
+      message(paste0(genes[!genes %in% rownames(mat)],
+                     " is not in the database.\n"))
     }
     mat <- mat[genes[genes %in% rownames(mat)], , drop = FALSE]
   }
@@ -95,19 +98,22 @@ normal_tissue_expression_multimapping <- function(database, genes = NULL, multim
     name <- "log_TPM"
   }
 
-  if (dim(mat)[1] > 100){ fontsize <- 4 }
-  if (dim(mat)[1] > 50 & dim(mat)[1] <= 100){ fontsize <- 5 }
-  if (dim(mat)[1] > 20 & dim(mat)[1] <= 50){ fontsize <- 6 }
+  if (dim(mat)[1] > 100) { fontsize <- 4 }
+  if (dim(mat)[1] > 50 & dim(mat)[1] <= 100) { fontsize <- 5 }
+  if (dim(mat)[1] > 20 & dim(mat)[1] <= 50) { fontsize <- 6 }
   if (dim(mat)[1] <= 20) { fontsize <- 8 }
 
   h <- suppressMessages(Heatmap(mat,
                                 name = name,
                                 col = colorRamp2(seq(0, max(mat), length = 11),
-                                                 c("#5E4FA2", "#3288BD", "#66C2A5", "#ABDDA4",
-                                                   "#E6F598", "#FFFFBF", "#FEE08B", "#FDAE61",
-                                                   "#F46D43", "#D53E4F", "#9E0142")),
+                                                 c("#5E4FA2", "#3288BD",
+                                                   "#66C2A5", "#ABDDA4",
+                                                   "#E6F598", "#FFFFBF",
+                                                   "#FEE08B", "#FDAE61",
+                                                   "#F46D43", "#D53E4F",
+                                                   "#9E0142")),
                                 column_title = title,
-                                cluster_rows = T,
+                                cluster_rows = TRUE,
                                 show_row_dend = FALSE,
                                 cluster_columns = TRUE,
                                 show_column_dend = FALSE,

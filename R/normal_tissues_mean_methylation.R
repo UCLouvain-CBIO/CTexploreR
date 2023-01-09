@@ -7,14 +7,14 @@
 #'
 #' @param database CT_mean_methylation_in_tissues
 #'
-#' @param genes name of CT gene selected
+#' @param genes Name of CT gene selected
 #'
 #' @param include_genes_with_missing_values Set to TRUE or FALSE to specify if
 #' genes with missing methylation values in some tissues should be included
 #' (set to FALSE by default). Note that no gene clustering will be done when
 #' some methylation values are missing.
 #'
-#' @return heatmap of mean promoter methylation of Cancer-Testis (CT) genes
+#' @return Heatmap of mean promoter methylation of Cancer-Testis (CT) genes
 #' in normal tissues. Methylation values are returned invisibly.
 #'
 #' @export
@@ -34,18 +34,19 @@
 normal_tissues_mean_methylation <- function(database, genes = NULL,
                                             include_genes_with_missing_values = FALSE){
 
-  if (missing(database)){
+  if (missing(database)) {
     stop("Database must be specified!")
   }
 
-  if (!missing(database)){
+  if (!missing(database)) {
     data <- database
   }
 
   if (!is.null(genes)) {
-    if (!all(genes %in% rowData(data)$external_gene_name)) { ## Warning !
+    if (!all(genes %in% rowData(data)$external_gene_name)) {
       message("Check gene name(s)!\n")
-      message(paste0(genes[!genes %in% rowData(data)$external_gene_name], " is not in the database.\n"))
+      message(paste0(genes[!genes %in% rowData(data)$external_gene_name],
+                     " is not in the database.\n"))
       genes <- genes[genes %in% rowData(data)$external_gene_name]
       stopifnot(length(genes) > 0)
     }
@@ -55,21 +56,22 @@ normal_tissues_mean_methylation <- function(database, genes = NULL,
   mat <- na.omit(assay(data))
   clustering_option <- TRUE
 
-  if (include_genes_with_missing_values == TRUE){
+  if (include_genes_with_missing_values == TRUE) {
     mat <- assay(data)
     clustering_option <- FALSE
   }
-  if (dim(mat)[1] > 140 ){ fontsize <- 3 }
-  if (dim(mat)[1] > 100 & dim(mat)[1] <= 140){ fontsize <- 4 }
-  if (dim(mat)[1] > 50 & dim(mat)[1] <= 100){ fontsize <- 5 }
-  if (dim(mat)[1] > 20 & dim(mat)[1] <= 50){ fontsize <- 6 }
+  if (dim(mat)[1] > 140 ) { fontsize <- 3 }
+  if (dim(mat)[1] > 100 & dim(mat)[1] <= 140) { fontsize <- 4 }
+  if (dim(mat)[1] > 50 & dim(mat)[1] <= 100) { fontsize <- 5 }
+  if (dim(mat)[1] > 20 & dim(mat)[1] <= 50) { fontsize <- 6 }
   if (dim(mat)[1] <= 20) { fontsize <- 8 }
 
   h <- Heatmap(mat,
                column_title = 'Promoter mean methylation level by tissue',
                name = 'Methylation',
                col = colorRamp2(c(1:100),
-                                colorRampPalette(c("moccasin","dodgerblue4"))(100)),
+                                colorRampPalette(c("moccasin","dodgerblue4"))
+                                (100)),
                na_col = "gray80",
                cluster_rows = clustering_option,
                cluster_columns = FALSE,

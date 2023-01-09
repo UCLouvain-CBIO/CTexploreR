@@ -1,4 +1,4 @@
-## code to prepare `CT_list` dataset goes here
+## Code to prepare `CT_list` dataset goes here
 
 library("tidyverse")
 library("SummarizedExperiment")
@@ -57,25 +57,29 @@ all_genes[is.na(all_genes$CCLE_category), "CCLE_category"] <- "not_in_CCLE"
 
 all_genes <- all_genes %>%
   left_join(as_tibble(rowData(TCGA_TPM)) %>%
-              dplyr::select(ensembl_gene_id,percent_pos_tum, percent_neg_tum, max_TPM_in_TCGA, TCGA_category))
+              dplyr::select(ensembl_gene_id,percent_pos_tum, percent_neg_tum,
+                            max_TPM_in_TCGA, TCGA_category))
 
 all_genes[!is.na(all_genes$multimapping_analysis) &
-            all_genes$multimapping_analysis == "testis_specific", "TCGA_category"] <- "multimapping_issue"
+            all_genes$multimapping_analysis == "testis_specific",
+          "TCGA_category"] <- "multimapping_issue"
 
 ##########################################################################
 ## Add DAC column specifying if genes are induced by 5-Aza-2′-Deoxycytidine
 ##########################################################################
 induced <- as_tibble(rowData(DAC_treated_cells_multimapping)) %>%
-  filter(induced == "induced") %>% pull(external_gene_name)
+  filter(induced == "induced") %>%
+  pull(external_gene_name)
 
 all_genes <- all_genes %>%
   mutate(DAC = case_when(external_gene_name %in% induced ~ "induced",
                          !external_gene_name %in% induced ~ "not_induced"))
 
-#####################################################################################
-## Associate each gene to its likely most biologically relevant transcript, selecting
-## the canonical transcript from ensembl database. Add the TSS coordinates
-#####################################################################################
+################################################################################
+## Associate each gene to its likely most biologically relevant transcript,
+## selecting the canonical transcript from ensembl database.
+## Add the TSS coordinates
+################################################################################
 
 ensembl <- biomaRt::useDataset("hsapiens_gene_ensembl", useMart("ensembl"))
 attributes_vector <- c("ensembl_gene_id",
@@ -90,20 +94,24 @@ attributes_vector <- c("ensembl_gene_id",
                        "transcript_length",
                        "transcript_biotype",
                        "transcript_is_canonical")
-transcripts_infos <- as_tibble(biomaRt::getBM(attributes = attributes_vector, mart = ensembl))
+transcripts_infos <- as_tibble(biomaRt::getBM(attributes = attributes_vector,
+                                              mart = ensembl))
 canonical_transcripts <- transcripts_infos %>%
   filter(transcript_is_canonical == 1) %>%
   filter(chromosome_name %in% c(1:22, "X", "Y", "MT")) %>%
   filter(transcript_biotype == "protein_coding" | transcript_biotype == "lncRNA")
 all_genes <- all_genes %>%
   left_join(canonical_transcripts %>%
-              dplyr::select(ensembl_gene_id, external_gene_name, external_transcript_name,
-                            ensembl_transcript_id, chromosome_name, strand, transcript_start,
-                            transcript_end, transcription_start_site, transcript_length, transcript_biotype))
+              dplyr::select(ensembl_gene_id, external_gene_name,
+                            external_transcript_name, ensembl_transcript_id,
+                            chromosome_name, strand, transcript_start,
+                            transcript_end, transcription_start_site,
+                            transcript_length, transcript_biotype))
 
-##############################################################################################
-## create CT_list keeping testis-specific genes activated in CCLE cell lines and TCGA tumors.
-##############################################################################################
+################################################################################
+## create CT_list keeping testis-specific genes activated in CCLE cell lines
+## and TCGA tumors.
+################################################################################
 
 CT_list <- all_genes %>%
   filter(testis_specificity == "testis_specific" |
@@ -111,14 +119,14 @@ CT_list <- all_genes %>%
   filter(CCLE_category == "activated") %>%
   filter(TCGA_category == "activated" | TCGA_category == "multimapping_issue")
 
-#####################################################################################
-## For each CT gene, the most relevant transcript was validated manually, by visualizing
-## on IGV RNA-seq alignments from a testis sample.
+################################################################################
+## For each CT gene, the most relevant transcript was validated manually, by
+## visualizing on IGV RNA-seq alignments from a testis sample.
 ## When reads didn't fit to a referenced transcript in the testis sample,
 ## external_transcript_name was set to NA.
 ## When the testis-transcript is not the one activated in tumor cells lines,
 ## external_transcript_name was set to NA.
-#####################################################################################
+################################################################################
 
 CT_list[CT_list$external_gene_name == "FAM81B", "external_transcript_name"] <- "FAM81B-205"
 CT_list[CT_list$external_gene_name == "LIN28B", "external_transcript_name"] <- "LIN28B-202"
@@ -226,31 +234,45 @@ CT_list[CT_list$external_gene_name == "TUBB8B", "external_transcript_name"] <- N
 
 ## Change transcripts infos according to selected transcript
 CT_list <- CT_list %>%
-  dplyr::select(-c(ensembl_transcript_id, chromosome_name, strand, transcript_start, transcription_start_site,
-                   transcript_end, transcript_length, transcript_biotype)) %>%
+  dplyr::select(-c(ensembl_transcript_id, chromosome_name, strand, transcript_start,
+                   transcription_start_site, transcript_end, transcript_length,
+                   transcript_biotype)) %>%
   left_join(transcripts_infos %>%
-              dplyr::select(ensembl_gene_id, external_gene_name, external_transcript_name,
-                            ensembl_transcript_id, chromosome_name, strand, transcription_start_site, transcript_length, transcript_biotype))
+              dplyr::select(ensembl_gene_id, external_gene_name,
+                            external_transcript_name, ensembl_transcript_id,
+                            chromosome_name, strand, transcription_start_site,
+                            transcript_length, transcript_biotype))
 ## Remove genes with TSS set to NA
 CT_list <- CT_list %>%
   filter(!is.na(transcription_start_site))
 
-#####################################################################################
+################################################################################
 ## Add gene family column
-#####################################################################################
+################################################################################
 
 CT_list$family <- NA
-CT_list[grep(pattern = "MAGE", x = CT_list$external_gene_name, value = FALSE), "family"] <- "MAGE"
-CT_list[grep(pattern = "CT45A", x = CT_list$external_gene_name, value = FALSE), "family"] <- "CT45A"
-CT_list[grep(pattern = "CTAG", x = CT_list$external_gene_name, value = FALSE), "family"] <- "CTAG"
-CT_list[grep(pattern = "GAGE", x = CT_list$external_gene_name, value = FALSE), "family"] <- "GAGE"
-CT_list[grep(pattern = "XAGE", x = CT_list$external_gene_name, value = FALSE), "family"] <- "GAGE"
-CT_list[grep(pattern = "PAGE", x = CT_list$external_gene_name, value = FALSE), "family"] <- "PAGE"
-CT_list[grep(pattern = "SPANX", x = CT_list$external_gene_name, value = FALSE), "family"] <- "SPANX"
-CT_list[grep(pattern = "SSX", x = CT_list$external_gene_name, value = FALSE), "family"] <- "SSX"
-CT_list[grep(pattern = "VCX", x = CT_list$external_gene_name, value = FALSE), "family"] <- "VCX"
-CT_list[grep(pattern = "TSPY", x = CT_list$external_gene_name, value = FALSE), "family"] <- "TSPY"
-CT_list[grep(pattern = "RBMY", x = CT_list$external_gene_name, value = FALSE), "family"] <- "RBMY"
+CT_list[grep(pattern = "MAGE", x = CT_list$external_gene_name,
+             value = FALSE), "family"] <- "MAGE"
+CT_list[grep(pattern = "CT45A", x = CT_list$external_gene_name,
+             value = FALSE), "family"] <- "CT45A"
+CT_list[grep(pattern = "CTAG", x = CT_list$external_gene_name,
+             value = FALSE), "family"] <- "CTAG"
+CT_list[grep(pattern = "GAGE", x = CT_list$external_gene_name,
+             value = FALSE), "family"] <- "GAGE"
+CT_list[grep(pattern = "XAGE", x = CT_list$external_gene_name,
+             value = FALSE), "family"] <- "GAGE"
+CT_list[grep(pattern = "PAGE", x = CT_list$external_gene_name,
+             value = FALSE), "family"] <- "PAGE"
+CT_list[grep(pattern = "SPANX", x = CT_list$external_gene_name,
+             value = FALSE), "family"] <- "SPANX"
+CT_list[grep(pattern = "SSX", x = CT_list$external_gene_name,
+             value = FALSE), "family"] <- "SSX"
+CT_list[grep(pattern = "VCX", x = CT_list$external_gene_name,
+             value = FALSE), "family"] <- "VCX"
+CT_list[grep(pattern = "TSPY", x = CT_list$external_gene_name,
+             value = FALSE), "family"] <- "TSPY"
+CT_list[grep(pattern = "RBMY", x = CT_list$external_gene_name,
+             value = FALSE), "family"] <- "RBMY"
 
 save(CT_list, file = "../extdata/CT_list.rda")
 

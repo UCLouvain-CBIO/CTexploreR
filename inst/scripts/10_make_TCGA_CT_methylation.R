@@ -1,4 +1,4 @@
-## code to prepare `TCGA_CT_methylation` dataset goes here
+## Code to prepare `TCGA_CT_methylation` dataset goes here
 library("TCGAbiolinks")
 library("tidyverse")
 library("SummarizedExperiment")
@@ -13,7 +13,7 @@ bfc <- BiocFileCache(cache = "/home/users/aloriot/.cache/BiocFileCache",
 for(tumor_code in c("SKCM", "LUAD", "LUSC", "ESCA", "BRCA", "HNSC")) {
   rname <- paste0("TCGA_", tumor_code, "_methylation")
 
-  if(length(bfcquery(bfc, rname)$rid) == 0 ){
+  if(length(bfcquery(bfc, rname)$rid) == 0) {
 
     savepath <- bfcnew(bfc, rname, ext=".RData")
 
@@ -38,7 +38,7 @@ for(tumor_code in c("SKCM", "LUAD", "LUSC", "ESCA", "BRCA", "HNSC")) {
   }
 }
 
-## promoter region is defined as `nt_up` nucleotides upstream TSS
+## Promoter region is defined as `nt_up` nucleotides upstream TSS
 ## and `nt_down` nucleotides downstream TSS
 nt_up <- 1000
 nt_down <- 200
@@ -86,9 +86,10 @@ BRCA_CT_methylation <- subsetByOverlaps(data, CT_promoter_gr)
 load(bfc[[bfcquery(bfc, "TCGA_HNSC_methylation")$rid]])
 HNSC_CT_methylation <- subsetByOverlaps(data, CT_promoter_gr)
 
-met <- cbind(assay(SKCM_CT_methylation), assay(LUAD_CT_methylation), assay(LUSC_CT_methylation),
-            assay(COAD_CT_methylation), assay(ESCA_CT_methylation), assay(BRCA_CT_methylation),
-            assay(HNSC_CT_methylation))
+met <- cbind(assay(SKCM_CT_methylation), assay(LUAD_CT_methylation),
+             assay(LUSC_CT_methylation),assay(COAD_CT_methylation),
+             assay(ESCA_CT_methylation), assay(BRCA_CT_methylation),
+             assay(HNSC_CT_methylation))
 
 colData(SKCM_CT_methylation)$sample <- substr(colData(SKCM_CT_methylation)$samples, 1, 16)
 colData(SKCM_CT_methylation)$project_id <- "TCGA-SKCM"
