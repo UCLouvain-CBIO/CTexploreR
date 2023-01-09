@@ -1,6 +1,6 @@
 #' Genes expression in GTEX
 #'
-#' @description Gene expression data in normal tissues from GTEX database.
+#' @description Gene expression data in normal tissues from GTEx database.
 #'
 #' @format A `SummarizedExperiment` object with 24359 rows and 32 columns
 #' - Rows correspond to genes (ensembl_gene_id as rownames)
@@ -11,7 +11,15 @@
 #' - A column named `GTEX_category`, specifying the tissue specificity
 #' category ("testis_specific", "testis-preferential", "lowly_expressed" or
 #' "other") assigned to each gene using expression values in testis and in
-#' somatic tissues, has been added to the rowData.
+#' somatic tissues, has been added to the rowData. "testis_specific" genes are
+#' expressed exclusively in testis (expression in testis >= 1 TPM, highest expression
+#' in somatic tissues < 0.5 TPM, and expressed at least 10x more in testis than
+#' in any somatic tissue). "testis-preferential" genes are genes expressed in
+#' testis but also in a few somatic tissues (expression in testis >= 1 TPM,
+#' quantile 75% of expression in somatic tissues < 0.5 TPM, and expressed at
+#' least 10x more in testis than in any somatic tissue). "lowly_expressed" genes
+#' are genes undetectable in GTEX database probably due to multi-mapping issues
+#' (expression in all GTEX tissues < 1 TPM).
 #' - A column named `TPM_testis` giving the expression level in testis.
 #' - A column named `max_TPM_somatic` giving the maximum expression level
 #' found in a somatic tissue.
@@ -226,11 +234,11 @@
 #' "testis_preferential" or "lowly_expressed") assigned to each gene
 #' using GTEx database.
 #' - Column `TPM_testis` gives the gene expression level in testis
-#' (using GTEX database).
+#' (using GTEx database).
 #' - Column `max_TPM_somatic` gives the maximum expression level
-#' found in a somatic tissue (using GTEX database).
+#' found in a somatic tissue (using GTEx database).
 #' - Column `q75_TPM_somatic` gives the 75% quantile expression level
-#' found in a somatic tissue (using GTEX database).
+#' found in a somatic tissue (using GTEx database).
 #' - Column `multimapping_analysis` informs if the gene was found to
 #' be testis-specific when multi-mapped reads were counted for gene
 #' expression in normal tissues ("not_analysed" or "testis_specific").
