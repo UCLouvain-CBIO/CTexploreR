@@ -7,7 +7,7 @@
 #'
 #' @param database CT_mean_methylation_in_tissues
 #'
-#' @param Genes Name of CT gene selected
+#' @param genes Name of CT gene selected
 #'
 #' @param include_genes_with_missing_values Set to TRUE or FALSE to specify if
 #' genes with missing methylation values in some tissues should be included
