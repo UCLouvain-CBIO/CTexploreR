@@ -1,7 +1,7 @@
-#' Cytosine methylation of Cancer-Testis promoters in normal tissues
+#' Methylation of CpGs located in Cancer-Testis promoters in normal tissues
 #'
-#' @description Plots a heatmap of cytosine methylation of a Cancer-Testis (CT)
-#' promoter in normal tissues
+#' @description Plots a heatmap of the methylation of CpGs located in a
+#' Cancer-Testis (CT) promoter, in normal tissues
 #'
 #' @param database CT_methylation_in_tissues
 #'
@@ -13,8 +13,8 @@
 #' @param nt_down Number of nucleotides downstream the TSS to analyse
 #' (200 by default)
 #'
-#' @return Heatmap of cytosine methylation of a Cancer-Testis (CT) promoter in
-#' normal tissues. Methylation values are returned invisibly.
+#' @return Heatmap of the methylation of CpGs located in a Cancer-Testis (CT)
+#' promoter, in normal tissues. Methylation values are returned invisibly.
 #'
 #' @export
 #'
