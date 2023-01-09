@@ -188,7 +188,7 @@ TCGA_methylation_expression_correlation <- function(expression_database,
 
   if (length(unique(methylation_expression$Tumor)) == 1) {  # color by tissue if only one tumor type
     p <- ggplot(methylation_expression[order(methylation_expression$Tissue,
-                                             decreasing = TRUE),],
+                                             decreasing = TRUE), ],
                 aes(x = met, y = log1p(TPM))) +
       geom_point(alpha = 0.6, aes(color = Tissue)) +
       ggtitle(paste0(gene, " in ", tumor, " (corr = ", round(cor, 2), ")")) +
