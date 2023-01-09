@@ -26,21 +26,13 @@
 #' @importFrom circlize colorRamp2
 #'
 #' @examples
-#' CCLE_expression(database = CCLE_data,
-#'                 genes = c("MAGEA1", "MAGEA3", "MAGEA4", "MAGEA6", "MAGEA10"),
+#' CCLE_expression(genes = c("MAGEA1", "MAGEA3", "MAGEA4", "MAGEA6", "MAGEA10"),
 #'                 type = c("Skin", "Lung"), units = "log_TPM")
-#' CCLE_expression(database = CCLE_data, type = c("Skin", "Lung"),
-#'                 units = "log_TPM")
-CCLE_expression <- function(database, genes = NULL,
-                            units = "TPM", type = NULL) {
+#' CCLE_expression(units = "log_TPM")
+CCLE_expression <- function(genes = NULL, units = "TPM", type = NULL,
+                            database = CCLE_data) {
 
-  if (missing(database)) {
-    stop("Database must be specified!")
-  }
-
-  if (!missing(database)) {
-    CCLE <- database
-  }
+  CCLE <- database
 
   if (!is.null(type)) {
     if (!all(type %in% colData(CCLE)$type)) {
