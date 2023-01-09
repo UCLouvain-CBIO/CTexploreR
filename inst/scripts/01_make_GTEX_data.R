@@ -77,7 +77,7 @@ GTEX_data <- GTEX_data %>%
 
 ordered_tissues <- sort(colnames(GTEX_data)[-c(1:2)])
 GTEX_data <- GTEX_data %>%
-  dplyr::select("ensembl_gene_id", "external_gene_name", ordered_tissues)
+  dplyr::select("ensembl_gene_id", "external_gene_name", all_of(ordered_tissues))
 
 ##########################################################################
 ## Evaluate maximum TPM and 75% quantile TPM in somatic tissues
@@ -136,10 +136,9 @@ Gtex_mat <- as.matrix(GTEX_data %>%
 rownames(Gtex_mat) <- GTEX_data$ensembl_gene_id
 rowdata <- as.data.frame(GTEX_data %>%
                            dplyr::select(c(ensembl_gene_id, external_gene_name,
-                                           GTEX_category, Testis,
-                                           max_TPM_somatic, q75_TPM_somatic)) %>%
-                           dplyr::rename(TPM_testis = Testis))
-rownames(rowdata) <- rowdata$ensembl_gene_id
+                                           GTEX_category,
+                                           max_TPM_somatic, q75_TPM_somatic)))
+rowdata <- column_to_rownames(rowdata, "ensembl_gene_id")
 GTEX_data <- SummarizedExperiment(assays = list(TPM = Gtex_mat),
                                   rowData = rowdata)
 
