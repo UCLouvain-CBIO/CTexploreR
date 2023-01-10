@@ -140,13 +140,19 @@ genes_testis_specific_in_multimapping <- ratio_multi_not_multi %>%
     GTEX_category == "lowly_expressed" & TPM_testis_when_multi >= 1 &
       ratio >= 5 & ratio_testis_other >= 10 ~ "testis_specific",
     GTEX_category == "lowly_expressed" &
-      (TPM_testis_when_multi < 1 | ratio < 5 | ratio_testis_other < 10) ~ "not_testis_specific"))
+      (TPM_testis_when_multi < 1 | ratio < 5 | ratio_testis_other < 10) ~
+      "not_testis_specific"))
 
 rowdata <-
   tibble(ensembl_gene_id = TPM_matrix_with_multimapping$ensembl_gene_id,
          external_gene_name = TPM_matrix_with_multimapping$external_gene_name) %>%
   left_join(genes_testis_specific_in_multimapping %>%
-              dplyr::select(ensembl_gene_id, GTEX_category, multimapping_analysis))
+              dplyr::select(ensembl_gene_id, GTEX_category, multimapping_analysis)) %>%
+  mutate(lowly_expressed_in_GTEX = case_when(
+    GTEX_category == "lowly_expressed" ~ TRUE,
+    GTEX_category != "lowly_expressed" ~ FALSE)) %>%
+  dplyr::select(ensembl_gene_id, external_gene_name,
+                lowly_expressed_in_GTEX, multimapping_analysis)
 
 rowdata$multimapping_analysis[rowdata$multimapping_analysis == "not_analysed"] <- NA
 
