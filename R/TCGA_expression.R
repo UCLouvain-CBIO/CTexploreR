@@ -28,20 +28,15 @@
 #' TCGA_expression(TCGA_TPM, tumor = "LUAD",
 #' genes = c("MAGEA1", "MAGEA3", "MAGEA4"),
 #' units = "log_TPM")
-TCGA_expression <- function(database, tumor = "all", genes = NULL,
-                            units = "TPM") {
+TCGA_expression <- function(tumor = "all", genes = NULL,
+                            units = "TPM", database = TCGA_TPM) {
 
-  if (missing(database)) {
-    stop("Database must be specified!")
-  }
+  data <- database
 
-  if (!missing(database)) {
-    data <- database
-  }
-
-  if (!tumor %in% c("SKCM", "LUAD", "LUSC", "COAD", "ESCA", "BRCA",
-                    "HNSC", "all")) {
-    stop("TCGA tumor code must be 'SKCM', 'LUAD', 'LUSC', 'COAD', 'ESCA', 'BRCA', 'HNSC' or 'all'!")
+  if (!tumor %in% c(unique(sub(pattern = 'TCGA-', x = data$project_id, '')),
+                    'all')) {
+    stop("TCGA tumor code must be one of ",
+         paste(c(unique(sub(pattern = 'TCGA-', x = data$project_id, ''))),  ", "), "or all")
   }
 
   # Use only primary/metastatic tumors and normal peritumoral samples
@@ -75,7 +70,7 @@ TCGA_expression <- function(database, tumor = "all", genes = NULL,
                 "definition"] <- "Peritumoral"
   colData(data)[colData(data)$definition == "Primary solid Tumor",
                 "definition"] <- "Primary"
-  df_col <- data.frame("barcode" = colData(data)$barcode,
+  df_col <- data.frame("barcode" = rownames(colData(data)),
                        "shortLetterCode" = colData(data)$shortLetterCode,
                        "tumor" = sub("TCGA-", x = colData(data)$project_id,
                                      replacement = ''),
