@@ -168,7 +168,7 @@ rowdata <- rowdata %>%
     percent_neg_tum >= 20 & percent_pos_tum > 0 ~ "activated",
     percent_neg_tum >= 20 & percent_pos_tum == 0 ~ "not_activated"))
 rowdata <- as.data.frame(rowdata)
-rowdata <- column_to_rownames(x, "ensembl_gene_id")
+rowdata <- column_to_rownames(rowdata, "ensembl_gene_id")
 
 rowData(TCGA_TPM) <- rowdata
 
