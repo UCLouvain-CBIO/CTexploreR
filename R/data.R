@@ -99,16 +99,20 @@
 #' or not with 5-Aza-2′-Deoxycytidine (DAC), a demethylating agent.
 #'
 #' @format A SummarizedExperiment object with 24359 rows and 32 columns
-#' - Rows correspond to genes (ensembl_gene_id)
-#' - Columns correspond to samples
-#' - Expression data are normalised log-transformed counts (log1p)
-#' - The colData contains the SRA references from which fastq files
-#' were downloaded
-#' - Results of a differential expression evaluating the DAC treatment
-#' effect are stored in the rowData.
+#' - Rows correspond to genes (ensembl_gene_id).
+#' - Columns correspond to samples.
+#' - Expression data correspond to counts that have been normalised (by DESeq2
+#' method) and log-transformed (log1p).
+#' - The colData contains the SRA references of the fastq files that were
+#' downloaded, and informations about the cell lines and the DAC treatment.
+#' - The rowData contains the results of a differential expression evaluating
+#' the DAC treatment effect. For each each cell line, the log2FC between treated
+#' and control cells is given, as well as the p-adjusted value. The column
+#' `induced` flags genes significantly induced (log2FoldChange >= 2 and padj <= 0.05)
+#' in at least one cell line.
 #'
 #' @details Differential expression analysis was done using DESeq2_1.36.0,
-#' using as design = ~ cell + treatment
+#' using as design = ~ treatment
 #' (see inst/scripts/make_DAC_treated_cells.R for details).
 #'
 #' @source RNAseq fastq files were downloaded from Encode database.
@@ -128,14 +132,18 @@
 #' @format A SummarizedExperiment object with 24359 rows and 32 columns
 #' - Rows correspond to genes (ensembl_gene_id).
 #' - Columns correspond to samples.
-#' - Expression data are normalised log-transformed counts (log1p).
-#' - The colData contains the SRA references from which fastq files
-#' were downloaded.
-#' - Results of a differential expression evaluating the DAC treatment
-#' effect are stored in the rowData.
+#' - Expression data correspond to counts that have been normalised (by DESeq2
+#' method) and log-transformed (log1p).
+#' - The colData contains the SRA references of the fastq files that were
+#' downloaded, and informations about the cell lines and the DAC treatment.
+#' - The rowData contains the results of a differential expression evaluating
+#' the DAC treatment effect. For each each cell line, the log2FC between treated
+#' and control cells is given, as well as the p-adjusted value. The column
+#' `induced` flags genes significantly induced (log2FoldChange >= 2 and padj <= 0.05)
+#' in at least one cell line.
 #'
 #' @details Differential expression analysis was done using DESeq2_1.36.0,
-#' using as design = ~ cell + treatment
+#' using as design = ~ treatment
 #' (see inst/scripts/make_DAC_treated_cells_multimapping.R for details).
 #'
 #' @source RNAseq fastq files were downloaded from Encode database.
