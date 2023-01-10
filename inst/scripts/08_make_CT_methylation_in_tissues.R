@@ -1,4 +1,4 @@
-## Code to prepare `CG_methylation_in_tissues` dataset goes here
+## Code to prepare `CT_methylation_in_tissues` dataset goes here
 
 library(GenomicRanges)
 library(SummarizedExperiment)
@@ -129,69 +129,67 @@ for (cell in Encode_tissues) {
   rm(bismark_merge)
 }
 
-## Sperm methylation data (from RoadmapEpigenomics project) was dowloaded
-## from GEO.
-## https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSM1127119
-## wig2bed (bedops) was used to convert the wig file into a bed file.
-## No info about number of reads (not possible to select cytosine having at
-## least 2 reads)
-
-cell <- "GSM1127119"
-bismark_file <- paste0("../../../CTdata/inst/extdata/", cell, ".bed")
-bismark <- read_tsv(bismark_file, col_types = cols(.default = "?", X1 = 'c'),
-                    col_names = FALSE)
-bismark <- bismark %>%
-  dplyr::rename(chr = X1, CpG_pos = X2, end = X3, met = X5) %>%
-  dplyr::select(-X4)
-
-# Methylation data are in hg19 coords. Use liftOver to convert coords to hg38
-hub <- AnnotationHub()
-# query(hub, 'hg19ToHg38')
-chain <- query(hub, 'hg19ToHg38')[[1]]
-bismark_gr <- makeGRangesFromDataFrame(bismark,
-                                       keep.extra.columns = TRUE,
-                                       seqnames.field = "chr",
-                                       start.field = "CpG_pos",
-                                       end.field = "end")
-
-bismark_gr <- unlist(liftOver(bismark_gr, chain))
-bismark_gr <- subsetByOverlaps(bismark_gr, CT_list_prom_gr)
-
-CT_met_in_tissues <- CT_met_in_tissues %>%
-  left_join(as_tibble(bismark_gr) %>%
-              dplyr::rename(CpG_pos = start, chr = seqnames, sperm = met) %>%
-              mutate(sperm = sperm * 100) %>%
-              dplyr::select(chr, CpG_pos, sperm))
-
-# ## Use sperm WGBS from SRR15427118
-# bismark_file <- "/data/cbio/202203_CBIO_CGexploreR/WGBS/reports/Bismark/SRR15427118_1_val_1_bismark_bt2_pe.bismark.cov.gz"
-# bismark <- read_tsv(bismark_file, col_types = cols(.default = "?", X1 = 'c'), col_names = FALSE)
+# ## Sperm methylation data (from RoadmapEpigenomics project) was dowloaded
+# ## from GEO.
+# ## https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSM1127119
+# ## wig2bed (bedops) was used to convert the wig file into a bed file.
+# ## No info about number of reads (not possible to select cytosine having at
+# ## least 2 reads)
 #
+# cell <- "GSM1127119"
+# bismark_file <- paste0("../../../CTdata/inst/extdata/", cell, ".bed")
+# bismark <- read_tsv(bismark_file, col_types = cols(.default = "?", X1 = 'c'),
+#                     col_names = FALSE)
 # bismark <- bismark %>%
-#   dplyr::rename(chr = X1, start = X2, end = X3, score = X4, met = X5, unmet = X6) %>%
-#   dplyr::mutate(chr = paste0("chr", chr)) %>%
-#   mutate(nReads = met + unmet) %>%
-#   filter(nReads > 1) %>%
-#   dplyr::select(-nReads)
-#   mutate(start = Start + 1) %>%  # change coords to 1-based system
-#   mutate(CpG_pos = case_when(strand == '+' ~ start,
-#                             strand == '-' ~ start - 1)) %>%
-#   dplyr::select(chr, CpG_pos, strand, score)
-# CG_pos_strand <- as_tibble(CpG_positions_gr) %>%
-#   dplyr::rename(chr = seqnames) %>%
-#   left_join(bismark, by = c("chr" = "chr", "start" = "start")) %>%
-#   dplyr::mutate(end = start + 1) %>%
-#   dplyr::select(chr, start, end, width, strand, CpG_pos, score, met, unmet)
-# CG_neg_strand <- as_tibble(CpG_positions_gr) %>%
-#   dplyr::rename(chr = seqnames) %>%
-#   left_join(bismark, by = c("chr" = "chr", "end" = "start")) %>%
-#   dplyr::select(chr, start, end, width, strand, CpG_pos, score, met, unmet)
+#   dplyr::rename(chr = X1, CpG_pos = X2, end = X3, met = X5) %>%
+#   dplyr::select(-X4)
 #
-# bismark_merge <- rbind(CG_pos_strand, CG_neg_strand) %>%
-#   group_by(chr, CpG_pos) %>% dplyr::summarise(sperm = mean(c(score), na.rm = TRUE))
+# # Methylation data are in hg19 coords. Use liftOver to convert coords to hg38
+# hub <- AnnotationHub()
+# # query(hub, 'hg19ToHg38')
+# chain <- query(hub, 'hg19ToHg38')[[1]]
+# bismark_gr <- makeGRangesFromDataFrame(bismark,
+#                                        keep.extra.columns = TRUE,
+#                                        seqnames.field = "chr",
+#                                        start.field = "CpG_pos",
+#                                        end.field = "end")
+#
+# bismark_gr <- unlist(liftOver(bismark_gr, chain))
+# bismark_gr <- subsetByOverlaps(bismark_gr, CT_list_prom_gr)
 #
 # CT_met_in_tissues <- CT_met_in_tissues %>%
-#   left_join(bismark_merge)
+#   left_join(as_tibble(bismark_gr) %>%
+#               dplyr::rename(CpG_pos = start, chr = seqnames, sperm = met) %>%
+#               mutate(sperm = sperm * 100) %>%
+#               dplyr::select(chr, CpG_pos, sperm))
+
+## Use sperm WGBS from SRR15427118
+## raw data was processed with bismark (version 0.20.0)
+bismark_file <- "../../../CTdata/inst/extdata/SRR15427118_1_val_1_bismark_bt2_pe.bismark.cov.gz"
+bismark <- read_tsv(bismark_file, col_types = cols(.default = "?", X1 = 'c'), col_names = FALSE)
+
+bismark <- bismark %>%
+  dplyr::rename(chr = X1, start = X2, end = X3, score = X4, met = X5, unmet = X6) %>%
+  dplyr::mutate(chr = paste0("chr", chr)) %>%
+  mutate(nReads = met + unmet) %>%
+  filter(nReads > 1) %>%
+  dplyr::select(-nReads)
+
+CG_pos_strand <- as_tibble(CpG_positions_gr) %>%
+  dplyr::rename(chr = seqnames) %>%
+  left_join(bismark, by = c("chr" = "chr", "start" = "start")) %>%
+  dplyr::mutate(end = start + 1) %>%
+  dplyr::select(chr, start, end, width, strand, CpG_pos, score, met, unmet)
+CG_neg_strand <- as_tibble(CpG_positions_gr) %>%
+  dplyr::rename(chr = seqnames) %>%
+  left_join(bismark, by = c("chr" = "chr", "end" = "start")) %>%
+  dplyr::select(chr, start, end, width, strand, CpG_pos, score, met, unmet)
+
+bismark_merge <- rbind(CG_pos_strand, CG_neg_strand) %>%
+  group_by(chr, CpG_pos) %>% dplyr::summarise(sperm = mean(c(score), na.rm = TRUE))
+
+CT_met_in_tissues <- CT_met_in_tissues %>%
+  left_join(bismark_merge)
 
 
 #  Save as a RangedSummarizeExperiment
