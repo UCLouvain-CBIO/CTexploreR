@@ -5,7 +5,6 @@ library("tidyverse")
 library("SummarizedExperiment")
 library("BiocFileCache")
 library("org.Hs.eg.db")
-load("../../data/GTEX_data.rda")
 
 bfc <- BiocFileCache(cache = "/home/users/aloriot/.cache/BiocFileCache",
                      ask = FALSE)
@@ -75,7 +74,10 @@ prepare_data <- function(tum) {
   tmp <- rowSums(binary) / ncol(binary) * 100
   tmp <- enframe(tmp, name = "ensembl_gene_id",
                  value = paste0("percent_neg_", tum))
-  rowdata <- left_join(rowdata, tmp)
+  rowdata <- rowdata %>%
+    filter(ensembl_gene_id %in% rownames(GTEX_data)) %>%
+    left_join(tmp)
+
   rowData(data) <- rowdata
   return(assign(x = paste0(tum, "_TPM"), value = data))
 }
@@ -104,7 +106,7 @@ coldata_common_variables <-
                             colnames(colData(SKCM)) %in% colnames(colData(BRCA)) &
                             colnames(colData(SKCM)) %in% colnames(colData(HNSC))]
 
-TPM <-cbind(assay(SKCM), assay(LUAD), assay(LUSC), assay(COAD),
+TPM <- cbind(assay(SKCM), assay(LUAD), assay(LUSC), assay(COAD),
             assay(ESCA), assay(BRCA), assay(HNSC))
 
 rowdata <- as_tibble(rowData(SKCM)) %>%
@@ -127,7 +129,8 @@ coldata <- rbind(colData(SKCM)[, coldata_common_variables],
 ## DNA methylation loss promotes immune evasion of tumours with high
 ## mutation and copy number load. Jang et al., Nature Commun 2019
 ## Keep also `CD8 T cells` and `Proliferation score` columns
-global_hypo <- readxl::read_xlsx("../../../CTdata/inst/extdata/41467_2019_12159_MOESM4_ESM.xlsx", skip = 3)
+global_hypo <- readxl::read_xlsx(
+  "../../../CTdata/inst/extdata/41467_2019_12159_MOESM4_ESM.xlsx", skip = 3)
 names(global_hypo) <- c("project_id", "Sample", "global_methylation",
                         "CD8_T_cells", "proliferation_score")
 global_hypo$project_id <- paste0("TCGA-", global_hypo$project_id)
@@ -135,11 +138,13 @@ coldata$Sample <- substr(coldata$sample, 1, 15)
 coldata <- as_tibble(coldata) %>%
   left_join(global_hypo) %>%
   as.data.frame()
-
+coldata <- column_to_rownames(coldata, "barcode")
 TCGA_TPM <- SummarizedExperiment(assays = list(TPM = TPM),
-                                 colData = coldata)
+                                 colData = coldata,
+                                 rowData = rowdata)
 
-# Add frequencies of activation (TPM >= TPM_thr) of each gene in all types of tumor samples.
+# Add frequencies of activation (TPM >= TPM_thr) of each gene in all types of
+# tumor samples.
 tumors_only <- TCGA_TPM[, colData(TCGA_TPM)$shortLetterCode != 'NT']
 TPM_thr <- 10
 binary <- ifelse(assay(tumors_only) >= TPM_thr, 1, 0)
@@ -153,44 +158,17 @@ TPM_low_thr <- 0.1
 binary <- ifelse(assay(tumors_only) <= TPM_low_thr, 1, 0)
 tmp <- rowSums(binary) / ncol(binary) * 100
 tmp <- enframe(tmp, name = "ensembl_gene_id", value = "percent_neg_tum")
-rowdata <- rowdata %>%
-  left_join(tmp)
+rowdata <- left_join(rowdata, tmp)
 
 rowdata$max_TPM_in_TCGA <- rowMax(assay(tumors_only))
 
-# Add mean expression level of each gene in all positive tumors (TPM >= TPM_thr).
-# assay(tumors_only)[assay(tumors_only) < TPM_thr] <- NA
-# tmp <- rowMeans(assay(tumors_only), na.rm = TRUE)
-# tmp <- rowMedians(assay(tumors_only), na.rm = TRUE)
-# rowData(TCGA_TPM)$mean_TPM_in_pos_tum <- tmp
-# rowData(TCGA_TPM)$median_TPM_in_pos_tum <- tmp
-
-# Add frequencies of expression (TPM >= TPM_thr) of each gene in all types of
-# normal samples.
-# normal_only <- TCGA_TPM[ , colData(TCGA_TPM)$shortLetterCode == 'NT']
-# TPM_thr <- 3
-# binary <- ifelse(assay(normal_only) >= TPM_thr, 1, 0)
-# tmp <- rowSums(binary) / ncol(binary) * 100
-# rowData(TCGA_TPM)$percent_pos_NT <- tmp
-#
-# Estimate the percent of normal tissues in which genes are repressed (TPM < TPM_low_thr)
-# TPM_low_thr <- 0.1
-# binary <- ifelse(assay(normal_only) <= TPM_low_thr, 1, 0)
-# tmp <- rowSums(binary) / ncol(binary) * 100
-# rowData(TCGA_TPM)$percent_neg_NT <- tmp
-
-# Add mean expression level of each gene in all positive NT (TPM >= TPM_thr).
-# assay(normal_only)[assay(normal_only) < TPM_thr] <- NA
-# tmp <- rowMeans(assay(normal_only), na.rm = TRUE)
-# tmp <- rowMedians(assay(normal_only), na.rm = TRUE)
-# rowData(TCGA_TPM)$mean_TPM_in_pos_NT <- tmp
-# rowData(TCGA_TPM)$median_TPM_in_pos_NT <- tmp
-
-rowdata <-rowdata %>%
+rowdata <- rowdata %>%
   mutate(TCGA_category = case_when(
     percent_neg_tum < 20 ~ "leaky",
     percent_neg_tum >= 20 & percent_pos_tum > 0 ~ "activated",
     percent_neg_tum >= 20 & percent_pos_tum == 0 ~ "not_activated"))
+rowdata <- as.data.frame(rowdata)
+rowdata <- column_to_rownames(x, "ensembl_gene_id")
 
 rowData(TCGA_TPM) <- rowdata
 

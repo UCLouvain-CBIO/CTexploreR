@@ -195,11 +195,22 @@
 #' - Clinical information are stored in colData
 #' - Genes information are stored in RowData
 #'
-#' @source SKCM, LUAD, LUSC, COAD, ESCA, BRCA and HNSC expression data were downloaded
-#' with TCGAbiolinks. Global hypomethylation levels from paper `DNA methylation
-#' loss promotes immune evasion of tumours with high mutation and copy number load`
-#' from Jang et al., Nature Commun 2019 were added to colData
-#' (see inst/scripts/make_TCGA_TPM.R for details).
+#' @details
+#' - The colData contains clinical data from TCGA as well as global
+#' hypomethylation levels obtained from paper `DNA methylation loss promotes
+#' immune evasion of tumours with high mutation and copy number load`
+#' from Jang et al., Nature Commun 2019 that were added (see
+#' inst/scripts/make_TCGA_TPM.R for details).
+#' - The rowData contains genes information, the percentages of tumors positive
+#' for the genes (TPM >= 10), and the percentages of tumors negative for the
+#' genes (TPM < 0.1). In column "TCGA_category", genes are labelled as "activated"
+#' when the percentage of positive tumors is > 0 and when at least 20% of tumors
+#' are negative. Genes are labelled as "not_activated" when the percentage of
+#' positive tumors is 0. Genes are labelled as "leaky" when less than 20% of
+#' tumors are negative.
+#'
+#' @source SKCM, LUAD, LUSC, COAD, ESCA, BRCA and HNSC expression data were
+#' downloaded with TCGAbiolinks. (see inst/scripts/make_TCGA_TPM.R for details).
 "TCGA_TPM"
 
 #' Methylation of CT promoters in TCGA samples
