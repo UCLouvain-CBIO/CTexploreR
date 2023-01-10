@@ -3,7 +3,7 @@
 library(tidyverse)
 library(DESeq2)
 load("../../data/GTEX_data.rda")
-genes_in_gtex <- rowData(GTEX_data)$ensembl_gene_id
+genes_in_gtex <- rownames(GTEX_data)
 
 ## RNAseq data from cells treated or not with 5-aza downloaded from SRA.
 ## Data was processed using a standard RNAseq pipeline including
@@ -22,15 +22,15 @@ genes_in_gtex <- rowData(GTEX_data)$ensembl_gene_id
 load("../../../CTdata/inst/extdata/DAC_coldata.rda")
 load("../../../CTdata/inst/extdata/DAC_raw_counts_multiM.rda")
 
-
 dds <- DESeqDataSetFromMatrix(countData = raw_counts_with_MP,
                               colData = coldata,
-                              design = ~ cell + treatment)
-dds <- DESeq(dds)
+                              design = ~ 1)
+dds <- DESeq2::estimateSizeFactors(dds)
 log1p_transformed <- log1p(counts(dds, normalize = TRUE))
 
-## DESeq2 results
-## Analyse separately each cell line
+## DESeq2 analysis
+## Compare DAC treated cells to control cells separately each cell line
+## to identify genes induced by DAC in at least one cell line.
 cell_line <- unique(coldata$cell)[1]
 coldata_by_cell_line <- coldata[coldata$cell == cell_line, ]
 dds <- DESeqDataSetFromMatrix(
@@ -44,7 +44,7 @@ res <- results(dds, name = "treatment_DAC_vs_CTL",
                altHypothesis = "greater")
 
 res_all <- as_tibble(res, rownames = "ensembl_gene_id") %>%
-  right_join(as_tibble(rowData(GTEX_data)) %>%
+  right_join(as_tibble(rowData(GTEX_data), rownames = "ensembl_gene_id") %>%
                dplyr::select(ensembl_gene_id, external_gene_name)) %>%
   dplyr::select(ensembl_gene_id, external_gene_name, log2FoldChange, padj) %>%
   mutate(log2FoldChange = round(log2FoldChange, 2)) %>%
@@ -57,8 +57,6 @@ names(res_all) <- c("ensembl_gene_id", "external_gene_name",
                 paste0("logFC_", cell_line),
                 paste0("padj_", cell_line),
                 paste0("sign_", cell_line))
-
-
 
 for(cell_line in unique(coldata$cell)[-1]) {
 
@@ -73,7 +71,7 @@ for(cell_line in unique(coldata$cell)[-1]) {
                  independentFiltering = TRUE,
                  altHypothesis = "greater")
   res <- as_tibble(res, rownames = "ensembl_gene_id") %>%
-    right_join(as_tibble(rowData(GTEX_data)) %>%
+    right_join(as_tibble(rowData(GTEX_data), rownames = "ensembl_gene_id") %>%
                  dplyr::select(ensembl_gene_id, external_gene_name)) %>%
     dplyr::select(ensembl_gene_id, external_gene_name, log2FoldChange, padj) %>%
     mutate(log2FoldChange = round(log2FoldChange, 2)) %>%
@@ -90,16 +88,17 @@ for(cell_line in unique(coldata$cell)[-1]) {
   res_all <- left_join(res_all, res)
 }
 
+## Tag genes significantly induced in at least one cell line
 res_all$sign <- res_all %>%
   dplyr::select(starts_with("sign")) %>%
   rowSums()
 
-## Tag genes significantly induced in at least one cell line
 res_all <- res_all %>%
-  mutate(induced = ifelse(sign >= 1, "induced", "not_induced"))
+  mutate(induced = ifelse(sign >= 1, TRUE, FALSE)) %>%
+  dplyr::select(-starts_with("sign"))
 
 res_all <- as.data.frame(res_all)
-rownames(res_all) <- res_all$ensembl_gene_id
+res_all <- column_to_rownames(res_all, "ensembl_gene_id")
 
 ## Create a summarizedExperiment
 DAC_treated_cells_multimapping <- SummarizedExperiment(
@@ -108,3 +107,4 @@ DAC_treated_cells_multimapping <- SummarizedExperiment(
   rowData = res_all[genes_in_gtex, ])
 
 usethis::use_data(DAC_treated_cells_multimapping, overwrite = TRUE)
+
