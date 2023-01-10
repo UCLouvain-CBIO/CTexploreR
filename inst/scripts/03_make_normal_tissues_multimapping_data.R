@@ -64,7 +64,7 @@ TPM_matrix_no_multimapping <- as_tibble(x1, rownames = "Geneid") %>%
   dplyr::select(Geneid, sample, TPM) %>%
   spread(sample, TPM) %>%
   dplyr::rename(ensembl_gene_id = Geneid) %>%
-  right_join(as_tibble(rowData(GTEX_data)) %>%
+  right_join(as_tibble(rowData(GTEX_data), rownames = "ensembl_gene_id") %>%
                dplyr::select(ensembl_gene_id, external_gene_name)) %>%
   dplyr::select(ensembl_gene_id, external_gene_name, everything())
 
@@ -90,7 +90,7 @@ TPM_matrix_with_multimapping <- as_tibble(x1, rownames = "Geneid") %>%
   dplyr::select(Geneid, sample, TPM) %>%
   spread(sample, TPM) %>%
   dplyr::rename(ensembl_gene_id = Geneid) %>%
-  right_join(as_tibble(rowData(GTEX_data)) %>%
+  right_join(as_tibble(rowData(GTEX_data), rownames = "ensembl_gene_id") %>%
                dplyr::select(ensembl_gene_id, external_gene_name)) %>%
   dplyr::select(ensembl_gene_id, external_gene_name, everything())
 
@@ -134,7 +134,7 @@ max_not_testis <- tibble(ensembl_gene_id = rownames(mat_with_multimapping),
 genes_testis_specific_in_multimapping <- ratio_multi_not_multi %>%
   left_join(max_not_testis) %>%
   mutate(ratio_testis_other = TPM_testis_when_multi / max_in_somatic) %>%
-  left_join(as_tibble(rowData(GTEX_data))) %>%
+  left_join(as_tibble(rowData(GTEX_data), rownames = "ensembl_gene_id")) %>%
   mutate(multimapping_analysis = case_when(
     GTEX_category != "lowly_expressed" ~ "not_analysed",
     GTEX_category == "lowly_expressed" & TPM_testis_when_multi >= 1 &
@@ -146,8 +146,11 @@ rowdata <-
   tibble(ensembl_gene_id = TPM_matrix_with_multimapping$ensembl_gene_id,
          external_gene_name = TPM_matrix_with_multimapping$external_gene_name) %>%
   left_join(genes_testis_specific_in_multimapping %>%
-              dplyr::select(ensembl_gene_id, multimapping_analysis))
+              dplyr::select(ensembl_gene_id, GTEX_category, multimapping_analysis))
 
+rowdata$multimapping_analysis[rowdata$multimapping_analysis == "not_analysed"] <- NA
+
+rowdata <- column_to_rownames(rowdata, "ensembl_gene_id")
 
 #################################################################################
 ## Create normal_tissues_multimapping SE
