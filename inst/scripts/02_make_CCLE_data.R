@@ -54,7 +54,7 @@ TPM <- CCLE_full_data %>%
   dplyr::select(-gene) %>%
   filter(DepMap_ID %in% coldata$DepMap_ID) %>%
   filter(ensembl_gene_id %in% rownames(GTEX_data)) %>%
-  left_join(as_tibble(rowData(GTEX_data)) %>%
+  left_join(as_tibble(rowData(GTEX_data), rownames = "ensembl_gene_id") %>%
               dplyr::select(ensembl_gene_id, external_gene_name)) %>%
   left_join(coldata %>%
               dplyr::select(DepMap_ID, stripped_cell_line_name)) %>%
@@ -64,8 +64,7 @@ TPM <- CCLE_full_data %>%
 TPM_mat <- TPM %>%
   dplyr::select(-ensembl_gene_id, -external_gene_name) %>%
   as.matrix()
-rownames(TPM_mat) <- TPM %>%
-  pull(ensembl_gene_id)
+rownames(TPM_mat) <- TPM$ensembl_gene_id
 
 ## Values are in log2(TPM + 1), convert to TPM
 TPM_mat <- 2^(TPM_mat) - 1
@@ -75,7 +74,7 @@ TPM_mat <- 2^(TPM_mat) - 1
 # Gene considered as "activated" if TPM >= TPM_thr
 TPM_thr <- 10
 activation_frequencies <- tibble(ensembl_gene_id = rownames(TPM_mat)) %>%
-  left_join(as_tibble(rowData(GTEX_data)) %>%
+  left_join(as_tibble(rowData(GTEX_data), rownames = "ensembl_gene_id") %>%
               dplyr::select(ensembl_gene_id, external_gene_name))
 binary <- ifelse(TPM_mat >= TPM_thr, 1, 0)
 tmp <- rowSums(binary) / ncol(binary) * 100
@@ -107,7 +106,8 @@ rowdata <- left_join(activation_frequencies, repression_frequencies) %>%
                      percent_of_negative_CCLE_cell_lines >= 20 &
                        percent_of_positive_CCLE_cell_lines > 0 ~ "activated",
                      percent_of_negative_CCLE_cell_lines >= 20 &
-                       percent_of_positive_CCLE_cell_lines == 0 ~ "not_activated"))
+                       percent_of_positive_CCLE_cell_lines == 0 ~ "not_activated")) %>%
+  select(-ensembl_gene_id)
 
 CCLE_data <- SummarizedExperiment(assays = list(TPM = TPM_mat),
                                   rowData = rowdata,
