@@ -15,7 +15,8 @@
 #' Can be "TPM" (default) or "log_TPM" (log(TPM + 1))
 #'
 #' @return A heatmap of selected CT genes expression in TCGA samples.
-#' A SummarizedExperiment with TPM expression data is invisibly returned.
+#' A SummarizedExperiment with TPM expression data is invisibly returned (Columns
+#' of RowData and colData are described in TCGA_TPM).
 #'
 #' @export
 #'
@@ -117,6 +118,7 @@ TCGA_expression <- function(tumor = "all", genes = NULL,
   mat <- assay(data)
   rownames(mat) <- rowData(data)$external_gene_name
   name <- "TPM"
+  title <- paste0("Gene expression in TCGA-", tumor)
 
   if (units == "log_TPM") {
     mat <- log1p(mat)
@@ -131,11 +133,13 @@ TCGA_expression <- function(tumor = "all", genes = NULL,
   annot <- column_ha_type
   if (tumor == "all") {
     annot <- column_ha_tumor
+    title <- "Gene expression in TCGA samples"
   }
+
 
   h <- suppressMessages(Heatmap(mat[, rownames(df_col), drop = FALSE],
                                 name = name,
-                                column_title = paste0("Gene expression in TCGA samples"),
+                                column_title = title,
                                 column_split = split_order_by_cat,
                                 col = colorRamp2(seq(0, max(mat), length = 11),
                                                  c("#5E4FA2", "#3288BD",
