@@ -6,8 +6,6 @@
 #' from which members have identical or nearly identical sequences. Some CT can
 #' only be detected in RNAseq data in which multimapping reads are not discared.
 #'
-#' @param database normal_tissues_multimapping_data
-#'
 #' @param genes Genes selected (all CT genes by default)
 #'
 #' @param multimapping Set to TRUE or FALSE to specify if returned expression
@@ -15,6 +13,8 @@
 #'
 #' @param units Expression values units.
 #' Can be "TPM" (default) or "log_TPM" (log(TPM + 1))
+#'
+#' @param database normal_tissues_multimapping_data
 #'
 #' @details
 #' RNAseq data from a set of normal tissues were downloaded from Encode.
@@ -46,15 +46,15 @@
 #' @importFrom circlize colorRamp2
 #'
 #' @examples
-#' normal_tissue_expression_multimapping(database = normal_tissues_multimapping_data,
-#' genes = c("GAGE13", "CT45A6", "NXF2", "SSX2", "CTAG1A", "MAGEA3", "MAGEA6"),
-#' multimapping = FALSE)
-#' normal_tissue_expression_multimapping(database = normal_tissues_multimapping_data,
-#' genes = c("GAGE13", "CT45A6", "NXF2", "SSX2", "CTAG1A", "MAGEA3", "MAGEA6"),
-#' multimapping = TRUE)
-normal_tissue_expression_multimapping <- function(database, genes = NULL,
-                                                  multimapping = NULL,
-                                                  units = "TPM") {
+#' normal_tissue_expression_multimapping(genes = c("GAGE13", "CT45A6", "NXF2",
+#' "SSX2", "CTAG1A", "MAGEA3", "MAGEA6"), multimapping = FALSE)
+#' normal_tissue_expression_multimapping(genes = c("GAGE13", "CT45A6", "NXF2",
+#' "SSX2", "CTAG1A", "MAGEA3", "MAGEA6"), multimapping = TRUE)
+normal_tissue_expression_multimapping <-
+  function(genes = NULL,
+           multimapping = NULL,
+           units = "TPM",
+           database = normal_tissues_multimapping_data) {
 
   if (missing(database)) {
     stop("Database must be specified!")
@@ -70,12 +70,12 @@ normal_tissue_expression_multimapping <- function(database, genes = NULL,
 
   if (multimapping == TRUE) {
     mat <- assay(data, "TPM_with_multimapping")
-    title <- "Gene expression in normal tissues (multimapped reads were counted)"
+    title <- "Expression (multi-mapped reads were counted)"
   }
 
   if (multimapping == FALSE) {
     mat <- assay(data, "TPM_no_multimapping")
-    title <- "Gene expression in normal tissues (multimapped reads were discared)"
+    title <- "Expression (multimapped reads were discared)"
   }
   rownames(mat) <- rowData(data)$external_gene_name
 
