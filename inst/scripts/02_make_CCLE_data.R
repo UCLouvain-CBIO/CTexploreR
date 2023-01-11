@@ -83,7 +83,7 @@ tmp <- enframe(tmp, name = "ensembl_gene_id",
 activation_frequencies <- left_join(activation_frequencies, tmp)
 
 # Estimate the percent of cell line in which the genes
-# are not expressed (TPM < TPM_low_thr)
+# are not expressed (TPM <= TPM_low_thr)
 TPM_low_thr <- 0.1
 binary <- ifelse(TPM_mat <= TPM_low_thr, 1, 0)
 tmp <- rowSums(binary) / ncol(binary) * 100
