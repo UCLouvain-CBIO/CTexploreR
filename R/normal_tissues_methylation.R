@@ -1,9 +1,8 @@
 #' Methylation of CpGs located in Cancer-Testis promoters in normal tissues
 #'
 #' @description Plots a heatmap of the methylation of CpGs located in a
-#' Cancer-Testis (CT) promoter, in normal tissues
-#'
-#' @param database CT_methylation_in_tissues
+#' Cancer-Testis (CT) promoter, in normal tissues. X-axis corresponds to the
+#' CpGs position (related to TSS).
 #'
 #' @param gene Name of selected CT gene
 #'
@@ -12,6 +11,8 @@
 #'
 #' @param nt_down Number of nucleotides downstream the TSS to analyse
 #' (200 by default)
+#'
+#' @param database CT_methylation_in_tissues
 #'
 #' @return Heatmap of the methylation of CpGs located in a Cancer-Testis (CT)
 #' promoter, in normal tissues. Methylation values are returned invisibly.
@@ -30,16 +31,11 @@
 #' @importFrom grDevices colorRampPalette
 #'
 #' @examples
-#' normal_tissues_methylation(CT_methylation_in_tissues, gene = "TDRD1", 1000, 0)
-normal_tissues_methylation <- function(database, gene, nt_up = NULL, nt_down = NULL){
+#' normal_tissues_methylation(gene = "TDRD1", 1000, 0)
+normal_tissues_methylation <- function(gene, nt_up = NULL, nt_down = NULL,
+                                       database = CT_methylation_in_tissues) {
 
-  if (missing(database)) {
-    stop("Database must be specified!")
-  }
-
-  if (!missing(database)) {
     data <- database
-  }
 
   if (!gene %in% CT_genes$external_gene_name) {
     stop(paste0(gene, " is not in the CT database"))
@@ -96,7 +92,7 @@ normal_tissues_methylation <- function(database, gene, nt_up = NULL, nt_down = N
   rownames(mat) <- methylation_individual_CpG$cell
 
   h <- Heatmap(mat,
-               name = paste0('Methylation'),
+               name = paste0('Meth'),
                col = colorRamp2(c(1:100),
                                 colorRampPalette(c("moccasin","dodgerblue4"))
                                 (100)),
