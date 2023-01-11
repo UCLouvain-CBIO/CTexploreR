@@ -4,7 +4,7 @@
 #' tissues. Expression values (in TPM) have been evaluated by either counting or
 #' discarding multi-mapped reads. Indeed, many CT genes belong to gene families
 #' from which members have identical or nearly identical sequences. Some CT can
-#' only be detected in RNAseq data in which multimapping reads are not discared.
+#' only be detected in RNAseq data in which multimapping reads are not discarded.
 #'
 #' @param genes Genes selected (all CT genes by default)
 #'
