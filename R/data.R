@@ -159,7 +159,7 @@
 #' - Rows correspond to CpGs (located within CT genes promoters)
 #' - Columns correspond to normal tissues
 #' - Methylation values from WGBS data
-#' - RowRanges correspond to CpG positions
+#' - rowRanges correspond to CpG positions
 #'
 #' @source WGBS methylation data was downloaded from Encode and from GEO databases
 #' (see inst/scripts/make_CT_methylation_in_tissues.R for details).
