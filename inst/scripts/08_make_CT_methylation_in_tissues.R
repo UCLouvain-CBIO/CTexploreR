@@ -11,8 +11,9 @@ load("../extdata/CT_list.rda")
 # Download human genome fasta file
 # download.file("http://ftp.ensembl.org/pub/release-104/fasta/homo_sapiens/dna/Homo_sapiens.GRCh38.dna.primary_assembly.fa.gz",
 #               destfile = "/data/cbio/GENOMES/Homo_sapiens.GRCh38.dna.primary_assembly.fa.gz")
-hg <- rtracklayer::import("../../../CTdata/inst/extdata/Homo_sapiens.GRCh38.dna.primary_assembly.fa",
-                          format = "fasta")
+hg <- rtracklayer::import(
+  "../../../CTdata/inst/extdata/Homo_sapiens.GRCh38.dna.primary_assembly.fa",
+  format = "fasta")
 
 ################################################################################
 # Create a GRange with all CpG positions located in CT genes
@@ -166,10 +167,12 @@ for (cell in Encode_tissues) {
 ## Use sperm WGBS from SRR15427118
 ## raw data was processed with bismark (version 0.20.0)
 bismark_file <- "../../../CTdata/inst/extdata/SRR15427118_1_val_1_bismark_bt2_pe.bismark.cov.gz"
-bismark <- read_tsv(bismark_file, col_types = cols(.default = "?", X1 = 'c'), col_names = FALSE)
+bismark <- read_tsv(bismark_file, col_types = cols(.default = "?", X1 = 'c'),
+                    col_names = FALSE)
 
 bismark <- bismark %>%
-  dplyr::rename(chr = X1, start = X2, end = X3, score = X4, met = X5, unmet = X6) %>%
+  dplyr::rename(chr = X1, start = X2, end = X3, score = X4,
+                met = X5, unmet = X6) %>%
   dplyr::mutate(chr = paste0("chr", chr)) %>%
   mutate(nReads = met + unmet) %>%
   filter(nReads > 1) %>%
@@ -186,7 +189,8 @@ CG_neg_strand <- as_tibble(CpG_positions_gr) %>%
   dplyr::select(chr, start, end, width, strand, CpG_pos, score, met, unmet)
 
 bismark_merge <- rbind(CG_pos_strand, CG_neg_strand) %>%
-  group_by(chr, CpG_pos) %>% dplyr::summarise(sperm = mean(c(score), na.rm = TRUE))
+  group_by(chr, CpG_pos) %>%
+  dplyr::summarise(sperm = mean(c(score), na.rm = TRUE))
 
 CT_met_in_tissues <- CT_met_in_tissues %>%
   left_join(bismark_merge)

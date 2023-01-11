@@ -32,17 +32,17 @@ load("../../data/GTEX_data.rda")
 ## to remove low quality reads and trim the adapter from the sequences.
 ## [hisat2](https://ccb.jhu.edu/software/hisat2/index.shtml) was used to align
 ## reads to grch38 genome.
-## [featurecounts](https://rdrr.io/bioc/Rsubread/man/featureCounts.html) was used
-## to assign reads to genes using Homo_sapiens.GRCh38.94.gtf.
+## [featurecounts](https://rdrr.io/bioc/Rsubread/man/featureCounts.html) was
+## used to assign reads to genes using Homo_sapiens.GRCh38.94.gtf.
 
 ## Two different pipelines were run in order to remove or not multi-mapping reads.
 ## When multi-mapping was allowed, hisat2 was run with -k 20 parameter (reports
 ## up to 20 alignments per read), and featurecounts was run with -M parameter
 ## (multi-mapping reads are counted).
 
-#################################################################################
+################################################################################
 ## Data generated without allowing multi-mapping
-#################################################################################
+################################################################################
 
 load("../../../CTdata/inst/extdata/normal_tissues_RNAseq_coldata.rda")
 load("../../../CTdata/inst/extdata/normal_tissues_RNAseq_raw_counts.rda")
@@ -71,9 +71,9 @@ TPM_matrix_no_multimapping <- as_tibble(x1, rownames = "Geneid") %>%
 mat_no_multimapping <- as.matrix(TPM_matrix_no_multimapping[, -c(1:2)])
 rownames(mat_no_multimapping) <- TPM_matrix_no_multimapping$ensembl_gene_id
 
-#################################################################################
+################################################################################
 ## Data generated when allowing multi-mapping
-#################################################################################
+################################################################################
 
 load(file = "../../../CTdata/inst/extdata/normal_tissues_RNAseq_raw_counts_multiM.rda")
 
@@ -97,10 +97,10 @@ TPM_matrix_with_multimapping <- as_tibble(x1, rownames = "Geneid") %>%
 mat_with_multimapping <- as.matrix(TPM_matrix_with_multimapping[, -c(1:2)])
 rownames(mat_with_multimapping) <- TPM_matrix_with_multimapping$ensembl_gene_id
 
-##########################################################################
+################################################################################
 ## Assess testis-specificity of genes flagged as "lowly_expressed" in
 ## GTEX_category from GTEX_data (when their TPM < 1 in testis)
-##########################################################################
+################################################################################
 ## Many Cancer-Testis genes belong to gene families from which members
 ## have identical or nearly identical sequences. This is likely the reason
 ## why these genes are not detected in GTEx database, as GTEX processing
@@ -145,22 +145,25 @@ genes_testis_specific_in_multimapping <- ratio_multi_not_multi %>%
 
 rowdata <-
   tibble(ensembl_gene_id = TPM_matrix_with_multimapping$ensembl_gene_id,
-         external_gene_name = TPM_matrix_with_multimapping$external_gene_name) %>%
+         external_gene_name =
+           TPM_matrix_with_multimapping$external_gene_name) %>%
   left_join(genes_testis_specific_in_multimapping %>%
-              dplyr::select(ensembl_gene_id, GTEX_category, multimapping_analysis)) %>%
+              dplyr::select(ensembl_gene_id, GTEX_category,
+                            multimapping_analysis)) %>%
   mutate(lowly_expressed_in_GTEX = case_when(
     GTEX_category == "lowly_expressed" ~ TRUE,
     GTEX_category != "lowly_expressed" ~ FALSE)) %>%
   dplyr::select(ensembl_gene_id, external_gene_name,
                 lowly_expressed_in_GTEX, multimapping_analysis)
 
-rowdata$multimapping_analysis[rowdata$multimapping_analysis == "not_analysed"] <- NA
+rowdata$multimapping_analysis[rowdata$multimapping_analysis ==
+                                "not_analysed"] <- NA
 
 rowdata <- column_to_rownames(rowdata, "ensembl_gene_id")
 
-#################################################################################
+################################################################################
 ## Create normal_tissues_multimapping SE
-#################################################################################
+################################################################################
 
 normal_tissues_multimapping_data <- SummarizedExperiment(
   assays = list(TPM_no_multimapping = mat_no_multimapping,

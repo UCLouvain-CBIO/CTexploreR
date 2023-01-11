@@ -13,8 +13,8 @@ genes_in_gtex <- rownames(GTEX_data)
 ## to remove low quality reads and trim the adapter from the sequences.
 ## [hisat2](https://ccb.jhu.edu/software/hisat2/index.shtml) was used to align
 ## reads to grch38 genome.
-## [featurecounts](https://rdrr.io/bioc/Rsubread/man/featureCounts.html) was used
-## to assign reads to genes using Homo_sapiens.GRCh38.105.gtf.
+## [featurecounts](https://rdrr.io/bioc/Rsubread/man/featureCounts.html) was
+## used to assign reads to genes using Homo_sapiens.GRCh38.105.gtf.
 
 load("../../../CTdata/inst/extdata/DAC_coldata.rda")
 load("../../../CTdata/inst/extdata/DAC_raw_counts.rda")
@@ -30,7 +30,8 @@ log1p_transformed <- log1p(counts(dds, normalize = TRUE))
 ## to identify genes induced by DAC in at least one cell line.
 cell_line <- unique(coldata$cell)[1]
 coldata_by_cell_line <- coldata[coldata$cell == cell_line, ]
-dds <- DESeqDataSetFromMatrix(countData = raw_counts[, coldata_by_cell_line$sample],
+dds <- DESeqDataSetFromMatrix(countData =
+                                raw_counts[, coldata_by_cell_line$sample],
                               colData = coldata_by_cell_line,
                               design = ~ treatment)
 dds <- DESeq(dds)
@@ -57,7 +58,8 @@ names(res_all) <- c("ensembl_gene_id", "external_gene_name",
 for(cell_line in unique(coldata$cell)[-1]) {
 
   coldata_by_cell_line <- coldata[coldata$cell == cell_line, ]
-  dds <- DESeqDataSetFromMatrix(countData = raw_counts[, coldata_by_cell_line$sample],
+  dds <- DESeqDataSetFromMatrix(countData =
+                                  raw_counts[, coldata_by_cell_line$sample],
                                 colData = coldata_by_cell_line,
                                 design = ~ treatment)
   dds <- DESeq(dds)
