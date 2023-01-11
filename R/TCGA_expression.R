@@ -26,12 +26,11 @@
 #' @importFrom circlize colorRamp2
 #'
 #' @examples
-#' TCGA_expression(TCGA_TPM, tumor = "LUAD",
+#' TCGA_expression(tumor = "LUAD",
 #' genes = c("MAGEA1", "MAGEA3", "MAGEA4"),
 #' units = "log_TPM")
 TCGA_expression <- function(tumor = "all", genes = NULL,
                             units = "TPM", database = TCGA_TPM) {
-
   data <- database
 
   if (!tumor %in% c(unique(sub(pattern = 'TCGA-', x = data$project_id, '')),
@@ -42,16 +41,14 @@ TCGA_expression <- function(tumor = "all", genes = NULL,
   }
 
   # Use only primary/metastatic tumors and normal peritumoral samples
-  data <- data[, c(colData(data)$shortLetterCode == "TP" |
-                     colData(data)$shortLetterCode == "TM" |
-                     colData(data)$shortLetterCode == "NT" )]
+  data <- data[, colData(data)$shortLetterCode %in% c("TP", "TM", "NT")]
 
   if (is.null(genes)) {
     data <- data[rowData(data)$external_gene_name %in% CT_genes$external_gene_name, ]
   }
 
-  if(!is.null(genes)) {
-    if(all(genes %in% rowData(data)$external_gene_name) == FALSE){
+  if (!is.null(genes)) {
+    if (!all(genes %in% rowData(data)$external_gene_name)) {
       cat("Check gene name(s)!\n")
       cat(paste0(genes[!genes %in% rowData(data)$external_gene_name],
                  " is not in the database.\n"))

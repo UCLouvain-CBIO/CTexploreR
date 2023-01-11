@@ -7,7 +7,7 @@
 #' - Columns correspond to tissues
 #' - Expression data from the assay are TPM values
 #'
-#' @details The RowData contains
+#' @details The rowData contains
 #' - A column named `GTEX_category`, specifying the tissue specificity
 #' category ("testis_specific", "testis-preferential", "lowly_expressed" or
 #' "other") assigned to each gene using expression values in testis and in
@@ -42,7 +42,7 @@
 #' - Expression data from the assay are TPM values
 #' - Cell lines metadata are stored in colData
 #'
-#' @details The RowData contains
+#' @details The rowData contains
 #' - A column `percent_of_positive_CCLE_cell_lines` that gives the
 #' percentage of CCLE cell lines (all cell lines combined) expressing
 #' the gene at a highly level (TPM >= 10).
@@ -175,7 +175,7 @@
 #' - CpG densities and results of methylation analysis are stored
 #' in rowData
 #'
-#' @details The RowData contains:
+#' @details The rowData contains:
 #' - A column named `CpG_density`, gives the density of CpG within each promoter
 #' (number of CpG / promoter length * 100).
 #' - A column `CpG_promoter` that classifies the promoters according to their
@@ -201,7 +201,7 @@
 #' - Columns correspond to samples
 #' - Expression data from the assay are TPM values
 #' - Clinical information are stored in colData
-#' - Genes information are stored in RowData
+#' - Genes information are stored in rowData
 #'
 #' @details
 #' - The colData contains clinical data from TCGA as well as global
