@@ -37,7 +37,8 @@ TCGA_expression <- function(tumor = "all", genes = NULL,
   if (!tumor %in% c(unique(sub(pattern = 'TCGA-', x = data$project_id, '')),
                     'all')) {
     stop("TCGA tumor code must be one of ",
-         paste(c(unique(sub(pattern = 'TCGA-', x = data$project_id, ''))),  ", "), "or all")
+         paste(c(unique(sub(pattern = 'TCGA-', x = data$project_id, ''))),
+               ", "), "or all")
   }
 
   # Use only primary/metastatic tumors and normal peritumoral samples

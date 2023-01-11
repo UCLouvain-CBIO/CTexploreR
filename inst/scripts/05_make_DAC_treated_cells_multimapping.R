@@ -13,8 +13,8 @@ genes_in_gtex <- rownames(GTEX_data)
 ## to remove low quality reads and trim the adapter from the sequences.
 ## [hisat2](https://ccb.jhu.edu/software/hisat2/index.shtml) was used to align
 ## reads to grch38 genome.
-## [featurecounts](https://rdrr.io/bioc/Rsubread/man/featureCounts.html) was used
-## to assign reads to genes using Homo_sapiens.GRCh38.94.gtf.
+## [featurecounts](https://rdrr.io/bioc/Rsubread/man/featureCounts.html) was
+## used to assign reads to genes using Homo_sapiens.GRCh38.94.gtf.
 ## To allow for multi-mapped reads to be counted,
 ## hisat2 was run with -k 20 parameter (to report up to 20 alignments per read),
 ## and featurecounts was run with -M parameter (multi-mapping reads are counted).
