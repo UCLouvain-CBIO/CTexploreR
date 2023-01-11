@@ -107,7 +107,7 @@ rowdata <- left_join(activation_frequencies, repression_frequencies) %>%
                        percent_of_positive_CCLE_cell_lines > 0 ~ "activated",
                      percent_of_negative_CCLE_cell_lines >= 20 &
                        percent_of_positive_CCLE_cell_lines == 0 ~ "not_activated")) %>%
-  select(-ensembl_gene_id)
+  column_to_rownames("ensembl_gene_id")
 
 CCLE_data <- SummarizedExperiment(assays = list(TPM = TPM_mat),
                                   rowData = rowdata,
