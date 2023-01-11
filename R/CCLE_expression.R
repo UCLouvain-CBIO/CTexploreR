@@ -2,8 +2,6 @@
 #'
 #' @description Plots an expression heatmap of genes in CCLE tumor cell lines.
 #'
-#' @param database CCLE_data
-#'
 #' @param type `character` describing the tumor cell line(s) type to
 #' be plotted. Allowed cell lines are "Ovarian", "Leukemia", "Colorectal",
 #' Skin", "Lung", "Bladder", "Kidney", "Breast", "Pancreatic", "Myeloma",
@@ -14,6 +12,8 @@
 #'
 #' @param units Expression values unit.
 #' Can be "TPM" (default) or "log_TPM" (log(TPM + 1))
+#'
+#' @param database CCLE_data
 #'
 #' @return A heatmap of selected genes in CCLE cell lines from specified type.
 #' Expression values are invisibly returned.

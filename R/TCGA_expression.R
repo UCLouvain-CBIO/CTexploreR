@@ -4,8 +4,6 @@
 #' (peritumoral and tumor samples when a specific tumor type is specified, or
 #' tumor samples only when tumor option is set to "all")
 #'
-#' @param database TCGA_TPM
-#'
 #' @param tumor TCGA tumor code. Can be one of "SKCM", "LUAD", "LUSC", "COAD",
 #' "ESCA", "BRCA", "HNSC", or "all" (default).
 #'
@@ -13,6 +11,8 @@
 #'
 #' @param units Expression values unit.
 #' Can be "TPM" (default) or "log_TPM" (log(TPM + 1))
+#'
+#' @param database TCGA_TPM
 #'
 #' @return A heatmap of selected CT genes expression in TCGA samples.
 #' A SummarizedExperiment with TPM expression data is invisibly returned (Columns

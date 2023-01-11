@@ -3,12 +3,12 @@
 #' @description Plots an expression heatmap of genes in normal
 #' tissues (GTEx database)
 #'
-#' @param database GTEX_data
-#'
 #' @param genes Genes selected (all CT genes by default)
 #'
 #' @param units Expression values unit.
 #' Can be "TPM" (default) or "log_TPM" (log(TPM + 1))
+#'
+#' @param database GTEX_data
 #'
 #' @return A heatmap of selected genes expression in normal tissues.
 #' Expression values are invisibly returned.
