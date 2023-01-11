@@ -4,7 +4,7 @@
 #' in a selection of cells treated or not by 5-Aza-2′-Deoxycytidine (DAC),
 #' a demethylating agent.
 #'
-#' @param database Can be `DAC_treated_cells` or` DAC_treated_cells_multimapping`,
+#' @param database Can be `DAC_treated_cells` or `DAC_treated_cells_multimapping`,
 #' depending if returned expression values should take into account or not
 #' multi-mapped reads.
 #'
@@ -12,6 +12,8 @@
 #'
 #' @details
 #' RNAseq data from cells treated or not with 5-aza downloaded from SRA.
+#' (SRA references and information about cell lines and DAC treatment are stored
+#' the colData of `DAC_treated_cells`).
 #' Data was processed using a standard RNAseq pipeline.
 #' [hisat2](https://ccb.jhu.edu/software/hisat2/index.shtml) was used to align
 #' reads to grch38 genome.
