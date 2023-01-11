@@ -53,11 +53,11 @@
 #' in all cell lines.
 #' - A column `CCLE_category` gives the category ("activated",
 #' "not_activated", "leaky") assigned to each gene.
-#' "activated" category corresponds to genes expressed in at least
-#' one cell line and repressed in at least 20% of cell lines.
-#' "not_activated" category corresponds to genes repressed in at least
-#' 20% of cell lines and expressed in no cell lines.
-#' "leaky" category corresponds to genes repressed in less than 20%
+#' "activated" category corresponds to genes highly expressed (TPM >= 10) in at
+#' least one cell line and repressed (TPM <= 0.1) in at least 20% of cell lines.
+#' "not_activated" category corresponds to genes repressed (TPM <= 0.1) in at
+#' least 20% of cell lines and never expressed (TPM >= 10) in any cell line.
+#' "leaky" category corresponds to genes repressed (TPM <= 0.1) in less than 20%
 #' of cell lines.
 #'
 #' @source TPM values downloaded using depmap bioconductor package
