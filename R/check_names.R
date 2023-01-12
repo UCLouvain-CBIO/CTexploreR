@@ -16,8 +16,7 @@
 check_names <- function(variable, valid_vector) {
 
   if (!all(variable %in% valid_vector)) {
-    message(paste(variable[!variable %in% valid_vector], "is not valid.
-                  Check spelling!\n"))
+    message(paste(variable[!variable %in% valid_vector], "is not valid: check spelling!\n"))
     if (length(valid_vector) < 20){
     message("Should be one of :")
     message(paste0(valid_vector, " "))
