@@ -8,10 +8,13 @@
 #' @param units Expression values unit.
 #' Can be "TPM" (default) or "log_TPM" (log(TPM + 1))
 #'
+#' @param return If return is set to TRUE, values are returned instead of the
+#' heatmap (FALSE by default)
+#'
 #' @param database GTEX_data
 #'
 #' @return A heatmap of selected genes expression in normal tissues.
-#' Expression values are invisibly returned.
+#' If return = TRUE, expression values are returned instead.
 #'
 #' @export
 #'
@@ -23,36 +26,24 @@
 #' @examples
 #' GTEX_expression(units = "log_TPM")
 #' GTEX_expression(genes = c("MAGEA1", "MAGEA3"), units = "log_TPM")
-GTEX_expression <- function(genes = NULL, units = "TPM", database = GTEX_data) {
+GTEX_expression <- function(genes = NULL, units = "TPM", return = FALSE) {
 
+  database <- GTEX_data
+  if (is.null(genes)) genes <- CT_genes$external_gene_name
+  genes <- check_gene_names(genes = genes, database = database)
+  database <- database[rowData(database)$external_gene_name %in% genes, ]
   mat <- assay(database)
   rownames(mat) <- rowData(database)$external_gene_name
-
-  if (is.null(genes)) {
-    mat <- mat[CT_genes$external_gene_name, ]
-  }
-
-  if (!is.null(genes)) {
-    if (!all(genes %in% rownames(mat))) {
-      message("Check gene name(s)!\n")
-      message(paste0(
-        genes[!genes %in% rownames(mat)],
-        " is not in the database.\n"))
-      genes <- genes[genes %in% rownames(mat)]
-    }
-    mat <- mat[genes, ]
-  }
-
   name <- "TPM"
   if (units == "log_TPM") {
     mat <- log1p(mat)
     name <- "log_TPM"
   }
 
-  if (dim(mat)[1] > 100) { fontsize <- 4 }
-  if (dim(mat)[1] > 50 & dim(mat)[1] <= 100) { fontsize <- 5 }
-  if (dim(mat)[1] > 20 & dim(mat)[1] <= 50) { fontsize <- 6 }
-  if (dim(mat)[1] <= 20) { fontsize <- 8 }
+  if (dim(mat)[1] > 100) fontsize <- 4
+  if (dim(mat)[1] > 50 & dim(mat)[1] <= 100) fontsize <- 5
+  if (dim(mat)[1] > 20 & dim(mat)[1] <= 50) fontsize <- 6
+  if (dim(mat)[1] <= 20) fontsize <- 8
 
   h <- suppressMessages(
     Heatmap(mat,
@@ -69,7 +60,12 @@ GTEX_expression <- function(genes = NULL, units = "TPM", database = GTEX_data) {
             row_names_gp = gpar(fontsize = fontsize),
             column_names_gp = gpar(fontsize = 10),
             clustering_method_rows = "ward.D"))
-  print(h)
-  invisible(mat)
+
+  if (return == FALSE) {
+    print(h)
+  } else {
+    mat
+  }
+
 }
 
