@@ -44,10 +44,10 @@ CCLE_expression <- function(genes = NULL, type = NULL, units = "TPM",
   if (is.null(genes)) genes <- CT_genes$external_gene_name
   valid_gene_names <- unique(rowData(database)$external_gene_name)
   genes <- check_names(genes, valid_gene_names)
+  database <- database[rowData(database)$external_gene_name %in% genes, ]
 
   mat <- assay(database)
   rownames(mat) <- rowData(database)$external_gene_name
-  mat <- mat[genes, ]
 
   name <- "TPM"
   if (units == "log_TPM") {
