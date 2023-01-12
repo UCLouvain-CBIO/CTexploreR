@@ -14,7 +14,8 @@
 #' @param units Expression values units.
 #' Can be "TPM" (default) or "log_TPM" (log(TPM + 1))
 #'
-#' @param database normal_tissues_multimapping_data
+#' @param return Boolean (FALSE by default). If set to TRUE, the function will
+#' return the gene's expression values in all samples instead of the heatmap.
 #'
 #' @details
 #' RNAseq data from a set of normal tissues were downloaded from Encode.
@@ -34,9 +35,9 @@
 #' up to 20 alignments per read), and featurecounts was run with -M parameter
 #' (multi-mapping reads are counted).
 #'
-#' @return A heatmap of selected gene expression values (TPM) in a set of
-#' normal tissues calculated by counting or discarding multi-mapped reads.
-#' Gene TPM values are invisibly returned.
+#' @return A heatmap of selected gene expression values in a set of normal
+#' tissues calculated by counting or discarding multi-mapped reads.
+#' If return = TRUE, gene expression values are returned instead.
 #'
 #' @export
 #'
@@ -54,43 +55,27 @@ normal_tissue_expression_multimapping <-
   function(genes = NULL,
            multimapping = NULL,
            units = "TPM",
-           database = normal_tissues_multimapping_data) {
+           return = FALSE) {
 
-  if (missing(database)) {
-    stop("Database must be specified!")
-  }
+    if (is.null(multimapping)) {
+      stop("multimapping parameter should be set to TRUE/FALSE")
+    } else {
+        database <- normal_tissues_multimapping_data
+    }
 
-  if (!missing(database)) {
-    data <- database
-  }
-
-  if (is.null(multimapping)) {
-    stop("multimapping parameter should be set to TRUE/FALSE")
-  }
+    if (is.null(genes)) genes <- CT_genes$external_gene_name
+    valid_gene_names <- unique(rowData(database)$external_gene_name)
+    genes <- check_names(genes, valid_gene_names)
+    database <- database[rowData(database)$external_gene_name %in% genes, ]
 
   if (multimapping == TRUE) {
-    mat <- assay(data, "TPM_with_multimapping")
+    mat <- assay(database, "TPM_with_multimapping")
     title <- "Expression (multi-mapped reads were counted)"
-  }
-
-  if (multimapping == FALSE) {
-    mat <- assay(data, "TPM_no_multimapping")
+  } else {
+    mat <- assay(database, "TPM_no_multimapping")
     title <- "Expression (multimapped reads were discared)"
   }
-  rownames(mat) <- rowData(data)$external_gene_name
-
-  if (is.null(genes)) {
-    mat <- mat[CT_genes$external_gene_name, ]
-  }
-
-  if (!is.null(genes)) {
-    if (!all(genes %in% rownames(mat))) {
-      message("Check gene name(s)!\n")
-      message(paste0(genes[!genes %in% rownames(mat)],
-                     " is not in the database.\n"))
-    }
-    mat <- mat[genes[genes %in% rownames(mat)], , drop = FALSE]
-  }
+  rownames(mat) <- rowData(database)$external_gene_name
 
   name <- "TPM"
   if (units == "log_TPM") {
@@ -98,10 +83,10 @@ normal_tissue_expression_multimapping <-
     name <- "log_TPM"
   }
 
-  if (dim(mat)[1] > 100) { fontsize <- 4 }
-  if (dim(mat)[1] > 50 & dim(mat)[1] <= 100) { fontsize <- 5 }
-  if (dim(mat)[1] > 20 & dim(mat)[1] <= 50) { fontsize <- 6 }
-  if (dim(mat)[1] <= 20) { fontsize <- 8 }
+  if (dim(mat)[1] > 100) fontsize <- 4
+  if (dim(mat)[1] > 50 & dim(mat)[1] <= 100) fontsize <- 5
+  if (dim(mat)[1] > 20 & dim(mat)[1] <= 50) fontsize <- 6
+  if (dim(mat)[1] <= 20) fontsize <- 8
 
   h <- suppressMessages(Heatmap(mat,
                                 name = name,
@@ -121,6 +106,11 @@ normal_tissue_expression_multimapping <-
                                 column_names_gp = gpar(fontsize = 6),
                                 clustering_method_rows = "ward.D"))
 
-  print(h)
-  invisible(mat)
+
+  if (return == FALSE) {
+    print(h)
+  } else {
+    mat
+  }
+
 }
