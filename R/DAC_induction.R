@@ -4,11 +4,10 @@
 #' in a selection of cells treated or not by 5-Aza-2′-Deoxycytidine (DAC),
 #' a demethylating agent.
 #'
-#' @param database Can be `DAC_treated_cells` or `DAC_treated_cells_multimapping`,
-#' depending if returned expression values should take into account or not
-#' multi-mapped reads.
-#'
 #' @param genes Genes selected (all CT genes by default)
+#'
+#' @param return Boolean (FALSE by default). If set to TRUE, the function will
+#' return the gene normalised logcounts in all samples instead of the heatmap.
 #'
 #' @details
 #' RNAseq data from cells treated or not with 5-aza downloaded from SRA.
@@ -22,7 +21,7 @@
 #' counting multi-mapping reads.
 #'
 #' @return A heatmap of selected genes in cells treated or not by a demethylating
-#' agent. Gene normalised logcounts are invisibly returned.
+#' agent. If return = TRUE, gene normalised logcounts are returned instead.
 #'
 #' @export
 #'
@@ -32,42 +31,29 @@
 #' @importFrom circlize colorRamp2
 #'
 #' @examples
-#' DAC_induction(database = DAC_treated_cells, genes = c("MAGEA1", "MAGEA3",
-#' "MAGEA4", "MAGEA6", "CTAG1A"))
-#' DAC_induction(database = DAC_treated_cells_multimapping,
-#' genes = c("MAGEA1", "MAGEA3", "MAGEA4", "MAGEA6", "CTAG1A"))
-DAC_induction <- function(database, genes = NULL) {
+#' DAC_induction(genes = c("MAGEA1", "MAGEA3", "MAGEA4", "MAGEA6", "CTAG1A"))
+#' DAC_induction(genes = c("MAGEA1", "MAGEA3", "MAGEA4", "MAGEA6", "CTAG1A",
+#' multimapping = FALSE))
+DAC_induction <- function(genes = NULL, multimapping = TRUE, return = FALSE) {
 
-  if (missing(database)) {
-    stop("Database must be specified!")
+  if (multimapping == TRUE) {
+    database <- DAC_treated_cells_multimapping
+  } else {
+    database <- DAC_treated_cells
   }
 
-  if (!missing(database)) {
-    data <- database
-  }
+  if (is.null(genes)) genes <- CT_genes$external_gene_name
+  valid_gene_names <- unique(rowData(database)$external_gene_name)
+  genes <- check_names(genes, valid_gene_names)
+  database <- database[rowData(database)$external_gene_name %in% genes, ]
 
-  if (!is.null(genes)) {
-    if (!all(genes %in% rowData(data)$external_gene_name)) {
-      message("Check gene name(s)!\n")
-      message(paste0(genes[!genes %in% rowData(data)$external_gene_name],
-                     " is not in the database.\n"))
-      genes <- genes[genes %in% rowData(data)$external_gene_name]
-      stopifnot(!is_empty(genes))
-    }
-    data <- data[rowData(data)$external_gene_name %in% genes]
-  }
-
-  if (is.null(genes)) {
-    data <- data[rowData(data)$external_gene_name %in% CT_genes$external_gene_name, ]
-  }
-
-  mat <- assay(data, "log1p")
-  rownames(mat) <- rowData(data)$external_gene_name
+  mat <- assay(database, "log1p")
+  rownames(mat) <- rowData(database)$external_gene_name
 
   set.seed(1)
-  df_col <- data.frame("cell" = colData(data)$cell,
-                       "treatment" = colData(data)$treatment)
-  rownames(df_col) <- rownames(colData(data))
+  df_col <- data.frame("cell" = colData(database)$cell,
+                       "treatment" = colData(database)$treatment)
+  rownames(df_col) <- rownames(colData(database))
   df_col <- df_col[order(df_col$cell, df_col$treatment), ]
 
   column_ha_cell <- HeatmapAnnotation(cell = df_col$cell,
@@ -78,10 +64,10 @@ DAC_induction <- function(database, genes = NULL) {
     col = list(treatment = c("CTL" = "cyan", "DAC" = "firebrick1")),
     border = TRUE)
 
-  if (dim(mat)[1] > 100) { fontsize <- 4 }
-  if (dim(mat)[1] > 50 & dim(mat)[1] <= 100) { fontsize <- 5 }
-  if (dim(mat)[1] > 20 & dim(mat)[1] <= 50) { fontsize <- 6 }
-  if (dim(mat)[1] <= 20) { fontsize <- 8 }
+  if (dim(mat)[1] > 100) fontsize <- 4
+  if (dim(mat)[1] > 50 & dim(mat)[1] <= 100) fontsize <- 5
+  if (dim(mat)[1] > 20 & dim(mat)[1] <= 50) fontsize <- 6
+  if (dim(mat)[1] <= 20) fontsize <- 8
 
   h <- suppressMessages(Heatmap(mat[, rownames(df_col), drop = FALSE],
                                 name = "logCounts",
@@ -103,7 +89,13 @@ DAC_induction <- function(database, genes = NULL) {
                                 column_title_gp = gpar(fontsize = 0),
                                 top_annotation = c(column_ha_cell,
                                                    column_ha_treatment)))
-  print(h)
-  invisible(mat)
+
+
+  if (return == FALSE) {
+    print(h)
+  } else {
+    mat
+  }
+
 }
 
