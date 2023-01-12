@@ -11,8 +11,6 @@
 #' @param return If return is set to TRUE, values are returned instead of the
 #' heatmap (FALSE by default)
 #'
-#' @param database GTEX_data
-#'
 #' @return A heatmap of selected genes expression in normal tissues.
 #' If return = TRUE, expression values are returned instead.
 #'
