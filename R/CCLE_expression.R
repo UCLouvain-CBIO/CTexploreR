@@ -2,21 +2,22 @@
 #'
 #' @description Plots an expression heatmap of genes in CCLE tumor cell lines.
 #'
+#' @param genes Genes selected (all CT genes by default)
+
 #' @param type `character` describing the tumor cell line(s) type to
 #' be plotted. Allowed cell lines are "Ovarian", "Leukemia", "Colorectal",
 #' Skin", "Lung", "Bladder", "Kidney", "Breast", "Pancreatic", "Myeloma",
 #' "Brain", "Sarcoma", "Lymphoma", "Bone", "Neuroblastoma", "Gastric",
 #' "Uterine", "Head_and_Neck", "Bile_Duct" and "Esophageal".
 #'
-#' @param genes Genes selected (all CT genes by default)
-#'
 #' @param units Expression values unit.
 #' Can be "TPM" (default) or "log_TPM" (log(TPM + 1))
 #'
-#' @param database CCLE_data
+#' @param return If return is set to TRUE, values are returned instead of the
+#' heatmap (FALSE by default)
 #'
 #' @return A heatmap of selected genes in CCLE cell lines from specified type.
-#' Expression values are invisibly returned.
+#' If return = TRUE, expression values are returned instead.
 #'
 #' @export
 #'
@@ -29,35 +30,24 @@
 #' CCLE_expression(genes = c("MAGEA1", "MAGEA3", "MAGEA4", "MAGEA6", "MAGEA10"),
 #'                 type = c("Skin", "Lung"), units = "log_TPM")
 #' CCLE_expression(units = "log_TPM")
-CCLE_expression <- function(genes = NULL, units = "TPM", type = NULL,
-                            database = CCLE_data) {
+CCLE_expression <- function(genes = NULL, type = NULL, units = "TPM",
+                            return = FALSE) {
 
-  CCLE <- database
+  database <- CCLE_data
 
-  if (!is.null(type)) {
-    if (!all(type %in% colData(CCLE)$type)) {
-      message("Tumor type(s) must be one of: ",
-              paste0(unique(colData(CCLE)$type), ' '))
-      return(invisible(NA))
-    }
-    CCLE <- CCLE[, colData(CCLE)$type %in% type]
-  }
+  colData(database)$type <- tolower(colData(database)$type)
+  valid_tumor_types <- unique(colData(database)$type)
+  type <- check_names(variable = tolower(type), valid_vector = valid_tumor_types)
+  stopifnot("No valid tumor type entered" = length(type) > 0)
+  database <- database[, database$type %in% type]
 
-  if (is.null(genes)) {
-    CCLE <- CCLE[rowData(CCLE_data)$external_gene_name %in% CT_genes$external_gene_name, ]
-  }
+  if (is.null(genes)) genes <- CT_genes$external_gene_name
+  valid_gene_names <- unique(rowData(database)$external_gene_name)
+  genes <- check_names(genes, valid_gene_names)
 
-  if (!is.null(genes)) {
-    if (!all(genes %in% rowData(CCLE)$external_gene_name)) {
-      message("Check gene name(s)!\n")
-      message(paste0(genes[!genes %in% rowData(CCLE)$external_gene_name],
-                     " is not in the database.\n"))
-    }
-    CCLE <- CCLE[rowData(CCLE)$external_gene_name %in% genes, ]
-  }
-
-  mat <- assay(CCLE)
-  rownames(mat) <- rowData(CCLE)$external_gene_name
+  mat <- assay(database)
+  rownames(mat) <- rowData(database)$external_gene_name
+  mat <- mat[genes, ]
 
   name <- "TPM"
   if (units == "log_TPM") {
@@ -71,27 +61,26 @@ CCLE_expression <- function(genes = NULL, units = "TPM", type = NULL,
     row_names_gp = gpar(fontsize = 4),
     annotation_name_side = "left")
 
-  df_col <- data.frame("cell_line" = colData(CCLE)$cell_line_name,
-                       "type" = as.factor(colData(CCLE)$type))
-  rownames(df_col) <- rownames(colData(CCLE))
+  df_col <- data.frame("cell_line" = colData(database)$cell_line_name,
+                       "type" = as.factor(colData(database)$type))
+  rownames(df_col) <- rownames(colData(database))
   df_col <- df_col[order(df_col$type), ]
 
   set.seed(1)
-
   column_ha_type <- HeatmapAnnotation(
     type = df_col$type,
     border = TRUE,
     annotation_name_gp = gpar(fontsize = 8),
     annotation_legend_param = legends_param)
 
-  if (dim(mat)[1] > 100) { fontsize <- 4 }
-  if (dim(mat)[1] > 50 & dim(mat)[1] <= 100) { fontsize <- 5 }
-  if (dim(mat)[1] > 20 & dim(mat)[1] <= 50) { fontsize <- 6 }
-  if (dim(mat)[1] <= 20) { fontsize <- 8 }
+  if (dim(mat)[1] > 100) fontsize <- 4
+  if (dim(mat)[1] > 50 & dim(mat)[1] <= 100) fontsize <- 5
+  if (dim(mat)[1] > 20 & dim(mat)[1] <= 50) fontsize <- 6
+  if (dim(mat)[1] <= 20) fontsize <- 8
 
-  if (length(type) <= 5) { label_fontsize <- 6 }
-  if (length(type) > 5 & length(type) < 10) { label_fontsize <- 4 }
-  if (length(type) >= 10 | is.null(type)) { label_fontsize <- 0 }
+  if (length(type) <= 5) label_fontsize <- 6
+  if (length(type) > 5 & length(type) < 10) label_fontsize <- 4
+  if (length(type) >= 10 | is.null(type)) label_fontsize <- 0
 
   h <- suppressMessages(Heatmap(mat[, rownames(df_col), drop = FALSE],
                                 name = name,
@@ -115,6 +104,10 @@ CCLE_expression <- function(genes = NULL, units = "TPM", type = NULL,
                                 heatmap_legend_param = legends_param,
                                 top_annotation = c(column_ha_type)))
 
-  print(h)
-  invisible(mat)
+  if (return == FALSE) {
+    print(h)
+  } else {
+    mat
+  }
+
 }
