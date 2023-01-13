@@ -87,7 +87,7 @@ load(bfc[[bfcquery(bfc, "TCGA_HNSC_methylation")$rid]])
 HNSC_CT_methylation <- subsetByOverlaps(data, CT_promoter_gr)
 
 met <- cbind(assay(SKCM_CT_methylation), assay(LUAD_CT_methylation),
-             assay(LUSC_CT_methylation),assay(COAD_CT_methylation),
+             assay(LUSC_CT_methylation), assay(COAD_CT_methylation),
              assay(ESCA_CT_methylation), assay(BRCA_CT_methylation),
              assay(HNSC_CT_methylation))
 

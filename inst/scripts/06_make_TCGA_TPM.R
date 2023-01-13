@@ -90,13 +90,13 @@ ESCA <- prepare_data(tum = "ESCA")
 BRCA <- prepare_data(tum = "BRCA")
 HNSC <- prepare_data(tum = "HNSC")
 
-## Sanity check
- # all(rownames(SKCM) == rownames(LUAD),
- #     rownames(SKCM) == rownames(LUSC),
- #     rownames(SKCM) == rownames(COAD),
- #     rownames(SKCM) == rownames(BRCA),
- #     rownames(SKCM) == rownames(ESCA),
- #     rownames(SKCM) == rownames(HNSC))
+# # Sanity check
+# all(rownames(SKCM) == rownames(LUAD),
+#     rownames(SKCM) == rownames(LUSC),
+#     rownames(SKCM) == rownames(COAD),
+#     rownames(SKCM) == rownames(BRCA),
+#     rownames(SKCM) == rownames(ESCA),
+#     rownames(SKCM) == rownames(HNSC))
 
 coldata_common_variables <-
   colnames(colData(SKCM))[colnames(colData(SKCM)) %in% colnames(colData(LUAD)) &

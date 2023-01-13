@@ -13,7 +13,7 @@ load(file = "../../data/CT_methylation_in_tissues.rda")
 ################################################################################
 ## Add CpG densities and promoter methylation analysis in normal tissues
 ################################################################################
-CT_genes <- CT_genes %>%
+CT_genes <- CT_list %>%
   left_join(as_tibble(rowData(CT_mean_methylation_in_tissues)))
 
 ################################################################################
@@ -25,31 +25,22 @@ CT_genes <- CT_genes %>%
 ################################################################################
 
 CT_genes <- CT_genes %>%
-  mutate(regulation = case_when(
-    DAC == "induced" &
-      (is.na(methylation_in_tissues) |
-         methylation_in_tissues == "methylated_in_somatic_unmethylated_in_germline")
-    ~ "methylation"))
-
-CT_genes[is.na(CT_genes$regulation), "regulation"] <- "not_methylation"
+  mutate(regulated_by_methylation = 
+           case_when(DAC_induced == FALSE ~ FALSE,
+                     DAC_induced == TRUE & is.na(germline_methylation) ~ TRUE,
+                     DAC_induced == TRUE & 
+                       somatic_methylation == TRUE & 
+                       germline_methylation == FALSE ~ TRUE,
+                     DAC_induced == TRUE & 
+                       (somatic_methylation == FALSE | 
+                       germline_methylation == TRUE) ~ FALSE))
 
 ################################################################################
-## Add correlation value between methylation and expression from TCGA data
+## Add X_linked information
 ################################################################################
 
-met_exp_corr_TCGA <- sapply(CT_genes$external_gene_name,
-                            TCGA_methylation_expression_correlation,
-                            expression_database = TCGA_TPM,
-                            methylation_database = TCGA_CT_methylation,
-                            tumor = c("SKCM", "LUAD", "LUSC", "COAD", "ESCA"),
-                            corr_coeff = TRUE)
-met_exp_corr_TCGA <- enframe(met_exp_corr_TCGA) %>%
-  dplyr::rename(external_gene_name = name, met_exp_corr_TCGA = value)
 CT_genes <- CT_genes %>%
-  left_join(met_exp_corr_TCGA)
-
-CT_genes <- CT_genes %>%
-  mutate(X_linked = ifelse(chromosome_name == "X", "chrX", "not_chrX"))
+  mutate(X_linked = ifelse(chromosome_name == "X", TRUE, FALSE))
 
 ################################################################################
 ## Flag genes as "oncogenic" or "tumor suppressor" using
@@ -75,17 +66,20 @@ CT_genes <- CT_genes %>%
 # Reorder the final table
 ################################################################################
 CT_genes <- CT_genes %>%
-  dplyr::select("ensembl_gene_id", "external_gene_name", "family", "X_linked",
-                "GTEX_category", "TPM_testis", "max_TPM_somatic",
-                "q75_TPM_somatic", "multimapping_analysis", "testis_specificity",
+  rename(chr = chromosome_name) %>% 
+  dplyr::select("ensembl_gene_id", "external_gene_name", "family", 
+                "chr", "strand", "transcription_start_site", "X_linked", 
+                "TPM_testis", "max_TPM_somatic",
+                "GTEX_category", "lowly_expressed_in_GTEX", 
+                "multimapping_analysis", "testis_specificity",
                 "percent_of_positive_CCLE_cell_lines",
                 "percent_of_negative_CCLE_cell_lines", "max_TPM_in_CCLE",
                 "CCLE_category", "percent_pos_tum", "percent_neg_tum",
-                "max_TPM_in_TCGA", "TCGA_category","DAC", "methylation_in_tissues",
-                "regulation", "met_exp_corr_TCGA", "CpG_density","CpG_promoter",
-                "external_transcript_name", "ensembl_transcript_id",
-                "chromosome_name", "strand", "transcription_start_site",
-                "transcript_length", "transcript_biotype", "oncogene",
+                "max_TPM_in_TCGA", "TCGA_category", "DAC_induced", 
+                "somatic_met_level", "sperm_met_level", "somatic_methylation",               
+                "germline_methylation", "regulated_by_methylation", "CpG_density",
+                "CpG_promoter", "external_transcript_name", 
+                "ensembl_transcript_id", "transcript_biotype", "oncogene",
                 "tumor_suppressor")
 
 usethis::use_data(CT_genes, overwrite = TRUE)

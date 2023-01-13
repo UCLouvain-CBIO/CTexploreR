@@ -47,7 +47,6 @@ coldata <- coldata[coldata$type %in% tumor_types, ]
 rownames(coldata) <- coldata$stripped_cell_line_name
 
 ## Reformat CCLE data keeping only genes present in GTEx data
-
 TPM <- CCLE_full_data %>%
   pivot_longer(names_to = "gene", values_to = "expression", -DepMap_ID) %>%
   mutate(ensembl_gene_id = str_extract(gene, "ENSG\\d{11}")) %>%
@@ -71,7 +70,7 @@ TPM_mat <- 2^(TPM_mat) - 1
 
 # Estimate frequencies of activation of each CT gene
 # in all selected cell lines.
-# Gene considered as "activated" if TPM >= TPM_thr
+# Gene are considered as "activated" if TPM >= TPM_thr
 TPM_thr <- 10
 activation_frequencies <- tibble(ensembl_gene_id = rownames(TPM_mat)) %>%
   left_join(as_tibble(rowData(GTEX_data), rownames = "ensembl_gene_id") %>%
