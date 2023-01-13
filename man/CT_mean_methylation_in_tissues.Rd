@@ -33,10 +33,17 @@ The rowData contains:
 \item A column named \code{CpG_density}, gives the density of CpG within each promoter
 (number of CpG / promoter length * 100).
 \item A column \code{CpG_promoter} that classifies the promoters according to their
-CpG densities: "CpG_low" (CpG_density < 2), "CpG_intermediate"
-(CpG_density >= 2 & CpG_density < 4), and "CpG_high (CpG_density >= 4).
-\item A column \code{methylation_in_tissues} summarising the methylation analysis
-in normal tissues.
+CpG densities: "low" (CpG_density < 2), "intermediate"
+(CpG_density >= 2 & CpG_density < 4), and "high" (CpG_density >= 4).
+\item A column \code{somatic_met_level} that gives the mean methylation level of each
+promoter in somatic tissues.
+\item A column \code{sperm_met_level} that gives the  methylation level of each
+promoter in sperm.
+\item A column \code{somatic_methylation} indicates if the promoter's mean methylation
+level in somatic tissues is higher than 50\%.
+\item A column \code{germline_methylation}indicates if the promoter is methylated in
+germline, based on the ratio with somatic tissues (FALSE if somatic_met_level
+is at least twice higher than germline_met_level).
 }
 }
 \keyword{datasets}

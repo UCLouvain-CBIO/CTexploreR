@@ -7,6 +7,8 @@
 TCGA_methylation_expression_correlation(
   tumor,
   gene = NULL,
+  nt_up = 1000,
+  nt_down = 200,
   return = FALSE,
   corr_coeff = FALSE
 )
@@ -15,7 +17,13 @@ TCGA_methylation_expression_correlation(
 \item{tumor}{TCGA tumor code. c("SKCM", "LUAD", "LUSC", "COAD", "ESCA",
 "BRCA", "HNSC", "all")}
 
-\item{gene}{CT gene name(s)}
+\item{gene}{CT gene name}
+
+\item{nt_up}{Number of nucleotides upstream the TSS to define the promoter
+region (1000 by default)}
+
+\item{nt_down}{Number of nucleotides downstream the TSS to define the
+promoter region (200 by default)}
 
 \item{return}{Boolean (FALSE by default). If set to TRUE, the function will
 return the methylation and expression values in all samples instead of the
@@ -43,8 +51,10 @@ found in promoter regions or if less than 1\% of tumors are positive
 (TPM >= 1) for the gene.
 }
 \examples{
-TCGA_methylation_expression_correlation(tumor = "LUAD", gene = "TDRD1")
-TCGA_methylation_expression_correlation(tumor = "all", gene = "TDRD1")
-TCGA_methylation_expression_correlation(tumor = "all", gene = "TDRD1",
-corr_coeff = TRUE)
+TCGA_methylation_expression_correlation("LUAD", gene = "TDRD1", 
+return = FALSE)
+TCGA_methylation_expression_correlation(c("LUAD", "LUSC"), 
+gene = "MAGEA1", return = FALSE)
+TCGA_methylation_expression_correlation("LUAD", 
+gene = "TDRD1", return = TRUE)
 }

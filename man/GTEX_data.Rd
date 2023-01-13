@@ -39,11 +39,8 @@ quantile 75\% of expression in somatic tissues < 0.5 TPM, and expressed at
 least 10x more in testis than in any somatic tissue). "lowly_expressed" genes
 are genes undetectable in GTEX database probably due to multi-mapping issues
 (expression in all GTEX tissues < 1 TPM).
-\item A column named \code{TPM_testis} giving the expression level in testis.
 \item A column named \code{max_TPM_somatic} giving the maximum expression level
 found in a somatic tissue.
-\item A column named \code{q75_TPM_somatic} giving the 75\% quantile of the expression
-level found in a somatic tissue.
 }
 }
 \keyword{datasets}

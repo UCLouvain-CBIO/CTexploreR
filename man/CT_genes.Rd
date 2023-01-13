@@ -21,22 +21,29 @@ CT_genes
 Cancer-Testis (CT) genes description
 }
 \details{
+When the promoter is mentionned, it has been determined as 1000 nt
+upstream TSS and 200 nt downstream TSS.
 CT_genes characteristics column:
 \itemize{
 \item Column \code{family} gives the gene family name.
-\item Column \code{X_linked} classifies genes in "chrX" or "not_chrX".
-\item Column \code{GTEX_category} gives the category ("testis_specific",
-"testis_preferential" or "lowly_expressed") assigned to each gene
-using GTEx database.
+\item Columns \code{chr}, \code{strand} and \code{transcription_start_site} give the genegenomic
+location.
+\item Column \code{X_linked} indicates if the gene is on the chromosome X (TRUE) or
+not (FALSE).
 \item Column \code{TPM_testis} gives the gene expression level in testis
 (using GTEx database).
 \item Column \code{max_TPM_somatic} gives the maximum expression level
 found in a somatic tissue (using GTEx database).
-\item Column \code{q75_TPM_somatic} gives the 75\% quantile expression level
-found in a somatic tissue (using GTEx database).
-\item Column \code{multimapping_analysis} informs if the gene was found to
-be testis-specific when multi-mapped reads were counted for gene
-expression in normal tissues ("not_analysed" or "testis_specific").
+\item Column \code{GTEX_category} gives the category ("testis_specific",
+"testis_preferential" or "lowly_expressed") assigned to each gene
+using GTEx database (see ?GTEX_data for details).
+\item Column \code{lowly_expressed_in_GTEX} indicates if the gene is lowly expressed
+in GTEX database and thus needed to be analysed with multimapping allowed.
+\item Column \code{multimapping_analysis} informs if the gene (flagged as
+"lowly_expressed" in GTEX_data) was found to be testis-specific when
+multi-mapped reads were counted for gene expression in normal tissues
+("not_analysed" or "testis_specific") (see ?normal_tissues_multimapping_data
+for details).
 \item Column \code{testis_specificity} gives the testis-specificity of genes
 assigned to each gene using \code{GTEX_category} and \code{multimapping_analysis}
 ("testis_specific" or "testis_preferential").
@@ -60,28 +67,32 @@ in TCGA cancer sample.
 \item Column \code{TCGA_category} gives the category assigned to each gene
 using TCGA data. "activated" category corresponds to genes expressed
 in at least one tumor (TPM >= 10) and repressed in at least 20\% of samples.
-\item Column \code{DAC} summarises the results ("induced" or "not_induced") of a
+"multimapping_issue" corresponds to genes that need  multi-mapping to be
+allowed in order to be analysed properly.
+\item Column \code{DAC_induced} summarises the results (TRUE or FALSE) of a
 differential expression evaluating gene induction upon DAC treatment
 in a series of cell lines.
-\item Column \code{methylation_in_tissues} summarises the analysis of gene
-promoter methylation in somatic and germline normal tissues
-("methylated_in_somatic_unmethylated_in_germline",
-"methylated_in_somatic_and_germline" or "unmethylated_in_somatic").
-\item Column \code{regulation} summarises the regulation category ("methylation"
-or "not_methylation") that was assigned to genes based on DAC induction
-and on promoter methylation levels in normal tissues (when available).
-\item Column \code{met_exp_corr_TCGA} gives the correlation coefficient between
-promoter methylation and expression in TCGA samples.
+\item Column \code{somatic_met_level} that gives the mean methylation level of each
+promoter in somatic tissues.
+\item Column \code{sperm_met_level} that gives the  methylation level of each
+promoter in sperm.
+\item Column \code{somatic_methylation} indicates if the promoter's mean methylation
+level in somatic tissues is higher than 50\%.
+\item Column \code{germline_methylation}indicates if the promoter is methylated in
+germline, based on the ratio with somatic tissues (FALSE if somatic_met_level
+is at least twice higher than germline_met_level).
+\item Column \code{regulated_by_methylation} indicates if the gene is regulated by
+methylation (TRUE) based on DAC induction (has to be TRUE) and on promoter
+methylation levels in normal tissues (when available, has to be methylated
+in somatic and unmethylated in germline)..
 \item Column named \code{CpG_density}, gives the density of CpG within each promoter
 (number of CpG / promoter length * 100).
 \item Column \code{CpG_promoter} classifies the promoters according to their
-CpG densities: "CpG_low" (CpG_density < 2), "CpG_intermediate"
-(CpG_density >= 2 & CpG_density < 4), and "CpG_high" (CpG_density >= 4).
-\item Columns \code{external_transcript_name}, \code{ensembl_transcript_id},
-\code{chromosome_name}, \code{strand}, \code{transcription_start_site},
-\code{transcript_length} and \code{transcript_biotype} give the references and
-informations about the most biologically relevant transcript associated to
-each gene.
+CpG densities: "low" (CpG_density < 2), "intermediate"
+(CpG_density >= 2 & CpG_density < 4), and "high" (CpG_density >= 4).
+\item Columns \code{external_transcript_name}, \code{ensembl_transcript_id}, and
+\code{transcript_biotype} give the references and informations about the most
+biologically relevant transcript associated to each gene.
 \item Columns \code{oncogene} and \code{tumor_suppressor} informs if oncogenic and
 tumor-suppressor functions have been associated to genes
 (source: \href{http://bionlp.bcgsc.ca/cancermine/}{Cancermine}).
