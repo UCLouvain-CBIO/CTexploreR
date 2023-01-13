@@ -4,22 +4,24 @@
 \alias{TCGA_expression}
 \title{Gene expression in TCGA tumors}
 \usage{
-TCGA_expression(database, tumor = "all", genes = NULL, units = "TPM")
+TCGA_expression(tumor = "all", genes = NULL, units = "TPM", return = FALSE)
 }
 \arguments{
-\item{database}{TCGA_TPM}
-
-\item{tumor}{TCGA tumor code. can be one of "SKCM", "LUAD", "LUSC", "COAD", "ESCA",
-"BRCA", "HNSC", or "all" (default).}
+\item{tumor}{TCGA tumor code. Can be one of "SKCM", "LUAD", "LUSC", "COAD",
+"ESCA", "BRCA", "HNSC", or "all" (default).}
 
 \item{genes}{Genes selected (All CT genes by default)}
 
 \item{units}{Expression values unit.
 Can be "TPM" (default) or "log_TPM" (log(TPM + 1))}
+
+\item{return}{Boolean (FALSE by default). If set to TRUE, the function will
+return the expression values in all samples instead of the heatmap.}
 }
 \value{
-A heatmap of selected CT genes in TCGA samples.
-A SummarizedExperiment with TPM expression data is invisibly returned.
+A heatmap of selected CT genes expression in TCGA samples.
+If return = TRUE, the SummarizedExperiment with TPM expression data is
+returned instead (Columns of RowData and colData are described in TCGA_TPM).
 }
 \description{
 Plots a heatmap of genes expression in TCGA samples
@@ -27,5 +29,7 @@ Plots a heatmap of genes expression in TCGA samples
 tumor samples only when tumor option is set to "all")
 }
 \examples{
-TCGA_expression(TCGA_TPM, tumor = "LUAD", genes = c("MAGEA1", "MAGEA3", "MAGEA4"), units = "log_TPM")
+TCGA_expression(tumor = "LUAD",
+genes = c("MAGEA1", "MAGEA3", "MAGEA4"),
+units = "log_TPM")
 }

@@ -314,17 +314,18 @@
 #' @source (see inst/scripts/make_CT_genes.R for details)
 "CT_genes"
 
-#' CCLE correlation_matrix
+#' Gene correlations in CCLE cancer cell lines
 #'
-#' @description CCLE correlation matrix
+#' @description Correlation coefficients between Cancer-Testis genes and all
+#' genes found on the CCLE database.
 #'
 #' @format A `matrix` object with 306 rows and 24327 columns.
 #' - Rows correspond to CT genes
-#' - Rows correspond to all genes from CCLE database
+#' - Columns correspond to all genes from CCLE database
 #'
-#' @details Correlation coefficients between CT genes and all other genes
-#' are given in the matrix. These correlation coefficients were calculated
-#' from using log transformed expression values from `CCLE_data`.
+#' @details Correlation coefficients (Pearson) between CT genes and all other
+#' genes are given in the matrix. These correlation coefficients were calculated
+#' using log transformed expression values from `CCLE_data` (all cell lines).
 #'
 #' @source (see inst/scripts/make_CCLE_correlation_matrix.R for details)
 "CCLE_correlation_matrix"

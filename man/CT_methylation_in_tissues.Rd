@@ -3,24 +3,25 @@
 \docType{data}
 \name{CT_methylation_in_tissues}
 \alias{CT_methylation_in_tissues}
-\title{Promoter methylation of Cancer-Testis Genes in normal tissues}
+\title{Methylation of CpGs located within CT promoters in normal tissues.}
 \format{
 A RangedSummarizedExperiment object with 53578 rows and 14 columns
 \itemize{
-\item Rows correspond to CpG positions (located within CT genes promoters)
+\item Rows correspond to CpGs (located within CT genes promoters)
 \item Columns correspond to normal tissues
 \item Methylation values from WGBS data
+\item rowRanges correspond to CpG positions
 }
 }
 \source{
-WGBS methylation data was downloaded from Encode and from GEO databases.
-(see inst/scripts/make_CT_methylation_in_tissues.R for details)
+WGBS methylation data was downloaded from Encode and from GEO databases
+(see inst/scripts/make_CT_methylation_in_tissues.R for details).
 }
 \usage{
 CT_methylation_in_tissues
 }
 \description{
-Methylation values of CpG located within Cancer-Testis
-(CT) promoters in a set of normal tissues
+Methylation values of CpGs located within Cancer-Testis
+(CT) promoters in a set of normal tissues.
 }
 \keyword{datasets}

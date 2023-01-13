@@ -5,9 +5,9 @@
 \alias{GTEX_data}
 \title{Genes expression in GTEX}
 \format{
-A \code{SummarizedExperiment} object with 24359 rows and 30 columns
+A \code{SummarizedExperiment} object with 24359 rows and 32 columns
 \itemize{
-\item Rows correspond to genes (ensembl_gene_id)
+\item Rows correspond to genes (ensembl_gene_id as rownames)
 \item Columns correspond to tissues
 \item Expression data from the assay are TPM values
 }
@@ -16,26 +16,34 @@ A \code{SummarizedExperiment} object with 24359 rows and 30 columns
 Downloaded from
 https://storage.googleapis.com/gtex_analysis_v8/rna_seq_data/GTEx_Analysis_2017-06-05_v8_RNASeQCv1.1.9_gene_median_tpm.gct.gz.
 Some categories of tissues were pooled (mean expression values are
-given in pooled tissues). (see inst/scripts/make_GTEX_data.R for details)
+given in pooled tissues) (see inst/scripts/make_GTEX_data.R for details).
 }
 \usage{
 GTEX_data
 }
 \description{
-Gene expression data in normal tissues from GTEX database.
+Gene expression data in normal tissues from GTEx database.
 }
 \details{
-The RowData contains
+The rowData contains
 \itemize{
 \item A column named \code{GTEX_category}, specifying the tissue specificity
 category ("testis_specific", "testis-preferential", "lowly_expressed" or
 "other") assigned to each gene using expression values in testis and in
-somatic tissues, has been added to the rowData.
+somatic tissues, has been added to the rowData. "testis_specific" genes are
+expressed exclusively in testis (expression in testis >= 1 TPM, highest expression
+in somatic tissues < 0.5 TPM, and expressed at least 10x more in testis than
+in any somatic tissue). "testis-preferential" genes are genes expressed in
+testis but also in a few somatic tissues (expression in testis >= 1 TPM,
+quantile 75\% of expression in somatic tissues < 0.5 TPM, and expressed at
+least 10x more in testis than in any somatic tissue). "lowly_expressed" genes
+are genes undetectable in GTEX database probably due to multi-mapping issues
+(expression in all GTEX tissues < 1 TPM).
 \item A column named \code{TPM_testis} giving the expression level in testis.
 \item A column named \code{max_TPM_somatic} giving the maximum expression level
 found in a somatic tissue.
-\item A column named \code{q75_TPM_somatic} giving the quantile 75\% expression level
-found in a somatic tissue.
+\item A column named \code{q75_TPM_somatic} giving the 75\% quantile of the expression
+level found in a somatic tissue.
 }
 }
 \keyword{datasets}

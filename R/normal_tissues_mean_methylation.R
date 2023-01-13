@@ -5,9 +5,10 @@
 #' tissues correspond to the mean methylation of CpGs located in range of
 #' 1000 pb upstream and 200 pb downstream from gene TSS.
 #'
-#' @param database CT_mean_methylation_in_tissues
-#'
 #' @param genes Name of CT gene selected
+#'
+#' @param return Boolean (FALSE by default). If set to TRUE, the function will
+#' return the methylation values in all samples instead of the heatmap.
 #'
 #' @param include_genes_with_missing_values Set to TRUE or FALSE to specify if
 #' genes with missing methylation values in some tissues should be included
@@ -15,7 +16,7 @@
 #' some methylation values are missing.
 #'
 #' @return Heatmap of mean promoter methylation of Cancer-Testis (CT) genes
-#' in normal tissues. Methylation values are returned invisibly.
+#' in normal tissues. If return = TRUE, methylation values are returned instead.
 #'
 #' @export
 #'
@@ -25,41 +26,36 @@
 #' @importFrom grDevices colorRampPalette
 #'
 #' @examples
-#' normal_tissues_mean_methylation(CT_mean_methylation_in_tissues)
-#' normal_tissues_mean_methylation(CT_mean_methylation_in_tissues,
-#' c("MAGEA1", "MAGEA2", "MAGEA3", "MAGEA4"))
-#' normal_tissues_mean_methylation(CT_mean_methylation_in_tissues,
-#' c("MAGEA1", "MAGEA2", "MAGEA3", "MAGEA4"),
+#' normal_tissues_mean_methylation()
+#' normal_tissues_mean_methylation(c("MAGEA1", "MAGEA2", "MAGEA3", "MAGEA4"))
+#' normal_tissues_mean_methylation(c("MAGEA1", "MAGEA2", "MAGEA3", "MAGEA4"),
 #' include_genes_with_missing_values = TRUE)
-normal_tissues_mean_methylation <- function(database, genes = NULL,
+normal_tissues_mean_methylation <- function(genes = NULL, return = FALSE,
                                             include_genes_with_missing_values = FALSE){
 
-  if (missing(database)) {
-    stop("Database must be specified!")
-  }
-
-  if (!missing(database)) {
-    data <- database
-  }
+  database <- CT_mean_methylation_in_tissues
 
   if (!is.null(genes)) {
-    if (!all(genes %in% rowData(data)$external_gene_name)) {
+    if (!all(genes %in% rownames(database))) {
       message("Check gene name(s)!\n")
-      message(paste0(genes[!genes %in% rowData(data)$external_gene_name],
+      message(paste0(genes[!genes %in% rownames(database)],
                      " is not in the database.\n"))
-      genes <- genes[genes %in% rowData(data)$external_gene_name]
+      genes <- genes[genes %in% rownames(database)]
       stopifnot(length(genes) > 0)
     }
-    data <- data[rowData(data)$external_gene_name %in% genes]
+    database <- database[rownames(database) %in% genes]
   }
 
-  mat <- na.omit(assay(data))
-  clustering_option <- TRUE
 
   if (include_genes_with_missing_values == TRUE) {
-    mat <- assay(data)
+    mat <- assay(database)
     clustering_option <- FALSE
+  } else {
+    mat <- na.omit(assay(database))
+    clustering_option <- TRUE
   }
+
+
   if (dim(mat)[1] > 140 ) { fontsize <- 3 }
   if (dim(mat)[1] > 100 & dim(mat)[1] <= 140) { fontsize <- 4 }
   if (dim(mat)[1] > 50 & dim(mat)[1] <= 100) { fontsize <- 5 }
@@ -68,7 +64,7 @@ normal_tissues_mean_methylation <- function(database, genes = NULL,
 
   h <- Heatmap(mat,
                column_title = 'Promoter mean methylation level by tissue',
-               name = 'Methylation',
+               name = 'Meth',
                col = colorRamp2(c(1:100),
                                 colorRampPalette(c("moccasin","dodgerblue4"))
                                 (100)),
@@ -83,7 +79,11 @@ normal_tissues_mean_methylation <- function(database, genes = NULL,
                column_names_side = "bottom",
                row_names_side = "right")
 
-  print(h)
-  invisible(mat)
+  if (return == FALSE) {
+    print(h)
+  } else {
+    mat
+  }
+
 }
 

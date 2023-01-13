@@ -11,13 +11,13 @@ A RangedSummarizedExperiment object with 689 rows and 3423 columns
 \item Columns correspond to samples
 \item Methylation data from the assay are Beta values
 \item Clinical information are stored in colData
-\item probe information (hg38 coordinates) are stored in RowData
+\item Probe information (hg38 coordinates) are stored in rowRanges
 }
 }
 \source{
 SKCM, LUAD, LUSC, COAD, ESCA, BRCA and HNSC methylation data were
 downloaded with TCGAbiolinks and subsetted to select probes located in CT genes
-promoter regions (see inst/scripts/make_TCGA_CT_methylation.R for details)
+promoter regions (see inst/scripts/make_TCGA_CT_methylation.R for details).
 }
 \usage{
 TCGA_CT_methylation

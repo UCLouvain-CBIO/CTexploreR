@@ -4,26 +4,26 @@
 \alias{GTEX_expression}
 \title{Gene expression in normal tissues (GTEx)}
 \usage{
-GTEX_expression(database, genes = NULL, units = "TPM")
+GTEX_expression(genes = NULL, units = "TPM", return = FALSE)
 }
 \arguments{
-\item{database}{GTEX_data}
-
 \item{genes}{Genes selected (all CT genes by default)}
 
 \item{units}{Expression values unit.
 Can be "TPM" (default) or "log_TPM" (log(TPM + 1))}
+
+\item{return}{Boolean (FALSE by default). If set to TRUE, the function will
+return the expression values in all samples instead of the heatmap.}
 }
 \value{
-A heatmap of selected genes in normal tissues.
-Expression values are invisibly returned.
+A heatmap of selected genes expression in normal tissues.
+If return = TRUE, expression values are returned instead.
 }
 \description{
 Plots an expression heatmap of genes in normal
 tissues (GTEx database)
 }
 \examples{
-GTEX_expression(database = GTEX_data)
-GTEX_expression(database = GTEX_data, genes = c("MAGEA1", "MAGEA3"),
-units = "log_TPM")
+GTEX_expression(units = "log_TPM")
+GTEX_expression(genes = c("MAGEA1", "MAGEA3"), units = "log_TPM")
 }

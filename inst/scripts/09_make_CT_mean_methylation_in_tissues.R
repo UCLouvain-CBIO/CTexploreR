@@ -86,7 +86,7 @@ methylation_analysis <- tibble(
   external_gene_name = prom_mean_met_in_tissues$external_gene_name,
   somatic_met = prom_mean_met_in_tissues %>%
     dplyr::select(-c(external_gene_name, placenta, testis, sperm)) %>%
-    rowwise %>%
+    dplyr::rowwise() %>%
     rowMeans(na.rm = TRUE),
   sperm_met = prom_mean_met_in_tissues %>%
     dplyr::select(sperm) %>%
@@ -98,17 +98,18 @@ methylation_analysis <- methylation_analysis %>%
   mutate(ratio_somatic_sperm = somatic_met / sperm_met) %>%
   left_join(CT_CpG_number) %>%
   mutate(CpG_density = CpG_number / (nt_up + nt_down) * 100) %>%
-  mutate(CpG_promoter = case_when(CpG_density < 2 ~ "CpG_low",
+  mutate(CpG_promoter = case_when(CpG_density < 2 ~ "low",
                                  CpG_density >= 2 &
-                                   CpG_density < 4 ~ "CpG_intermediate",
-                                 CpG_density >= 4 ~ "CpG_high")) %>%
+                                   CpG_density < 4 ~ "intermediate",
+                                 CpG_density >= 4 ~ "high")) %>%
   mutate(methylation_in_tissues =
            case_when(somatic_met < 50 ~ "unmethylated_in_somatic",
                      somatic_met >= 50 &
                        ratio_somatic_sperm > 2 ~ "methylated_in_somatic_unmethylated_in_germline",
                      somatic_met >= 50 &
                        ratio_somatic_sperm <= 2 ~ "methylated_in_somatic_and_germline")) %>%
-  dplyr::select(ensembl_gene_id, external_gene_name, CpG_density,
+  column_to_rownames("external_gene_name") %>%
+  dplyr::select(ensembl_gene_id, CpG_density,
                 CpG_promoter, methylation_in_tissues)
 
 

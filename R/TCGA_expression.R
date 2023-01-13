@@ -12,11 +12,12 @@
 #' @param units Expression values unit.
 #' Can be "TPM" (default) or "log_TPM" (log(TPM + 1))
 #'
-#' @param database TCGA_TPM
+#' @param return Boolean (FALSE by default). If set to TRUE, the function will
+#' return the expression values in all samples instead of the heatmap.
 #'
 #' @return A heatmap of selected CT genes expression in TCGA samples.
-#' A SummarizedExperiment with TPM expression data is invisibly returned (Columns
-#' of RowData and colData are described in TCGA_TPM).
+#' If return = TRUE, the SummarizedExperiment with TPM expression data is
+#' returned instead (Columns of RowData and colData are described in TCGA_TPM).
 #'
 #' @export
 #'
@@ -30,55 +31,55 @@
 #' genes = c("MAGEA1", "MAGEA3", "MAGEA4"),
 #' units = "log_TPM")
 TCGA_expression <- function(tumor = "all", genes = NULL,
-                            units = "TPM", database = TCGA_TPM) {
-  data <- database
+                            units = "TPM", return = FALSE) {
+  database <- TCGA_TPM
 
-  if (!tumor %in% c(unique(sub(pattern = 'TCGA-', x = data$project_id, '')),
+  if (!tumor %in% c(unique(sub(pattern = 'TCGA-', x = database$project_id, '')),
                     'all')) {
     stop("TCGA tumor code must be one of ",
-         paste(c(unique(sub(pattern = 'TCGA-', x = data$project_id, ''))),
+         paste(c(unique(sub(pattern = 'TCGA-', x = database$project_id, ''))),
                ", "), "or all")
   }
 
   # Use only primary/metastatic tumors and normal peritumoral samples
-  data <- data[, colData(data)$shortLetterCode %in% c("TP", "TM", "NT")]
+  database <- database[, colData(database)$shortLetterCode %in% c("TP", "TM", "NT")]
 
   if (is.null(genes)) {
-    data <- data[rowData(data)$external_gene_name %in% CT_genes$external_gene_name, ]
+    database <- database[rowData(database)$external_gene_name %in% CT_genes$external_gene_name, ]
   }
 
   if (!is.null(genes)) {
-    if (!all(genes %in% rowData(data)$external_gene_name)) {
-      cat("Check gene name(s)!\n")
-      cat(paste0(genes[!genes %in% rowData(data)$external_gene_name],
-                 " is not in the database.\n"))
-      genes <- genes[genes %in% rowData(data)$external_gene_name]
+    if (!all(genes %in% rowData(database)$external_gene_name)) {
+      message("Check gene name(s)!\n")
+      message(paste0(genes[!genes %in% rowData(database)$external_gene_name],
+                     " is not in the database.\n"))
+      genes <- genes[genes %in% rowData(database)$external_gene_name]
     }
-    data <- data[rowData(data)$external_gene_name %in% genes, ]
+    database <- database[rowData(database)$external_gene_name %in% genes, ]
   }
 
   if (tumor != "all") {
-    data <- data[, colData(data)$project_id == paste0("TCGA-", tumor)]
+    database <- database[, colData(database)$project_id == paste0("TCGA-", tumor)]
   }
 
   if (tumor == "all") {
-    data <- data[, colData(data)$shortLetterCode != "NT"]
+    database <- database[, colData(database)$shortLetterCode != "NT"]
   }
 
-  colData(data)[colData(data)$definition == "Solid Tissue Normal",
+  colData(database)[colData(database)$definition == "Solid Tissue Normal",
                 "definition"] <- "Peritumoral"
-  colData(data)[colData(data)$definition == "Primary solid Tumor",
+  colData(database)[colData(database)$definition == "Primary solid Tumor",
                 "definition"] <- "Primary"
-  df_col <- data.frame("barcode" = rownames(colData(data)),
-                       "shortLetterCode" = colData(data)$shortLetterCode,
-                       "tumor" = sub("TCGA-", x = colData(data)$project_id,
+  df_col <- data.frame("barcode" = rownames(colData(database)),
+                       "shortLetterCode" = colData(database)$shortLetterCode,
+                       "tumor" = sub("TCGA-", x = colData(database)$project_id,
                                      replacement = ''),
-                       "type" = factor(colData(data)$definition,
+                       "type" = factor(colData(database)$definition,
                                        levels = c("Peritumoral", "Primary",
                                                   "Metastatic")))
 
   df_col$tissue <- ifelse(df_col$shortLetterCode == "NT", "Peritumoral", "Tumor")
-  rownames(df_col) <- rownames(colData(data))
+  rownames(df_col) <- rownames(colData(database))
   df_col <- df_col[order(df_col$tumor, df_col$tissue), ]
 
   legends_param <- list(
@@ -113,8 +114,8 @@ TCGA_expression <- function(tumor = "all", genes = NULL,
   }
 
   ## Use gene names instead of ENSEMBL IDs
-  mat <- assay(data)
-  rownames(mat) <- rowData(data)$external_gene_name
+  mat <- assay(database)
+  rownames(mat) <- rowData(database)$external_gene_name
   name <- "TPM"
   title <- paste0("Gene expression in TCGA-", tumor)
 
@@ -157,7 +158,9 @@ TCGA_expression <- function(tumor = "all", genes = NULL,
                                 heatmap_legend_param = legends_param,
                                 top_annotation = annot))
 
-  print(h)
-  invisible(data)
+  if (return == FALSE) {
+    print(h)
+  } else {
+    mat
+  }
 }
-

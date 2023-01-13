@@ -5,21 +5,21 @@
 \title{Methylation-Expression correlation of Cancer-Testis genes in TCGA samples}
 \usage{
 TCGA_methylation_expression_correlation(
-  expression_database,
-  methylation_database,
   tumor,
   gene = NULL,
+  return = FALSE,
   corr_coeff = FALSE
 )
 }
 \arguments{
-\item{expression_database}{TCGA_TPM}
-
-\item{methylation_database}{TCGA_CT_methylation}
-
-\item{tumor}{TCGA tumor code. c("SKCM", "LUAD", "LUSC", "COAD", "ESCA", "BRCA", "HNSC", "all")}
+\item{tumor}{TCGA tumor code. c("SKCM", "LUAD", "LUSC", "COAD", "ESCA",
+"BRCA", "HNSC", "all")}
 
 \item{gene}{CT gene name(s)}
+
+\item{return}{Boolean (FALSE by default). If set to TRUE, the function will
+return the methylation and expression values in all samples instead of the
+heatmap.}
 
 \item{corr_coeff}{Boolean (FALSE by default). If set to TRUE, the function
 will invisibly return the correlation coefficient (Pearson), between
@@ -29,10 +29,9 @@ methylation and expression values for the gene in selected samples.}
 A correlation plot between gene expression and methylation
 values of probe(s) located in its promoter region (defined as 1000
 nucleotides upstream TSS and 200 nucleotides downstream TSS).
-By default, methylation and expression values for the gene in
-selected tumors are invisibly returned in a tibble. If \code{corr_coeff} is
-set to TRUE, the correlation coefficient is be invisibly returned
-instead of methylation and expression values.
+If return = TRUE, methylation and expression values for the gene in
+selected tumors are returned in a tibble instead. If \code{corr_coeff} is
+set to TRUE, the correlation coefficient is being returned instead.
 }
 \description{
 Plots the correlation between methylation and
@@ -44,11 +43,8 @@ found in promoter regions or if less than 1\% of tumors are positive
 (TPM >= 1) for the gene.
 }
 \examples{
-TCGA_methylation_expression_correlation(TCGA_TPM, TCGA_CT_methylation,
-tumor = "LUAD", gene = "TDRD1")
-TCGA_methylation_expression_correlation(TCGA_TPM, TCGA_CT_methylation,
-tumor = "all", gene = "TDRD1")
-TCGA_methylation_expression_correlation(TCGA_TPM, TCGA_CT_methylation,
-tumor = "all", gene = "TDRD1",
+TCGA_methylation_expression_correlation(tumor = "LUAD", gene = "TDRD1")
+TCGA_methylation_expression_correlation(tumor = "all", gene = "TDRD1")
+TCGA_methylation_expression_correlation(tumor = "all", gene = "TDRD1",
 corr_coeff = TRUE)
 }

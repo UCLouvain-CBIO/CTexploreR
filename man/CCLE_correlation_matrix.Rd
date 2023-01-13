@@ -3,12 +3,12 @@
 \docType{data}
 \name{CCLE_correlation_matrix}
 \alias{CCLE_correlation_matrix}
-\title{CCLE correlation_matrix}
+\title{Gene correlations in CCLE cancer cell lines}
 \format{
 A \code{matrix} object with 306 rows and 24327 columns.
 \itemize{
 \item Rows correspond to CT genes
-\item Rows correspond to all genes from CCLE database
+\item Columns correspond to all genes from CCLE database
 }
 }
 \source{
@@ -18,11 +18,12 @@ A \code{matrix} object with 306 rows and 24327 columns.
 CCLE_correlation_matrix
 }
 \description{
-CCLE correlation matrix
+Correlation coefficients between Cancer-Testis genes and all
+genes found on the CCLE database.
 }
 \details{
-Correlation coefficients between CT genes and all other genes
-are given in the matrix. These correlation coefficients were calculated
-from using log transformed expression values from \code{CCLE_data}.
+Correlation coefficients (Pearson) between CT genes and all other
+genes are given in the matrix. These correlation coefficients were calculated
+using log transformed expression values from \code{CCLE_data} (all cell lines).
 }
 \keyword{datasets}

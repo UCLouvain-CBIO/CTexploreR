@@ -5,15 +5,16 @@
 \title{Promoter methylation of Cancer-Testis genes in normal tissues}
 \usage{
 normal_tissues_mean_methylation(
-  database,
   genes = NULL,
+  return = FALSE,
   include_genes_with_missing_values = FALSE
 )
 }
 \arguments{
-\item{database}{CT_mean_methylation_in_tissues}
+\item{genes}{Name of CT gene selected}
 
-\item{genes}{name of CT gene selected}
+\item{return}{Boolean (FALSE by default). If set to TRUE, the function will
+return the methylation values in all samples instead of the heatmap.}
 
 \item{include_genes_with_missing_values}{Set to TRUE or FALSE to specify if
 genes with missing methylation values in some tissues should be included
@@ -21,8 +22,8 @@ genes with missing methylation values in some tissues should be included
 some methylation values are missing.}
 }
 \value{
-heatmap of mean promoter methylation of Cancer-Testis (CT) genes
-in normal tissues. Methylation values are returned invisibly.
+Heatmap of mean promoter methylation of Cancer-Testis (CT) genes
+in normal tissues. If return = TRUE, methylation values are returned instead.
 }
 \description{
 Plots a heatmap of mean promoter methylation levels of
@@ -31,10 +32,8 @@ tissues correspond to the mean methylation of CpGs located in range of
 1000 pb upstream and 200 pb downstream from gene TSS.
 }
 \examples{
-normal_tissues_mean_methylation(CT_mean_methylation_in_tissues)
-normal_tissues_mean_methylation(CT_mean_methylation_in_tissues,
-c("MAGEA1", "MAGEA2", "MAGEA3", "MAGEA4"))
-normal_tissues_mean_methylation(CT_mean_methylation_in_tissues,
-c("MAGEA1", "MAGEA2", "MAGEA3", "MAGEA4"),
+normal_tissues_mean_methylation()
+normal_tissues_mean_methylation(c("MAGEA1", "MAGEA2", "MAGEA3", "MAGEA4"))
+normal_tissues_mean_methylation(c("MAGEA1", "MAGEA2", "MAGEA3", "MAGEA4"),
 include_genes_with_missing_values = TRUE)
 }

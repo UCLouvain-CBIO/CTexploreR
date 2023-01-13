@@ -2,27 +2,33 @@
 % Please edit documentation in R/normal_tissues_methylation.R
 \name{normal_tissues_methylation}
 \alias{normal_tissues_methylation}
-\title{Promoter methylation of Cancer-Testis genes in normal tissues}
+\title{Methylation of CpGs located in Cancer-Testis promoters in normal tissues}
 \usage{
-normal_tissues_methylation(database, gene, nt_up = NULL, nt_down = NULL)
+normal_tissues_methylation(gene, nt_up = NULL, nt_down = NULL, return = FALSE)
 }
 \arguments{
-\item{database}{CT_methylation_in_tissues}
+\item{gene}{Name of selected CT gene}
 
-\item{gene}{name of selected CT gene}
+\item{nt_up}{Number of nucleotides upstream the TSS to analyse
+(1000 by default)}
 
-\item{nt_up}{number of nucleotides upstream the TSS to analyse (1000 by default)}
+\item{nt_down}{Number of nucleotides downstream the TSS to analyse
+(200 by default)}
 
-\item{nt_down}{number of nucleotides downstream the TSS to analyse (200 by default)}
+\item{return}{Boolean (FALSE by default). If set to TRUE, the function will
+return the methylation values of all cytosines in the promoter instead of
+the heatmap.}
 }
 \value{
-heatmap of Promoter methylation of a Cancer-Testis (CT) gene in normal tissues.
-Methylation values are returned invisibly.
+Heatmap of the methylation of CpGs located in a Cancer-Testis (CT)
+promoter, in normal tissues. If return = TRUE, methylation values are
+returned instead.
 }
 \description{
-Plots a heatmap of Promoter methylation of a Cancer-Testis (CT)
-gene in normal tissues
+Plots a heatmap of the methylation of CpGs located in a
+Cancer-Testis (CT) promoter, in normal tissues. X-axis corresponds to the
+CpGs position (related to TSS).
 }
 \examples{
-normal_tissues_methylation(CT_methylation_in_tissues, gene = "TDRD1", 1000, 0)
+normal_tissues_methylation(gene = "TDRD1", 1000, 0)
 }

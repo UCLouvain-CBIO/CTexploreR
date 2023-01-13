@@ -4,26 +4,31 @@
 \alias{correlated_genes}
 \title{Gene correlations in CCLE cancer cell lines}
 \usage{
-correlated_genes(corr_matrix, gene, corr_thr = 0.5)
+correlated_genes(gene, corr_thr = 0.5, return = FALSE)
 }
 \arguments{
-\item{corr_matrix}{CCLE_correlation_matrix}
-
 \item{gene}{CT gene selected}
 
-\item{corr_thr}{Genes with an absolute correlation coefficient higher
-than this threshold will be highlighted (default = 0.5)}
+\item{corr_thr}{Genes with an absolute correlation coefficient (Pearson)
+higher than this threshold will be highlighted (default = 0.5)}
+
+\item{return}{Boolean (FALSE by default). If set to TRUE, the function will
+return the correlation coefficients with all genes instead of the plot.}
 }
 \value{
-A plot where each dots represent the correlation coefficients between
-genes and the specified CT gene (entered as input). All correlations coefficients
-are invisibly returned.
+A plot where each dots represent the correlation coefficients (Pearson)
+between genes and the specified CT gene (entered as input). Genes with a
+correlation coefficient above threshold are colored in red if they are CT
+genes or in blue, if not. If return = TRUE, all correlations coefficients are
+returned instead.
 }
 \description{
 A function that uses expression data from CCLE cell lines and
 highlights genes correlated (or anti-correlated) with specified CT gene.
+Genes with a correlation coefficient above threshold are colored in red if
+they are CT genes or in blue, if not.
 }
 \examples{
-correlated_genes(CCLE_correlation_matrix, gene = "MAGEA3")
-correlated_genes(CCLE_correlation_matrix, "TDRD1", 0.3)
+correlated_genes(gene = "MAGEA3")
+correlated_genes("TDRD1", 0.3)
 }

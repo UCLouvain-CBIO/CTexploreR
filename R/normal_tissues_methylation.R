@@ -12,10 +12,13 @@
 #' @param nt_down Number of nucleotides downstream the TSS to analyse
 #' (200 by default)
 #'
-#' @param database CT_methylation_in_tissues
+#' @param return Boolean (FALSE by default). If set to TRUE, the function will
+#' return the methylation values of all cytosines in the promoter instead of
+#' the heatmap.
 #'
 #' @return Heatmap of the methylation of CpGs located in a Cancer-Testis (CT)
-#' promoter, in normal tissues. Methylation values are returned invisibly.
+#' promoter, in normal tissues. If return = TRUE, methylation values are
+#' returned instead.
 #'
 #' @export
 #'
@@ -33,9 +36,9 @@
 #' @examples
 #' normal_tissues_methylation(gene = "TDRD1", 1000, 0)
 normal_tissues_methylation <- function(gene, nt_up = NULL, nt_down = NULL,
-                                       database = CT_methylation_in_tissues) {
+                                       return = FALSE) {
 
-    data <- database
+    database <- CT_methylation_in_tissues
 
   if (!gene %in% CT_genes$external_gene_name) {
     stop(paste0(gene, " is not in the CT database"))
@@ -73,7 +76,7 @@ normal_tissues_methylation <- function(gene, nt_up = NULL, nt_down = NULL,
     promoter_gr$TSS <- TSS
   }
 
-  promoter_methylation <- subsetByOverlaps(data, promoter_gr)
+  promoter_methylation <- subsetByOverlaps(database, promoter_gr)
 
   methylation_individual_CpG <- suppressWarnings(
     as_tibble(assay(promoter_methylation)) %>%
@@ -106,7 +109,10 @@ normal_tissues_methylation <- function(gene, nt_up = NULL, nt_down = NULL,
                column_names_side = "bottom",
                row_names_side = "left")
 
-  print(h)
-  invisible(mat)
+  if (return == FALSE) {
+    print(h)
+  } else {
+    mat
+  }
 }
 

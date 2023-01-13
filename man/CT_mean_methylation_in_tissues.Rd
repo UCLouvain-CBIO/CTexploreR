@@ -3,7 +3,7 @@
 \docType{data}
 \name{CT_mean_methylation_in_tissues}
 \alias{CT_mean_methylation_in_tissues}
-\title{Promoter mean methylation of Cancer Testis Genes in normal tissues}
+\title{Cancer-Testis genes’ promoters mean methylation in normal tissues}
 \format{
 A SummarizedExperiment object with 306 rows and 14 columns
 \itemize{
@@ -16,19 +16,19 @@ in rowData
 \source{
 WGBS methylation data was downloaded from Encode and from GEO
 databases. Mean methylation levels are evaluated using methylation values
-of CpG located in promoter region (defined as 1000 nt upstream TSS and
+of CpGs located in promoter region (defined as 1000 nt upstream TSS and
 200 nt downstream TSS) (see inst/scripts/make_CT_mean_methylation_in_tissues.R
-for details)
+for details).
 }
 \usage{
 CT_mean_methylation_in_tissues
 }
 \description{
-Mean methylation values of CpG located within Cancer-Testis
+Mean methylation values of all CpGs located within Cancer-Testis
 (CT) promoters in a set of normal tissues
 }
 \details{
-The RowData contains:
+The rowData contains:
 \itemize{
 \item A column named \code{CpG_density}, gives the density of CpG within each promoter
 (number of CpG / promoter length * 100).

@@ -8,8 +8,8 @@
 #' @param units Expression values unit.
 #' Can be "TPM" (default) or "log_TPM" (log(TPM + 1))
 #'
-#' @param return If return is set to TRUE, values are returned instead of the
-#' heatmap (FALSE by default)
+#' @param return Boolean (FALSE by default). If set to TRUE, the function will
+#' return the expression values in all samples instead of the heatmap.
 #'
 #' @return A heatmap of selected genes expression in normal tissues.
 #' If return = TRUE, expression values are returned instead.

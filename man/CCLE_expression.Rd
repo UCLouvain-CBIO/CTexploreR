@@ -4,32 +4,32 @@
 \alias{CCLE_expression}
 \title{Gene expression in CCLE Tumors}
 \usage{
-CCLE_expression(database, genes = NULL, units = "TPM", type = NULL)
+CCLE_expression(genes = NULL, type = NULL, units = "TPM", return = FALSE)
 }
 \arguments{
-\item{database}{CCLE_data}
+\item{genes}{Genes selected (all CT genes by default)}
 
-\item{genes}{genes selected (all CT genes by default)}
+\item{type}{\code{character} describing the tumor cell line(s) type to
+be plotted. Allowed cell lines are "Ovarian", "Leukemia", "Colorectal",
+Skin", "Lung", "Bladder", "Kidney", "Breast", "Pancreatic", "Myeloma",
+"Brain", "Sarcoma", "Lymphoma", "Bone", "Neuroblastoma", "Gastric",
+"Uterine", "Head_and_Neck", "Bile_Duct" and "Esophageal".}
 
 \item{units}{Expression values unit.
 Can be "TPM" (default) or "log_TPM" (log(TPM + 1))}
 
-\item{type}{\code{character()} describing the tumor cell line(s) type to
-be "plotted. Allowed cell lines are "Ovarian", "Leukemia", "Colorectal",
-Skin", "Lung", "Bladder", "Kidney", "Breast", "Pancreatic", "Myeloma",
-"Brain", "Sarcoma", "Lymphoma", "Bone", "Neuroblastoma", "Gastric", "Uterine",
-"Head_and_Neck", "Bile_Duct" and "Esophageal".}
+\item{return}{If return is set to TRUE, values are returned instead of the
+heatmap (FALSE by default)}
 }
 \value{
 A heatmap of selected genes in CCLE cell lines from specified type.
-Expression values are invisibly returned.
+If return = TRUE, expression values are returned instead.
 }
 \description{
 Plots an expression heatmap of genes in CCLE tumor cell lines.
 }
 \examples{
-CCLE_expression(database = CCLE_data,
-genes = c("MAGEA1", "MAGEA3", "MAGEA4", "MAGEA6", "MAGEA10"),
-type = c("Skin", "Lung"), units = "log_TPM")
-CCLE_expression(database = CCLE_data, type = c("Skin", "Lung"), units = "log_TPM")
+CCLE_expression(genes = c("MAGEA1", "MAGEA3", "MAGEA4", "MAGEA6", "MAGEA10"),
+                type = c("Skin", "Lung"), units = "log_TPM")
+CCLE_expression(units = "log_TPM")
 }

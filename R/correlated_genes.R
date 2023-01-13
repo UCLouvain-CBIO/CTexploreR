@@ -2,17 +2,22 @@
 #'
 #' @description A function that uses expression data from CCLE cell lines and
 #' highlights genes correlated (or anti-correlated) with specified CT gene.
-#'
-#' @param corr_matrix CCLE_correlation_matrix
+#' Genes with a correlation coefficient above threshold are colored in red if
+#' they are CT genes or in blue, if not.
 #'
 #' @param gene CT gene selected
 #'
-#' @param corr_thr Genes with an absolute correlation coefficient higher
-#' than this threshold will be highlighted (default = 0.5)
+#' @param corr_thr Genes with an absolute correlation coefficient (Pearson)
+#' higher than this threshold will be highlighted (default = 0.5)
 #'
-#' @return A plot where each dots represent the correlation coefficients between
-#' genes and the specified CT gene (entered as input). All correlations
-#' coefficients are invisibly returned.
+#' @param return Boolean (FALSE by default). If set to TRUE, the function will
+#' return the correlation coefficients with all genes instead of the plot.
+#'
+#' @return A plot where each dots represent the correlation coefficients (Pearson)
+#' between genes and the specified CT gene (entered as input). Genes with a
+#' correlation coefficient above threshold are colored in red if they are CT
+#' genes or in blue, if not. If return = TRUE, all correlations coefficients are
+#' returned instead.
 #'
 #' @export
 #'
@@ -20,14 +25,13 @@
 #' @importFrom ggrepel geom_text_repel
 #'
 #' @examples
-#' correlated_genes(CCLE_correlation_matrix, gene = "MAGEA3")
-#' correlated_genes(CCLE_correlation_matrix, "TDRD1", 0.3)
-correlated_genes <- function(corr_matrix, gene, corr_thr = 0.5) {
+#' correlated_genes(gene = "MAGEA3")
+#' correlated_genes("TDRD1", 0.3)
+correlated_genes <- function(gene, corr_thr = 0.5,
+                             return = FALSE) {
 
-  if (missing(corr_matrix)) {
-    stop("Correlation matrix be specified!")
-  }
-
+  corr_matrix <- CCLE_correlation_matrix
+  
   if (missing(gene)) {
     stop("Gene name be specified!")
   }
@@ -36,24 +40,24 @@ correlated_genes <- function(corr_matrix, gene, corr_thr = 0.5) {
     stop("Gene must be a CT gene!")
   }
 
-  tested_ref <- rowData(CCLE_data)[rowData(CCLE_data)$external_gene_name == gene,
-                                   "ensembl_gene_id"]
+  tested_ref <- rownames(CCLE_data[rowData(CCLE_data)$external_gene_name == gene, ])
 
-  tmp <- data.frame(ensembl_gene_id = names(corr_matrix[tested_ref, ]),
-                    corr = corr_matrix[tested_ref, ],
+  tmp <- data.frame(corr = corr_matrix[tested_ref, ],
                     external_gene_name = rowData(CCLE_data)[names(corr_matrix[tested_ref, ]),
                                                             "external_gene_name"])
   tmp$CT_gene <- ifelse(tmp$external_gene_name %in% CT_genes$external_gene_name,
-                        "CTgene", "not_CTgene")
-  tmp <- tmp[order(tmp$corr, decreasing = TRUE), ]
+                        TRUE, FALSE)
+  tmp <- tmp[order(tmp$corr, decreasing = TRUE),]
   highly_correlated <-
     tmp[(!is.na(tmp$corr) & (tmp$corr > corr_thr | tmp$corr < -corr_thr)),
         "external_gene_name"]
 
   p <- ggplot(tmp[tmp$external_gene_name %in% highly_correlated, ],
               aes(x = gene, y = corr, label = external_gene_name)) +
-    geom_jitter(alpha = 0.5, color = "blue",
+    geom_jitter(aes(color = CT_gene), alpha = 0.5,
                 position = position_jitter(height = 0, seed = 1)) +
+    scale_colour_manual(limits = c(TRUE, FALSE),
+                        values = c("red", "deepskyblue")) +
     geom_text_repel(position = position_jitter(height = 0, seed = 1),
                     size = 2.5, max.overlaps = 20) +
     geom_jitter(data = tmp[!tmp$external_gene_name %in% highly_correlated, ],
@@ -66,10 +70,17 @@ correlated_genes <- function(corr_matrix, gene, corr_thr = 0.5) {
                size = 0.5,  color = "blue") +
     theme(axis.title.x = element_blank(),
           axis.text.x = element_blank(),
-          axis.ticks.x = element_blank()) +
+          axis.ticks.x = element_blank(),
+          legend.position = "bottom") +
     ylab("Correlation coefficient") +
     ylim(-1, 1)
 
-  suppressWarnings(print(p))
-  invisible(tmp)
+
+  if (return == FALSE) {
+    suppressWarnings(print(p))
+    } else {
+      tmp
+  }
+
+
 }
