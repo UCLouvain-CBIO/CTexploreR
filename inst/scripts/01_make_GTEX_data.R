@@ -55,7 +55,6 @@ GTEX_data <- GTEX_data %>%
 
 ## Clean tissue names
 ## Pool same categories of tissues and calculate mean of TPM in pooled tissues
-
 GTEX_data <- GTEX_data %>%
   dplyr::rename("Small Intestine...Terminal Ileum" =
                   "Small.Intestine...Terminal.Ileum") %>%
@@ -124,9 +123,10 @@ testis_preferential <- GTEX_data %>%
 ## Add GTEX_category column summarizing the category
 ## assigned to each gene using GTEx database.
 GTEX_data <- GTEX_data %>%
-  mutate(GTEX_category = case_when(external_gene_name %in% lowly_expressed ~ "lowly_expressed",
-                                   external_gene_name %in% testis_specific ~ "testis_specific",
-                                   external_gene_name %in% testis_preferential ~ "testis_preferential"))
+  mutate(GTEX_category = case_when(
+    external_gene_name %in% lowly_expressed ~ "lowly_expressed",
+    external_gene_name %in% testis_specific ~ "testis_specific",
+    external_gene_name %in% testis_preferential ~ "testis_preferential"))
 GTEX_data[is.na(GTEX_data$GTEX_category), "GTEX_category"] <- "other"
 
 Gtex_mat <- as.matrix(GTEX_data %>%
@@ -137,7 +137,7 @@ rownames(Gtex_mat) <- GTEX_data$ensembl_gene_id
 rowdata <- as.data.frame(GTEX_data %>%
                            dplyr::select(c(ensembl_gene_id, external_gene_name,
                                            GTEX_category,
-                                           max_TPM_somatic, q75_TPM_somatic)))
+                                           max_TPM_somatic )))
 rowdata <- column_to_rownames(rowdata, "ensembl_gene_id")
 GTEX_data <- SummarizedExperiment(assays = list(TPM = Gtex_mat),
                                   rowData = rowdata)

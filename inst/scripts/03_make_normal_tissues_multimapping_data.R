@@ -156,8 +156,7 @@ rowdata <-
   dplyr::select(ensembl_gene_id, external_gene_name,
                 lowly_expressed_in_GTEX, multimapping_analysis)
 
-rowdata$multimapping_analysis[rowdata$multimapping_analysis ==
-                                "not_analysed"] <- NA
+rowdata$multimapping_analysis[rowdata$multimapping_analysis == "not_analysed"] <- NA
 
 rowdata <- column_to_rownames(rowdata, "ensembl_gene_id")
 

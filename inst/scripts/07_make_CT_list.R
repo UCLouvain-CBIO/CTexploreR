@@ -3,7 +3,6 @@
 library("tidyverse")
 library("SummarizedExperiment")
 library("biomaRt")
-library("CTexploreR")
 
 load(file = "../../data/GTEX_data.rda")
 load(file = "../../data/CCLE_data.rda")
@@ -16,6 +15,7 @@ load(file = "../../data/TCGA_TPM.rda")
 ## assigned to each gene using GTEx database
 ################################################################################
 all_genes <- as_tibble(rowData(GTEX_data), rownames = "ensembl_gene_id")
+all_genes$TPM_testis <- assay(GTEX_data)[, "Testis"]
 
 ################################################################################
 ## Add multimapping_analysis column from normal_tissues_multimapping_data,
@@ -143,7 +143,6 @@ CT_list[CT_list$external_gene_name == "CIB3", "external_transcript_name"] <- NA
 CT_list[CT_list$external_gene_name == "PSG3", "external_transcript_name"] <- NA
 CT_list[CT_list$external_gene_name == "UBE2L5", "external_transcript_name"] <- NA
 CT_list[CT_list$external_gene_name == "RTL9", "external_transcript_name"] <- "RTL9-202"
-
 CT_list[CT_list$external_gene_name == "DMP1", "external_transcript_name"] <- NA
 CT_list[CT_list$external_gene_name == "ADAD1", "external_transcript_name"] <- "ADAD1-204"
 CT_list[CT_list$external_gene_name == "IL5", "external_transcript_name"] <- NA
@@ -155,7 +154,6 @@ CT_list[CT_list$external_gene_name == "UBE2L5", "external_transcript_name"] <- N
 CT_list[CT_list$external_gene_name == "VRTN", "external_transcript_name"] <- NA
 CT_list[CT_list$external_gene_name == "MBD3L5", "external_transcript_name"] <- NA
 CT_list[CT_list$external_gene_name == "SPANXN1", "external_transcript_name"] <- NA
-
 CT_list[CT_list$external_gene_name == "ROR1-AS1", "external_transcript_name"] <- NA
 CT_list[CT_list$external_gene_name == "LINC01344", "external_transcript_name"] <- NA
 CT_list[CT_list$external_gene_name == "SMYD3-AS1", "external_transcript_name"] <- NA
@@ -170,7 +168,6 @@ CT_list[CT_list$external_gene_name == "LINC01811", "external_transcript_name"] <
 CT_list[CT_list$external_gene_name == "IGF2BP2-AS1", "external_transcript_name"] <- NA
 CT_list[CT_list$external_gene_name == "LINC02020", "external_transcript_name"] <- NA
 CT_list[CT_list$external_gene_name == "LEF1-AS1", "external_transcript_name"] <- NA
-
 CT_list[CT_list$external_gene_name == "NEUROG2-AS1", "external_transcript_name"] <- NA
 CT_list[CT_list$external_gene_name == "SNHG27", "external_transcript_name"] <- NA
 CT_list[CT_list$external_gene_name == "LINC02492", "external_transcript_name"] <- NA
@@ -186,7 +183,6 @@ CT_list[CT_list$external_gene_name == "LINC01010", "external_transcript_name"] <
 CT_list[CT_list$external_gene_name == "ST7-OT4", "external_transcript_name"] <- NA
 CT_list[CT_list$external_gene_name == "LINC02912", "external_transcript_name"] <- NA
 CT_list[CT_list$external_gene_name == "LINC02669", "external_transcript_name"] <- NA
-
 CT_list[CT_list$external_gene_name == "LINC01517", "external_transcript_name"] <- NA
 CT_list[CT_list$external_gene_name == "LINC00867", "external_transcript_name"] <- NA
 CT_list[CT_list$external_gene_name == "LINC02742", "external_transcript_name"] <- NA
@@ -202,7 +198,6 @@ CT_list[CT_list$external_gene_name == "LINC02293", "external_transcript_name"] <
 CT_list[CT_list$external_gene_name == "G2E3-AS1", "external_transcript_name"] <- NA
 CT_list[CT_list$external_gene_name == "LINC00221", "external_transcript_name"] <- NA
 CT_list[CT_list$external_gene_name == "LINC01193", "external_transcript_name"] <- "LINC01193-201A"
-
 CT_list[CT_list$external_gene_name == "EWSAT1", "external_transcript_name"] <- NA
 CT_list[CT_list$external_gene_name == "INSYN1-AS1", "external_transcript_name"] <- NA
 CT_list[CT_list$external_gene_name == "LINC02152", "external_transcript_name"] <- NA
