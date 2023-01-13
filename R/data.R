@@ -20,11 +20,8 @@
 #' least 10x more in testis than in any somatic tissue). "lowly_expressed" genes
 #' are genes undetectable in GTEX database probably due to multi-mapping issues
 #' (expression in all GTEX tissues < 1 TPM).
-#' - A column named `TPM_testis` giving the expression level in testis.
 #' - A column named `max_TPM_somatic` giving the maximum expression level
 #' found in a somatic tissue.
-#' - A column named `q75_TPM_somatic` giving the 75% quantile of the expression
-#' level found in a somatic tissue.
 #'
 #' @source Downloaded from
 #' https://storage.googleapis.com/gtex_analysis_v8/rna_seq_data/GTEx_Analysis_2017-06-05_v8_RNASeQCv1.1.9_gene_median_tpm.gct.gz.
@@ -180,11 +177,18 @@
 #' - A column named `CpG_density`, gives the density of CpG within each promoter
 #' (number of CpG / promoter length * 100).
 #' - A column `CpG_promoter` that classifies the promoters according to their
-#' CpG densities: "CpG_low" (CpG_density < 2), "CpG_intermediate"
-#' (CpG_density >= 2 & CpG_density < 4), and "CpG_high (CpG_density >= 4).
-#' - A column `methylation_in_tissues` summarising the methylation analysis
-#' in normal tissues.
-#'
+#' CpG densities: "low" (CpG_density < 2), "intermediate"
+#' (CpG_density >= 2 & CpG_density < 4), and "high" (CpG_density >= 4).
+#' - A column `somatic_met_level` that gives the mean methylation level of each
+#' promoter in somatic tissues.
+#' - A column `sperm_met_level` that gives the  methylation level of each
+#' promoter in sperm.
+#' - A column `somatic_methylation` indicates if the promoter's mean methylation
+#' level in somatic tissues is higher than 50%.
+#' - A column `germline_methylation`indicates if the promoter is methylated in 
+#' germline, based on the ratio with somatic tissues (FALSE if somatic_met_level
+#' is at least twice higher than germline_met_level).
+#' 
 #' @source WGBS methylation data was downloaded from Encode and from GEO
 #' databases. Mean methylation levels are evaluated using methylation values
 #' of CpGs located in promoter region (defined as 1000 nt upstream TSS and
@@ -247,21 +251,28 @@
 #' - Rows correspond to CT genes
 #' - Columns give CT genes characteristics
 #'
-#' @details CT_genes characteristics column:
+#' @details When the promoter is mentionned, it has been determined as 1000 nt
+#' upstream TSS and 200 nt downstream TSS.
+#' CT_genes characteristics column:
 #' - Column `family` gives the gene family name.
-#' - Column `X_linked` classifies genes in "chrX" or "not_chrX".
-#' - Column `GTEX_category` gives the category ("testis_specific",
-#' "testis_preferential" or "lowly_expressed") assigned to each gene
-#' using GTEx database.
+#' - Columns `chr`, `strand` and `transcription_start_site` give the genegenomic 
+#' location.
+#' - Column `X_linked` indicates if the gene is on the chromosome X (TRUE) or 
+#' not (FALSE).
 #' - Column `TPM_testis` gives the gene expression level in testis
 #' (using GTEx database).
 #' - Column `max_TPM_somatic` gives the maximum expression level
 #' found in a somatic tissue (using GTEx database).
-#' - Column `q75_TPM_somatic` gives the 75% quantile expression level
-#' found in a somatic tissue (using GTEx database).
-#' - Column `multimapping_analysis` informs if the gene was found to
-#' be testis-specific when multi-mapped reads were counted for gene
-#' expression in normal tissues ("not_analysed" or "testis_specific").
+#' - Column `GTEX_category` gives the category ("testis_specific",
+#' "testis_preferential" or "lowly_expressed") assigned to each gene
+#' using GTEx database (see ?GTEX_data for details).
+#' - Column `lowly_expressed_in_GTEX` indicates if the gene is lowly expressed
+#' in GTEX database and thus needed to be analysed with multimapping allowed. 
+#' - Column `multimapping_analysis` informs if the gene (flagged as 
+#' "lowly_expressed" in GTEX_data) was found to be testis-specific when 
+#' multi-mapped reads were counted for gene expression in normal tissues 
+#' ("not_analysed" or "testis_specific") (see ?normal_tissues_multimapping_data 
+#' for details).
 #' - Column `testis_specificity` gives the testis-specificity of genes
 #' assigned to each gene using `GTEX_category` and `multimapping_analysis`
 #' ("testis_specific" or "testis_preferential").
@@ -284,29 +295,33 @@
 #' in TCGA cancer sample.
 #' - Column `TCGA_category` gives the category assigned to each gene
 #' using TCGA data. "activated" category corresponds to genes expressed
-#' in at least one tumor (TPM >= 10) and repressed in at least 20% of samples.
+#' in at least one tumor (TPM >= 10) and repressed in at least 20% of samples. 
+#' "multimapping_issue" corresponds to genes that need  multi-mapping to be 
+#' allowed in order to be analysed properly.
 #' - Column `DAC_induced` summarises the results (TRUE or FALSE) of a
 #' differential expression evaluating gene induction upon DAC treatment
 #' in a series of cell lines.
-#' - Column `methylation_in_tissues` summarises the analysis of gene
-#' promoter methylation in somatic and germline normal tissues
-#' ("methylated_in_somatic_unmethylated_in_germline",
-#' "methylated_in_somatic_and_germline" or "unmethylated_in_somatic").
-#' - Column `regulation` summarises the regulation category ("methylation"
-#' or "not_methylation") that was assigned to genes based on DAC induction
-#' and on promoter methylation levels in normal tissues (when available).
-#' - Column `met_exp_corr_TCGA` gives the correlation coefficient between
-#' promoter methylation and expression in TCGA samples.
+#' - Column `somatic_met_level` that gives the mean methylation level of each
+#' promoter in somatic tissues.
+#' - Column `sperm_met_level` that gives the  methylation level of each
+#' promoter in sperm.
+#' - Column `somatic_methylation` indicates if the promoter's mean methylation
+#' level in somatic tissues is higher than 50%.
+#' - Column `germline_methylation`indicates if the promoter is methylated in 
+#' germline, based on the ratio with somatic tissues (FALSE if somatic_met_level
+#' is at least twice higher than germline_met_level).
+#' - Column `regulated_by_methylation` indicates if the gene is regulated by 
+#' methylation (TRUE) based on DAC induction (has to be TRUE) and on promoter 
+#' methylation levels in normal tissues (when available, has to be methylated 
+#' in somatic and unmethylated in germline)..
 #' - Column named `CpG_density`, gives the density of CpG within each promoter
 #' (number of CpG / promoter length * 100).
 #' - Column `CpG_promoter` classifies the promoters according to their
-#' CpG densities: "CpG_low" (CpG_density < 2), "CpG_intermediate"
-#' (CpG_density >= 2 & CpG_density < 4), and "CpG_high" (CpG_density >= 4).
-#' - Columns `external_transcript_name`, `ensembl_transcript_id`,
-#' `chromosome_name`, `strand`, `transcription_start_site`,
-#' `transcript_length` and `transcript_biotype` give the references and
-#' informations about the most biologically relevant transcript associated to
-#' each gene.
+#' CpG densities: "low" (CpG_density < 2), "intermediate"
+#' (CpG_density >= 2 & CpG_density < 4), and "high" (CpG_density >= 4).
+#' - Columns `external_transcript_name`, `ensembl_transcript_id`, and 
+#' `transcript_biotype` give the references and informations about the most 
+#' biologically relevant transcript associated to each gene.
 #' - Columns `oncogene` and `tumor_suppressor` informs if oncogenic and
 #' tumor-suppressor functions have been associated to genes
 #' (source: [Cancermine](http://bionlp.bcgsc.ca/cancermine/)).
