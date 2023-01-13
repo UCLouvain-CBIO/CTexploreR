@@ -285,7 +285,7 @@
 #' - Column `TCGA_category` gives the category assigned to each gene
 #' using TCGA data. "activated" category corresponds to genes expressed
 #' in at least one tumor (TPM >= 10) and repressed in at least 20% of samples.
-#' - Column `DAC` summarises the results ("induced" or "not_induced") of a
+#' - Column `DAC_induced` summarises the results (TRUE or FALSE) of a
 #' differential expression evaluating gene induction upon DAC treatment
 #' in a series of cell lines.
 #' - Column `methylation_in_tissues` summarises the analysis of gene

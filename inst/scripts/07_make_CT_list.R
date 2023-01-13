@@ -11,41 +11,41 @@ load(file = "../../data/normal_tissues_multimapping_data.rda")
 load(file = "../../data/DAC_treated_cells_multimapping.rda")
 load(file = "../../data/TCGA_TPM.rda")
 
-##########################################################################
+################################################################################
 ## Start from rowData(GTEX), summarizing the tissue specificity category
 ## assigned to each gene using GTEx database
-##########################################################################
-all_genes <- as_tibble(rowData(GTEX_data))
+################################################################################
+all_genes <- as_tibble(rowData(GTEX_data), rownames = "ensembl_gene_id")
 
-##########################################################################
+################################################################################
 ## Add multimapping_analysis column from normal_tissues_multimapping_data,
 ## assessing testis-specificity of genes flagged as "lowly_expressed" in
 ## GTEX_category from GTEX_data (when their TPM < 1 in testis)
-##########################################################################
+################################################################################
 all_genes <- all_genes %>%
   left_join(as_tibble(rowData(normal_tissues_multimapping_data)))
 
-##########################################################################
+################################################################################
 ## Add testis_specificity summarizing testis-specificity analysis from
 ## GTEX and multimapping
-##########################################################################
+################################################################################
 all_genes <- all_genes %>%
   mutate(testis_specificity = case_when(
     GTEX_category == "testis_specific" |
       multimapping_analysis == "testis_specific" ~ "testis_specific",
     GTEX_category == "testis_preferential" ~ "testis_preferential"))
 
-##########################################################################
+################################################################################
 ## Add info from rowData(CCLE_TPM), summarising the analysis of CCLE
 ## database. In CCLE_category, genes are tagged as "activated" when
 ## at least 20 % of cell lines are negative (TPM <= 0.1)
 ## and at least one cell line is highly positive (TPM >= 10)
-##########################################################################
+################################################################################
 all_genes <- all_genes %>%
   left_join(as_tibble(rowData(CCLE_data)))
 all_genes[is.na(all_genes$CCLE_category), "CCLE_category"] <- "not_in_CCLE"
 
-##########################################################################
+################################################################################
 ## Add info from rowData(TCGA_TPM), summarising the analysis of TCGA
 ## tumor samples. In TCGA_category, genes are tagged as "activated" when
 ## at least 20 % of tumors are negative (TPM <= 0.1)
@@ -53,27 +53,27 @@ all_genes[is.na(all_genes$CCLE_category), "CCLE_category"] <- "not_in_CCLE"
 ## flagged as testis-specific in `multimapping analysis` are flagged as
 ## "mulimapping_issue" in TCGA_category, as most of them  are not detected
 ## in TCGA database.
-##########################################################################
+################################################################################
 
 all_genes <- all_genes %>%
   left_join(as_tibble(rowData(TCGA_TPM)) %>%
-              dplyr::select(ensembl_gene_id,percent_pos_tum, percent_neg_tum,
+              dplyr::select(external_gene_name, percent_pos_tum, percent_neg_tum,
                             max_TPM_in_TCGA, TCGA_category))
 
-all_genes[!is.na(all_genes$multimapping_analysis) &
+all_genes[all_genes$lowly_expressed_in_GTEX == TRUE &
             all_genes$multimapping_analysis == "testis_specific",
           "TCGA_category"] <- "multimapping_issue"
 
-##########################################################################
+################################################################################
 ## Add DAC column specifying if genes are induced by 5-Aza-2′-Deoxycytidine
-##########################################################################
+################################################################################
 induced <- as_tibble(rowData(DAC_treated_cells_multimapping)) %>%
-  filter(induced == "induced") %>%
+  filter(induced == TRUE) %>%
   pull(external_gene_name)
 
 all_genes <- all_genes %>%
-  mutate(DAC = case_when(external_gene_name %in% induced ~ "induced",
-                         !external_gene_name %in% induced ~ "not_induced"))
+  mutate(DAC_induced = case_when(external_gene_name %in% induced ~ TRUE,
+                         !external_gene_name %in% induced ~ FALSE))
 
 ################################################################################
 ## Associate each gene to its likely most biologically relevant transcript,
