@@ -20,8 +20,7 @@ return the expression values in all samples instead of the heatmap.}
 }
 \value{
 A heatmap of selected CT genes expression in TCGA samples.
-If return = TRUE, the SummarizedExperiment with TPM expression data is
-returned instead (Columns of RowData and colData are described in TCGA_TPM).
+If return = TRUE, TPM expression data is returned instead.
 }
 \description{
 Plots a heatmap of genes expression in TCGA samples
