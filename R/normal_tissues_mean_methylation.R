@@ -35,18 +35,12 @@ normal_tissues_mean_methylation <- function(genes = NULL, return = FALSE,
 
   database <- CT_mean_methylation_in_tissues
 
-  if (!is.null(genes)) {
-    if (!all(genes %in% rownames(database))) {
-      message("Check gene name(s)!\n")
-      message(paste0(genes[!genes %in% rownames(database)],
-                     " is not in the database.\n"))
-      genes <- genes[genes %in% rownames(database)]
-      stopifnot(length(genes) > 0)
-    }
-    database <- database[rownames(database) %in% genes]
-  }
-
-
+  if (is.null(genes)) genes <- CT_genes$external_gene_name
+  valid_gene_names <- unique(rownames(database))
+  genes <- check_names(genes, valid_gene_names)
+  database <- database[rownames(database) %in% genes]
+  
+  
   if (include_genes_with_missing_values == TRUE) {
     mat <- assay(database)
     clustering_option <- FALSE
@@ -56,11 +50,11 @@ normal_tissues_mean_methylation <- function(genes = NULL, return = FALSE,
   }
 
 
-  if (dim(mat)[1] > 140 ) { fontsize <- 3 }
-  if (dim(mat)[1] > 100 & dim(mat)[1] <= 140) { fontsize <- 4 }
-  if (dim(mat)[1] > 50 & dim(mat)[1] <= 100) { fontsize <- 5 }
-  if (dim(mat)[1] > 20 & dim(mat)[1] <= 50) { fontsize <- 6 }
-  if (dim(mat)[1] <= 20) { fontsize <- 8 }
+  if (dim(mat)[1] > 140 ) fontsize <- 3
+  if (dim(mat)[1] > 100 & dim(mat)[1] <= 140) fontsize <- 4
+  if (dim(mat)[1] > 50 & dim(mat)[1] <= 100) fontsize <- 5
+  if (dim(mat)[1] > 20 & dim(mat)[1] <= 50) fontsize <- 6
+  if (dim(mat)[1] <= 20) fontsize <- 8
 
   h <- Heatmap(mat,
                column_title = 'Promoter mean methylation level by tissue',

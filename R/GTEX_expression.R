@@ -28,8 +28,10 @@ GTEX_expression <- function(genes = NULL, units = "TPM", return = FALSE) {
 
   database <- GTEX_data
   if (is.null(genes)) genes <- CT_genes$external_gene_name
-  genes <- check_gene_names(genes = genes, database = database)
+  valid_gene_names <- unique(rowData(database)$external_gene_name)
+  genes <- check_names(genes, valid_gene_names)
   database <- database[rowData(database)$external_gene_name %in% genes, ]
+  
   mat <- assay(database)
   rownames(mat) <- rowData(database)$external_gene_name
   name <- "TPM"
