@@ -91,16 +91,16 @@ TCGA_methylation_expression_correlation <- function(tumor,
     CT_genes %>% 
       dplyr::filter(external_gene_name == gene) %>% 
       dplyr::select(ensembl_gene_id, external_gene_name,
-                    external_transcript_name,chromosome_name, strand,
+                    external_transcript_name, chr, strand,
                     transcription_start_site) %>%
-      mutate(chromosome_name = paste0("chr", chromosome_name)) %>%
+      mutate(chr = paste0("chr", chr)) %>%
       mutate(strand = ifelse(strand == 1, '+', '-')) %>%
       mutate(start = case_when(strand == '+' ~ transcription_start_site - nt_up,
                                strand == '-' ~ transcription_start_site - nt_down)) %>%
       mutate(stop = case_when(strand == '+' ~ transcription_start_site + nt_down,
                               strand == '-' ~ transcription_start_site + nt_up)),
     keep.extra.columns = TRUE,
-    seqnames.field = "chromosome_name",
+    seqnames.field = "chr",
     start.field = "start",
     end.field = "stop")
   
