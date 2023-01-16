@@ -46,7 +46,7 @@ normal_tissues_methylation <- function(gene, nt_up = NULL, nt_down = NULL,
 
   chr <- CT_genes %>%
     filter(external_gene_name == gene) %>%
-    pull(chromosome_name)
+    pull(chr)
 
   strand <- CT_genes %>%
     filter(external_gene_name == gene) %>%
