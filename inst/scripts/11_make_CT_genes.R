@@ -3,7 +3,6 @@
 library("tidyverse")
 library("SummarizedExperiment")
 library("biomaRt")
-library("CTexploreR")
 
 load("../extdata/CT_list.rda")
 load(file = "../../data/TCGA_CT_methylation.rda")

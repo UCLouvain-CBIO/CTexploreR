@@ -1,16 +1,18 @@
 ## Code to prepare `TCGA_CT_methylation` dataset goes here
+
 library("TCGAbiolinks")
 library("tidyverse")
 library("SummarizedExperiment")
 library("GenomicRanges")
 library("BiocFileCache")
 library("org.Hs.eg.db")
+
 load("../extdata/CT_list.rda")
 
 bfc <- BiocFileCache(cache = "/home/users/aloriot/.cache/BiocFileCache",
                      ask = FALSE)
 
-for(tumor_code in c("SKCM", "LUAD", "LUSC", "ESCA", "BRCA", "HNSC")) {
+for(tumor_code in c("SKCM", "LUAD", "LUSC", "COAD", "ESCA", "BRCA", "HNSC")) {
   rname <- paste0("TCGA_", tumor_code, "_methylation")
 
   if(length(bfcquery(bfc, rname)$rid) == 0) {

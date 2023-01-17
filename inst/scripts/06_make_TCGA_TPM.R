@@ -6,6 +6,8 @@ library("SummarizedExperiment")
 library("BiocFileCache")
 library("org.Hs.eg.db")
 
+load(file = "../../data/GTEX_data.rda")
+
 bfc <- BiocFileCache(cache = "/home/users/aloriot/.cache/BiocFileCache",
                      ask = FALSE)
 
@@ -33,7 +35,7 @@ for(tumor_code in c("SKCM", "LUAD", "LUSC", "COAD", "ESCA",
     # Create a Summarized-Experiment object
     GDCprepare(query_gene_counts_harmonized,
                directory = paste0("./tmp/TCGA_", tumor_code, "_STAR"),
-               save = FALSE,
+               save = TRUE,
                save.filename = savepath,
                remove.files.prepared = FALSE)
   }
