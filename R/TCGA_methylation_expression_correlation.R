@@ -146,9 +146,9 @@ TCGA_methylation_expression_correlation <- function(tumor,
   
   # Color by tissue (Peritumoral / Tumor) if only one tumor type, 
   # otherwise color by tumor types.
-  if (length(type) > 1) {  
+  if (type == "all" | length(type) > 1) {  
     p <- ggplot(
-      as_tibble(methylation_expression[order(methylation_expression$Tissue, 
+      as_tibble(methylation_expression[order(methylation_expression$type, 
                                              decreasing = TRUE), ]),
                 aes(x = met, y = log1p(TPM))) +
       geom_point(alpha = 0.6, aes(color = type, shape = Tissue)) +
