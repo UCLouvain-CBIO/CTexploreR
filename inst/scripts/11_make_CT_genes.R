@@ -2,7 +2,6 @@
 
 library("tidyverse")
 library("SummarizedExperiment")
-library("biomaRt")
 
 load("../extdata/CT_list.rda")
 load(file = "../../data/TCGA_CT_methylation.rda")
@@ -46,11 +45,11 @@ CT_genes <- CT_genes %>%
 ## [Cancermine](http://bionlp.bcgsc.ca/cancermine/), a literature-mined database
 ## of drivers, oncogenes and tumor suppressors in cancer.
 ################################################################################
-if (!file.exists("../../../CTdata/inst/extdata/cancermine_collated.tsv")) {
-  download.file(url = "http://bionlp.bcgsc.ca/cancermine/session/d64941b57313d6774447c97940158a37/download/gene_download_collated_all?w=",
-                destfile = "../../../CTdata/inst/extdata/cancermine_collated.tsv")
+if (!file.exists("../extdata/cancermine_collated.tsv")) {
+  download.file(url = "https://zenodo.org/record/7537824/files/cancermine_collated.tsv?download=1",
+                destfile = "../extdata/cancermine_collated.tsv")
 }
-cancermine <- read_tsv("../../../CTdata/inst/extdata/cancermine_collated.tsv")
+cancermine <- read_tsv("../extdata/cancermine_collated.tsv")
 oncogenes <- cancermine %>%
   filter(role == "Oncogene") %>%
   pull(gene_normalized)
@@ -65,7 +64,7 @@ CT_genes <- CT_genes %>%
 # Reorder the final table
 ################################################################################
 CT_genes <- CT_genes %>%
-  rename(chr = chromosome_name) %>% 
+  dplyr::rename(chr = chromosome_name) %>% 
   dplyr::select("ensembl_gene_id", "external_gene_name", "family", 
                 "chr", "strand", "transcription_start_site", "X_linked", 
                 "TPM_testis", "max_TPM_somatic",
