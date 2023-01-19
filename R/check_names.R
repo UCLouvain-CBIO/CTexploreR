@@ -9,10 +9,6 @@
 #' @param valid_vector `vector` Valid variable names
 #'
 #' @return A vector with valid variables
-#'
-#' @examples
-#' check_names(variable = c("Ovarian", "leukemia", "wrong_name"),
-#' valid_vector = c("ovarian", "leukemia"))
 check_names <- function(variable, valid_vector) {
 
   if (!all(variable %in% valid_vector)) {
