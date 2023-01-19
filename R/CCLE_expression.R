@@ -29,14 +29,13 @@
 #' @examples
 #' CCLE_expression(genes = c("MAGEA1", "MAGEA3", "MAGEA4", "MAGEA6", "MAGEA10"),
 #'                 type = c("Skin", "Lung"), units = "log_TPM")
-#' CCLE_expression(units = "log_TPM")
 CCLE_expression <- function(genes = NULL, type = NULL, units = "TPM",
                             return = FALSE) {
 
   database <- CCLE_data
 
-  colData(database)$type <- tolower(colData(database)$type)
-  valid_tumor_types <- unique(colData(database)$type)
+  database$type <- tolower(database$type)
+  valid_tumor_types <- unique(database$type)
   type <- check_names(variable = tolower(type), valid_vector = valid_tumor_types)
   stopifnot("No valid tumor type entered" = length(type) > 0)
   database <- database[, database$type %in% type]
