@@ -31,5 +31,4 @@ Plots an expression heatmap of genes in CCLE tumor cell lines.
 \examples{
 CCLE_expression(genes = c("MAGEA1", "MAGEA3", "MAGEA4", "MAGEA6", "MAGEA10"),
                 type = c("Skin", "Lung"), units = "log_TPM")
-CCLE_expression(units = "log_TPM")
 }

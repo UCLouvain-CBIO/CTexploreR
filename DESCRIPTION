@@ -10,7 +10,7 @@ Authors@R:
       person(given = "Julie",
            family = "Devis",
            role = "aut",
-           email = "julie.devis@uclouvain.be"),
+           email = "julie.devis@uclouvain.be",
            comment = c(ORCID = "0000-0001-5525-5666")),
       person(given = "Anna",
            family = "Diacofotaki",
