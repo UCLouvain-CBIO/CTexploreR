@@ -202,7 +202,7 @@
 #' (tumor and peritumoral samples).
 #'
 #' @format A SummarizedExperiment object with 24350 rows and 4087 columns
-#' - Rows correspond to CT genes (ensembl_gene_id)
+#' - Rows correspond to genes (ensembl_gene_id)
 #' - Columns correspond to samples
 #' - Expression data from the assay are TPM values
 #' - Clinical information are stored in colData
