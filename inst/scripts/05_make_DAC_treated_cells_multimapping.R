@@ -2,7 +2,7 @@
 
 library(tidyverse)
 library(DESeq2)
-load("../../eh_data/GTEX_data.rda")
+load("../../data/GTEX_data.rda")
 genes_in_gtex <- rownames(GTEX_data)
 
 ## RNAseq data from cells treated or not with 5-aza downloaded from SRA.
@@ -19,8 +19,8 @@ genes_in_gtex <- rownames(GTEX_data)
 ## hisat2 was run with -k 20 parameter (to report up to 20 alignments per read),
 ## and featurecounts was run with -M parameter (multi-mapping reads are counted).
 
-load("../extdata/DAC_coldata.rda")
-load("../extdata/DAC_raw_counts_multiM.rda")
+load("../../../CTdata/inst/extdata/DAC_coldata.rda")
+load("../../../CTdata/inst/extdata/DAC_raw_counts_multiM.rda")
 
 dds <- DESeqDataSetFromMatrix(countData = raw_counts_with_MP,
                               colData = coldata,
@@ -106,6 +106,4 @@ DAC_treated_cells_multimapping <- SummarizedExperiment(
   colData = coldata[, -1],
   rowData = res_all[genes_in_gtex, ])
 
-save(DAC_treated_cells_multimapping, file = "../../eh_data/DAC_treated_cells_multimapping.rda",
-     compress = "xz",
-     compression_level = 9)
+usethis::use_data(DAC_treated_cells_multimapping, overwrite = TRUE)

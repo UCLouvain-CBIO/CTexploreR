@@ -112,8 +112,6 @@ CCLE_data <- SummarizedExperiment(assays = list(TPM = TPM_mat),
                                   rowData = rowdata,
                                   colData = coldata[colnames(TPM_mat), ])
 
-save(CCLE_data, file = "../../eh_data/CCLE_data.rda",
-     compress = "xz",
-     compression_level = 9)
+usethis::use_data(CCLE_data, overwrite = TRUE)
 
 

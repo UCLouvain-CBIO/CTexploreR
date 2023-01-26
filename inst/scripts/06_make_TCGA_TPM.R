@@ -6,7 +6,7 @@ library("SummarizedExperiment")
 library("BiocFileCache")
 library("org.Hs.eg.db")
 
-load(file = "../../eh_data/GTEX_data.rda")
+load(file = "../../data/GTEX_data.rda")
 
 bfc <- BiocFileCache(cache = "../BiocFileCache",
                      ask = FALSE)
@@ -132,7 +132,7 @@ coldata <- rbind(colData(SKCM)[, coldata_common_variables],
 ## mutation and copy number load. Jang et al., Nature Commun 2019
 ## Keep also `CD8 T cells` and `Proliferation score` columns
 global_hypo <- readxl::read_xlsx(
-  "../extdata/41467_2019_12159_MOESM4_ESM.xlsx", skip = 3)
+  "../../../CTdata/inst/extdata/41467_2019_12159_MOESM4_ESM.xlsx", skip = 3)
 names(global_hypo) <- c("project_id", "Sample", "global_methylation",
                         "CD8_T_cells", "proliferation_score")
 global_hypo$project_id <- paste0("TCGA-", global_hypo$project_id)
@@ -174,7 +174,4 @@ rowdata <- column_to_rownames(rowdata, "ensembl_gene_id")
 
 rowData(TCGA_TPM) <- rowdata
 
-save(TCGA_TPM, file = "../../eh_data/TCGA_TPM.rda",
-     compress = "xz",
-     compression_level = 9)
-
+usethis::use_data(TCGA_TPM, overwrite = TRUE)

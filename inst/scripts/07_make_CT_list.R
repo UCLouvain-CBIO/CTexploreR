@@ -4,11 +4,11 @@ library("tidyverse")
 library("SummarizedExperiment")
 library("biomaRt")
 
-load(file = "../../eh_data/GTEX_data.rda")
-load(file = "../../eh_data/CCLE_data.rda")
-load(file = "../../eh_data/normal_tissues_multimapping_data.rda")
-load(file = "../../eh_data/DAC_treated_cells_multimapping.rda")
-load(file = "../../eh_data/TCGA_TPM.rda")
+load(file = "../../data/GTEX_data.rda")
+load(file = "../../data/CCLE_data.rda")
+load(file = "../../data/normal_tissues_multimapping_data.rda")
+load(file = "../../data/DAC_treated_cells_multimapping.rda")
+load(file = "../../data/TCGA_TPM.rda")
 
 ################################################################################
 ## Start from rowData(GTEX), summarizing the tissue specificity category
@@ -269,8 +269,5 @@ CT_list[grep(pattern = "TSPY", x = CT_list$external_gene_name,
 CT_list[grep(pattern = "RBMY", x = CT_list$external_gene_name,
              value = FALSE), "family"] <- "RBMY"
 
-save(CT_list, file = "../extdata/CT_list.rda",
-     compress = "xz",
-     compression_level = 9)
-
+save(CT_list, file = "../extdata/CT_list.rda")
 

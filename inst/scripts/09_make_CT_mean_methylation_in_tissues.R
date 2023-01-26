@@ -5,7 +5,7 @@ library(tidyverse)
 library(SummarizedExperiment)
 
 load("../extdata/CT_list.rda")
-load("../../eh_data/CT_methylation_in_tissues.rda")
+load("../../data/CT_methylation_in_tissues.rda")
 
 ## Promoter region is defined as `nt_up` nucleotides upstream TSS
 ## and `nt_down` nucleotides downstream TSS
@@ -119,6 +119,4 @@ CT_mean_methylation_in_tissues <-
   SummarizedExperiment(assays = mat,
                        rowData = methylation_analysis)
 
-save(CT_mean_methylation_in_tissues, file = "../../eh_data/CT_mean_methylation_in_tissues.rda",
-     compress = "xz",
-     compression_level = 9)
+usethis::use_data(CT_mean_methylation_in_tissues, overwrite = TRUE)

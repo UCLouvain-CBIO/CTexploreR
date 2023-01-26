@@ -4,9 +4,9 @@ library("tidyverse")
 library("SummarizedExperiment")
 
 load("../extdata/CT_list.rda")
-load(file = "../../eh_data/TCGA_CT_methylation.rda")
-load(file = "../../eh_data/CT_mean_methylation_in_tissues.rda")
-load(file = "../../eh_data/CT_methylation_in_tissues.rda")
+load(file = "../../data/TCGA_CT_methylation.rda")
+load(file = "../../data/CT_mean_methylation_in_tissues.rda")
+load(file = "../../data/CT_methylation_in_tissues.rda")
 
 ################################################################################
 ## Add CpG densities and promoter methylation analysis in normal tissues
@@ -81,9 +81,6 @@ CT_genes <- CT_genes %>%
                 "tumor_suppressor")
 
 
-save(CT_genes, file = "../../eh_data/CT_genes.rda",
-     compress = "xz",
-     compression_level = 9)
-
+usethis::use_data(CT_genes, overwrite = TRUE)
 
 

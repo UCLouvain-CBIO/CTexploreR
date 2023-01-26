@@ -2,7 +2,7 @@
 
 library("tidyverse")
 library("SummarizedExperiment")
-load("../../eh_data/GTEX_data.rda")
+load("../../data/GTEX_data.rda")
 
 ## RNAseq data from a set of normal tissues were downloaded from Encode.
 ## testis (ENCFF140UYT.fastq.gz, ENCFF794EAB.fastq.gz)
@@ -44,13 +44,13 @@ load("../../eh_data/GTEX_data.rda")
 ## Data generated without allowing multi-mapping
 ################################################################################
 
-load("../extdata/normal_tissues_RNAseq_coldata.rda")
-load("../extdata/normal_tissues_RNAseq_raw_counts.rda")
+load("../../../CTdata/inst/extdata/normal_tissues_RNAseq_coldata.rda")
+load("../../../CTdata/inst/extdata/normal_tissues_RNAseq_raw_counts.rda")
 
 ## TPM normalisation
 ## Keep only genes present in GTEx database
 gene_lengths <-
-  read_table("../extdata/adrenal_gland_featurecounts.tsv",
+  read_table("../../../CTdata/inst/extdata/adrenal_gland_featurecounts.tsv",
              skip = 1) %>%
   dplyr::select(Geneid, Length)
 x1 <- raw_counts / gene_lengths$Length * 1000
@@ -169,9 +169,6 @@ normal_tissues_multimapping_data <- SummarizedExperiment(
                 TPM_with_multimapping = mat_with_multimapping),
   rowData = rowdata)
 
-save(normal_tissues_multimapping_data,
-     file = "../../eh_data/normal_tissues_multimapping_data.rda",
-     compress = "xz",
-     compression_level = 9)
+usethis::use_data(normal_tissues_multimapping_data, overwrite = TRUE)
 
 

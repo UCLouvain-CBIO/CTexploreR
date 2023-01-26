@@ -2,7 +2,7 @@
 
 library(tidyverse)
 library(DESeq2)
-load("../../eh_data/GTEX_data.rda")
+load("../../data/GTEX_data.rda")
 genes_in_gtex <- rownames(GTEX_data)
 
 ## RNAseq data from cells treated or not with 5-aza downloaded from SRA
@@ -16,8 +16,8 @@ genes_in_gtex <- rownames(GTEX_data)
 ## [featurecounts](https://rdrr.io/bioc/Rsubread/man/featureCounts.html) was
 ## used to assign reads to genes using Homo_sapiens.GRCh38.105.gtf.
 
-load("../extdata/DAC_coldata.rda")
-load("../extdata/DAC_raw_counts.rda")
+load("../../../CTdata/inst/extdata/DAC_coldata.rda")
+load("../../../CTdata/inst/extdata/DAC_raw_counts.rda")
 
 dds <- DESeqDataSetFromMatrix(countData = raw_counts,
                               colData = coldata,
@@ -103,6 +103,4 @@ DAC_treated_cells <- SummarizedExperiment(
   colData = coldata[, -1],
   rowData = res_all[genes_in_gtex, ])
 
-save(DAC_treated_cells, file = "../../eh_data/DAC_treated_cells.rda",
-     compress = "xz",
-     compression_level = 9)
+usethis::use_data(DAC_treated_cells, overwrite = TRUE)

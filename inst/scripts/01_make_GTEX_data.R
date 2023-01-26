@@ -142,6 +142,4 @@ rowdata <- column_to_rownames(rowdata, "ensembl_gene_id")
 GTEX_data <- SummarizedExperiment(assays = list(TPM = Gtex_mat),
                                   rowData = rowdata)
 
-save(GTEX_data, file = "../../eh_data/GTEX_data.rda",
-     compress = "xz",
-     compression_level = 9)
+usethis::use_data(GTEX_data, overwrite = TRUE)

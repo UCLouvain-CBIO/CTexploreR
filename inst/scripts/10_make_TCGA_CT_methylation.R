@@ -120,6 +120,5 @@ TCGA_CT_methylation <- SummarizedExperiment(assays = list(methylation = met),
                                             colData = coldata,
                                             rowRanges = rowRanges(SKCM_CT_methylation))
 
-save(TCGA_CT_methylation, file = "../../eh_data/TCGA_CT_methylation.rda",
-     compress = "xz",
-     compression_level = 9)
+
+usethis::use_data(TCGA_CT_methylation, overwrite = TRUE)
