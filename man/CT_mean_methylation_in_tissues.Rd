@@ -5,7 +5,7 @@
 \alias{CT_mean_methylation_in_tissues}
 \title{Cancer-Testis genes’ promoters mean methylation in normal tissues}
 \format{
-A SummarizedExperiment object with 306 rows and 14 columns
+A SummarizedExperiment object with 307 rows and 14 columns
 \itemize{
 \item Rows correspond to CT genes
 \item Mean methylation levels in normal tissues are stored in columns
@@ -19,9 +19,6 @@ databases. Mean methylation levels are evaluated using methylation values
 of CpGs located in promoter region (defined as 1000 nt upstream TSS and
 200 nt downstream TSS) (see inst/scripts/make_CT_mean_methylation_in_tissues.R
 for details).
-}
-\usage{
-CT_mean_methylation_in_tissues
 }
 \description{
 Mean methylation values of all CpGs located within Cancer-Testis
@@ -46,4 +43,3 @@ germline, based on the ratio with somatic tissues (FALSE if somatic_met_level
 is at least twice higher than germline_met_level).
 }
 }
-\keyword{datasets}

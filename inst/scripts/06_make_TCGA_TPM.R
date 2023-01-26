@@ -6,9 +6,9 @@ library("SummarizedExperiment")
 library("BiocFileCache")
 library("org.Hs.eg.db")
 
-load(file = "../../data/GTEX_data.rda")
+load(file = "../../eh_data/GTEX_data.rda")
 
-bfc <- BiocFileCache(cache = "/home/users/aloriot/.cache/BiocFileCache",
+bfc <- BiocFileCache(cache = "../BiocFileCache",
                      ask = FALSE)
 
 # Load and save TCGA expression data
@@ -49,8 +49,8 @@ prepare_data <- function(tum) {
   names(assays(data)) <- "TPM"
 
   data <- data[, colData(data)$shortLetterCode == "NT" |
-         colData(data)$shortLetterCode == "TP" |
-         colData(data)$shortLetterCode == "TM"]
+                 colData(data)$shortLetterCode == "TP" |
+                 colData(data)$shortLetterCode == "TM"]
 
   ## Remove duplicated ensembl ref associated to PAR_Y, and duplicated genes
   data <- data[grep("_PAR_", x = rownames(data), invert = TRUE, value = TRUE), ]
@@ -109,7 +109,7 @@ coldata_common_variables <-
                             colnames(colData(SKCM)) %in% colnames(colData(HNSC))]
 
 TPM <- cbind(assay(SKCM), assay(LUAD), assay(LUSC), assay(COAD),
-            assay(ESCA), assay(BRCA), assay(HNSC))
+             assay(ESCA), assay(BRCA), assay(HNSC))
 
 rowdata <- as_tibble(rowData(SKCM)) %>%
   left_join(as_tibble(rowData(LUAD))) %>%
@@ -132,7 +132,7 @@ coldata <- rbind(colData(SKCM)[, coldata_common_variables],
 ## mutation and copy number load. Jang et al., Nature Commun 2019
 ## Keep also `CD8 T cells` and `Proliferation score` columns
 global_hypo <- readxl::read_xlsx(
-  "../../../CTdata/inst/extdata/41467_2019_12159_MOESM4_ESM.xlsx", skip = 3)
+  "../extdata/41467_2019_12159_MOESM4_ESM.xlsx", skip = 3)
 names(global_hypo) <- c("project_id", "Sample", "global_methylation",
                         "CD8_T_cells", "proliferation_score")
 global_hypo$project_id <- paste0("TCGA-", global_hypo$project_id)
@@ -174,6 +174,7 @@ rowdata <- column_to_rownames(rowdata, "ensembl_gene_id")
 
 rowData(TCGA_TPM) <- rowdata
 
-usethis::use_data(TCGA_TPM, overwrite = TRUE)
-
+save(TCGA_TPM, file = "../../eh_data/TCGA_TPM.rda",
+     compress = "xz",
+     compression_level = 9)
 

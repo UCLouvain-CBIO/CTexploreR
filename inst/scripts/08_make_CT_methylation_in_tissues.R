@@ -12,7 +12,7 @@ load("../extdata/CT_list.rda")
 # download.file("http://ftp.ensembl.org/pub/release-104/fasta/homo_sapiens/dna/Homo_sapiens.GRCh38.dna.primary_assembly.fa.gz",
 #               destfile = "/data/cbio/GENOMES/Homo_sapiens.GRCh38.dna.primary_assembly.fa.gz")
 hg <- rtracklayer::import(
-  "../../../CTdata/inst/extdata/Homo_sapiens.GRCh38.dna.primary_assembly.fa",
+  "../extdata/Homo_sapiens.GRCh38.dna.primary_assembly.fa",
   format = "fasta")
 
 ################################################################################
@@ -91,7 +91,7 @@ Encode_tissues <- c("adipose", "colon", "esophagus", "heart", "intestine",
 
 for (cell in Encode_tissues) {
 
-  bismark_file <- paste0("../../../CTdata/inst/extdata/", cell, ".bed")
+  bismark_file <- paste0("../extdata/", cell, ".bed")
   bismark <- read_tsv(bismark_file, col_types = cols(.default = "?", X1 = 'c'),
                       col_names = FALSE)
 
@@ -132,7 +132,7 @@ for (cell in Encode_tissues) {
 
 ## Use sperm WGBS from SRR15427118
 ## raw data was processed with bismark (version 0.20.0)
-bismark_file <- "../../../CTdata/inst/extdata/SRR15427118_1_val_1_bismark_bt2_pe.bismark.cov.gz"
+bismark_file <- "../extdata/SRR15427118_1_val_1_bismark_bt2_pe.bismark.cov.gz"
 bismark <- read_tsv(bismark_file, col_types = cols(.default = "?", X1 = 'c'),
                     col_names = FALSE)
 
@@ -174,4 +174,6 @@ CT_methylation_in_tissues <- SummarizedExperiment(
   assays = CT_met_in_tissues[, -(1:2)],
   rowRanges = CT_list_met_normal_tissues_gr)
 
-usethis::use_data(CT_methylation_in_tissues, overwrite = TRUE)
+save(CT_methylation_in_tissues, file = "../../eh_data/CT_methylation_in_tissues.rda",
+     compress = "xz",
+     compression_level = 9)
