@@ -1,23 +1,27 @@
 #' Gene expression in CCLE Tumors
 #'
-#' @description Plots an expression heatmap of genes in CCLE tumor cell lines.
+#' @description
+#'
+#' Plots an expression heatmap of genes in CCLE tumor cell lines.
 #'
 #' @param genes Genes selected (all CT genes by default)
-
-#' @param type `character` describing the tumor cell line(s) type to
-#' be plotted. Allowed cell lines are "Ovarian", "Leukemia", "Colorectal",
-#' Skin", "Lung", "Bladder", "Kidney", "Breast", "Pancreatic", "Myeloma",
-#' "Brain", "Sarcoma", "Lymphoma", "Bone", "Neuroblastoma", "Gastric",
-#' "Uterine", "Head_and_Neck", "Bile_Duct" and "Esophageal".
 #'
-#' @param units Expression values unit.
-#' Can be "TPM" (default) or "log_TPM" (log(TPM + 1))
+#' @param type `character()` describing the tumor cell line(s) type to
+#'     be plotted. Allowed cell lines are "Ovarian", "Leukemia",
+#'     "Colorectal", "Skin", "Lung", "Bladder", "Kidney", "Breast",
+#'     "Pancreatic", "Myeloma", "Brain", "Sarcoma", "Lymphoma",
+#'     "Bone", "Neuroblastoma", "Gastric", "Uterine", "Head_and_Neck",
+#'     "Bile_Duct" and "Esophageal".
 #'
-#' @param return If return is set to TRUE, values are returned instead of the
-#' heatmap (FALSE by default)
+#' @param units `character(1)` with expression values unit. Can be
+#'     "TPM" (default) or "log_TPM" (log(TPM + 1))
 #'
-#' @return A heatmap of selected genes in CCLE cell lines from specified type.
-#' If return = TRUE, expression values are returned instead.
+#' @param return If `TRUE`, values are returned instead of the heatmap
+#'     (`FALSE` by default)
+#'
+#' @return A heatmap of selected genes in CCLE cell lines from
+#'     specified type.  If `return` is `TRUE`, expression values are
+#'     returned instead.
 #'
 #' @export
 #'
@@ -31,7 +35,6 @@
 #'                 type = c("Skin", "Lung"), units = "log_TPM")
 CCLE_expression <- function(genes = NULL, type = NULL, units = "TPM",
                             return = FALSE) {
-
   database <- CCLE_data
 
   database$type <- tolower(database$type)
