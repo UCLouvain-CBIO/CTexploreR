@@ -86,6 +86,7 @@ CCLE_expression <- function(genes = NULL, type = NULL, units = "TPM",
 
   h <- suppressMessages(Heatmap(mat[, rownames(df_col), drop = FALSE],
                                 name = name,
+                                column_title = "Gene Expression in tumor cell lines (CCLE)",
                                 column_split = factor(df_col$type),
                                 col = colorRamp2(seq(0, max(mat), length = 11),
                                                  c("#5E4FA2", "#3288BD",

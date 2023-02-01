@@ -71,6 +71,7 @@ DAC_induction <- function(genes = NULL, multimapping = TRUE, return = FALSE) {
 
   h <- suppressMessages(Heatmap(mat[, rownames(df_col), drop = FALSE],
                                 name = "logCounts",
+                                column_title = "Gene expression in cells treated or not with 5-Aza",
                                 column_split = factor(df_col$cell),
                                 col = colorRamp2(seq(0, max(mat), length = 11),
                                                  c("#5E4FA2", "#3288BD",
