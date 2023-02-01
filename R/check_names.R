@@ -17,19 +17,15 @@
 #' check_names(variable = c("Ovarian", "leukemia", "wrong_name"),
 #'             valid_vector = c("ovarian", "leukemia"))
 check_names <- function(variable, valid_vector) {
-  if (!all(variable %in% valid_vector)) {
-      message(paste(variable[!variable %in% valid_vector],
-                    "is not valid: check spelling!\n"))
-
-      if (length(valid_vector) < 20) {
-          message("Should be one of: ",
-                  paste(valid_vector, collapse = " "),
-                  "\n")
+    in_valid <- variable %in% valid_vector
+    if (!all(in_valid)) {
+        msg <- paste0(sum(!in_valid), " out of ",
+                     length(in_valid), " names invalid: ",
+                     paste(variable[!in_valid], collapse = ", "),
+                     ".")
+        warning(paste(strwrap(msg), collapse = "\n"),
+                "\nSee the manual page for valid types.",
+                call. = FALSE)
     }
-      variable <- variable[variable %in% valid_vector]
-      if (length(variable) > 0 & length(variable) < 20) {
-          message("Kept only: ", paste(variable, collapse = " "))
-    }
-  }
-  variable
+    variable[in_valid]
 }
