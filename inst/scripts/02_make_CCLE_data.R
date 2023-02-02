@@ -5,7 +5,7 @@ library(SummarizedExperiment)
 library(BiocFileCache)
 library(biomaRt)
 
-bfc <- BiocFileCache(cache = "/home/users/aloriot/.cache/BiocFileCache",
+bfc <- BiocFileCache(cache = "../BiocFileCache",
                      ask = FALSE)
 
 if (length(bfcquery(bfc, "CCLE_data")$rid) == 0) {
@@ -68,7 +68,7 @@ rownames(TPM_mat) <- TPM$ensembl_gene_id
 ## Values are in log2(TPM + 1), convert to TPM
 TPM_mat <- 2^(TPM_mat) - 1
 
-# Estimate frequencies of activation of each CT gene
+# Estimate frequencies of activation of each gene
 # in all selected cell lines.
 # Gene are considered as "activated" if TPM >= TPM_thr
 TPM_thr <- 10
@@ -87,7 +87,7 @@ TPM_low_thr <- 0.1
 binary <- ifelse(TPM_mat <= TPM_low_thr, 1, 0)
 tmp <- rowSums(binary) / ncol(binary) * 100
 repression_frequencies <- enframe(tmp, name = "ensembl_gene_id",
-               value = "percent_of_negative_CCLE_cell_lines")
+                                  value = "percent_of_negative_CCLE_cell_lines")
 
 # Max expression (TPM) in a cell line
 max_TPM <- tibble(ensembl_gene_id = rownames(TPM_mat),
@@ -113,6 +113,5 @@ CCLE_data <- SummarizedExperiment(assays = list(TPM = TPM_mat),
                                   colData = coldata[colnames(TPM_mat), ])
 
 usethis::use_data(CCLE_data, overwrite = TRUE)
-
 
 

@@ -9,7 +9,7 @@ library("org.Hs.eg.db")
 
 load("../extdata/CT_list.rda")
 
-bfc <- BiocFileCache(cache = "/home/users/aloriot/.cache/BiocFileCache",
+bfc <- BiocFileCache(cache = "../BiocFileCache",
                      ask = FALSE)
 
 for(tumor_code in c("SKCM", "LUAD", "LUSC", "COAD", "ESCA", "BRCA", "HNSC")) {
@@ -119,5 +119,6 @@ coldata <- rbind(colData(SKCM_CT_methylation),
 TCGA_CT_methylation <- SummarizedExperiment(assays = list(methylation = met),
                                             colData = coldata,
                                             rowRanges = rowRanges(SKCM_CT_methylation))
+
 
 usethis::use_data(TCGA_CT_methylation, overwrite = TRUE)

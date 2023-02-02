@@ -75,7 +75,7 @@ rownames(mat_no_multimapping) <- TPM_matrix_no_multimapping$ensembl_gene_id
 ## Data generated when allowing multi-mapping
 ################################################################################
 
-load(file = "../../../CTdata/inst/extdata/normal_tissues_RNAseq_raw_counts_multiM.rda")
+load(file = "../extdata/normal_tissues_RNAseq_raw_counts_multiM.rda")
 
 ## Normalise in TPM
 ## Keep only genes present in GTEx database
@@ -170,3 +170,5 @@ normal_tissues_multimapping_data <- SummarizedExperiment(
   rowData = rowdata)
 
 usethis::use_data(normal_tissues_multimapping_data, overwrite = TRUE)
+
+

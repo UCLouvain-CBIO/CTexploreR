@@ -8,7 +8,7 @@ library("org.Hs.eg.db")
 
 load(file = "../../data/GTEX_data.rda")
 
-bfc <- BiocFileCache(cache = "/home/users/aloriot/.cache/BiocFileCache",
+bfc <- BiocFileCache(cache = "../BiocFileCache",
                      ask = FALSE)
 
 # Load and save TCGA expression data
@@ -49,8 +49,8 @@ prepare_data <- function(tum) {
   names(assays(data)) <- "TPM"
 
   data <- data[, colData(data)$shortLetterCode == "NT" |
-         colData(data)$shortLetterCode == "TP" |
-         colData(data)$shortLetterCode == "TM"]
+                 colData(data)$shortLetterCode == "TP" |
+                 colData(data)$shortLetterCode == "TM"]
 
   ## Remove duplicated ensembl ref associated to PAR_Y, and duplicated genes
   data <- data[grep("_PAR_", x = rownames(data), invert = TRUE, value = TRUE), ]
@@ -109,7 +109,7 @@ coldata_common_variables <-
                             colnames(colData(SKCM)) %in% colnames(colData(HNSC))]
 
 TPM <- cbind(assay(SKCM), assay(LUAD), assay(LUSC), assay(COAD),
-            assay(ESCA), assay(BRCA), assay(HNSC))
+             assay(ESCA), assay(BRCA), assay(HNSC))
 
 rowdata <- as_tibble(rowData(SKCM)) %>%
   left_join(as_tibble(rowData(LUAD))) %>%
@@ -175,5 +175,3 @@ rowdata <- column_to_rownames(rowdata, "ensembl_gene_id")
 rowData(TCGA_TPM) <- rowdata
 
 usethis::use_data(TCGA_TPM, overwrite = TRUE)
-
-

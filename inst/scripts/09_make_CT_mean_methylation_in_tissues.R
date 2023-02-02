@@ -92,7 +92,7 @@ methylation_analysis <- tibble(
     dplyr::select(sperm) %>%
     pull(sperm))
 
-## CT Genes controlled by methylation should have somatic_methylation == TRUE 
+## CT Genes controlled by methylation should have somatic_methylation == TRUE
 ## and sperm_methylation == FALSE
 methylation_analysis <- methylation_analysis %>%
   left_join(CT_list %>%
@@ -104,18 +104,18 @@ methylation_analysis <- methylation_analysis %>%
                                   CpG_density >= 2 &
                                     CpG_density < 4 ~ "intermediate",
                                   CpG_density >= 4 ~ "high")) %>%
-  mutate(somatic_methylation = 
+  mutate(somatic_methylation =
            case_when(somatic_met_level < 50 ~ FALSE,
-                     somatic_met_level >= 50 ~ TRUE)) %>% 
+                     somatic_met_level >= 50 ~ TRUE)) %>%
   mutate(germline_methylation =
            case_when(ratio_somatic_sperm > 2 ~ FALSE,
-                     ratio_somatic_sperm <= 2 ~ TRUE)) %>% 
+                     ratio_somatic_sperm <= 2 ~ TRUE)) %>%
   column_to_rownames("external_gene_name") %>%
   dplyr::select(ensembl_gene_id, CpG_density,
-                CpG_promoter, somatic_met_level, sperm_met_level, 
+                CpG_promoter, somatic_met_level, sperm_met_level,
                 somatic_methylation, germline_methylation)
 
-CT_mean_methylation_in_tissues <- 
+CT_mean_methylation_in_tissues <-
   SummarizedExperiment(assays = mat,
                        rowData = methylation_analysis)
 

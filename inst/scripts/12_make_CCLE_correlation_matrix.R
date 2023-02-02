@@ -16,4 +16,3 @@ CCLE_correlation_matrix <- cor(x, method = "pearson")
 CCLE_correlation_matrix <- CCLE_correlation_matrix[CT_genes$ensembl_gene_id, ]
 
 usethis::use_data(CCLE_correlation_matrix, overwrite = TRUE)
-

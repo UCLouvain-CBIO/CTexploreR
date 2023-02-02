@@ -5,7 +5,7 @@
 \alias{CT_genes}
 \title{CT genes description table}
 \format{
-A \code{tibble} object with 306 rows and 33 columns.
+A \code{tibble} object with 307 rows and 34 columns.
 \itemize{
 \item Rows correspond to CT genes
 \item Columns give CT genes characteristics
@@ -13,9 +13,6 @@ A \code{tibble} object with 306 rows and 33 columns.
 }
 \source{
 (see inst/scripts/make_CT_genes.R for details)
-}
-\usage{
-CT_genes
 }
 \description{
 Cancer-Testis (CT) genes description
@@ -98,4 +95,3 @@ tumor-suppressor functions have been associated to genes
 (source: \href{http://bionlp.bcgsc.ca/cancermine/}{Cancermine}).
 }
 }
-\keyword{datasets}

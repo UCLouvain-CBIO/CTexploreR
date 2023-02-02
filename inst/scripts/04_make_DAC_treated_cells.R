@@ -42,7 +42,7 @@ res <- results(dds, name = "treatment_DAC_vs_CTL",
 
 res_all <- as_tibble(res, rownames = "ensembl_gene_id") %>%
   right_join(as_tibble(rowData(GTEX_data), rownames = "ensembl_gene_id") %>%
-   dplyr::select(ensembl_gene_id, external_gene_name)) %>%
+               dplyr::select(ensembl_gene_id, external_gene_name)) %>%
   dplyr::select(ensembl_gene_id, external_gene_name, log2FoldChange, padj) %>%
   mutate(log2FoldChange = round(log2FoldChange, 2)) %>%
   mutate(sign = case_when((!is.na(log2FoldChange) & log2FoldChange >= 2 &

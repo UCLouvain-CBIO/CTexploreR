@@ -5,7 +5,7 @@ library(SummarizedExperiment)
 library(BiocFileCache)
 library(biomaRt)
 
-bfc <- BiocFileCache(cache = "/home/users/aloriot/.cache/BiocFileCache",
+bfc <- BiocFileCache(cache = "../BiocFileCache",
                      ask = FALSE)
 
 if (length(bfcquery(bfc, "GTEX")$rid) == 0) {
@@ -143,4 +143,3 @@ GTEX_data <- SummarizedExperiment(assays = list(TPM = Gtex_mat),
                                   rowData = rowdata)
 
 usethis::use_data(GTEX_data, overwrite = TRUE)
-

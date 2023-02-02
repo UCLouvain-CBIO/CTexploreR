@@ -49,14 +49,14 @@ res_all <- as_tibble(res, rownames = "ensembl_gene_id") %>%
   dplyr::select(ensembl_gene_id, external_gene_name, log2FoldChange, padj) %>%
   mutate(log2FoldChange = round(log2FoldChange, 2)) %>%
   mutate(sign = case_when((!is.na(log2FoldChange) & log2FoldChange >= 2 &
-                            !is.na(padj) & padj <= 0.05) ~ 1,
+                             !is.na(padj) & padj <= 0.05) ~ 1,
                           (is.na(log2FoldChange) | log2FoldChange < 2 |
-                            is.na(padj) | padj > 0.05) ~ 0))
+                             is.na(padj) | padj > 0.05) ~ 0))
 
 names(res_all) <- c("ensembl_gene_id", "external_gene_name",
-                paste0("logFC_", cell_line),
-                paste0("padj_", cell_line),
-                paste0("sign_", cell_line))
+                    paste0("logFC_", cell_line),
+                    paste0("padj_", cell_line),
+                    paste0("sign_", cell_line))
 
 for(cell_line in unique(coldata$cell)[-1]) {
 
@@ -107,4 +107,3 @@ DAC_treated_cells_multimapping <- SummarizedExperiment(
   rowData = res_all[genes_in_gtex, ])
 
 usethis::use_data(DAC_treated_cells_multimapping, overwrite = TRUE)
-

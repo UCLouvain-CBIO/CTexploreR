@@ -73,7 +73,7 @@ induced <- as_tibble(rowData(DAC_treated_cells_multimapping)) %>%
 
 all_genes <- all_genes %>%
   mutate(DAC_induced = case_when(external_gene_name %in% induced ~ TRUE,
-                         !external_gene_name %in% induced ~ FALSE))
+                                 !external_gene_name %in% induced ~ FALSE))
 
 ################################################################################
 ## Associate each gene to its likely most biologically relevant transcript,
@@ -270,6 +270,4 @@ CT_list[grep(pattern = "RBMY", x = CT_list$external_gene_name,
              value = FALSE), "family"] <- "RBMY"
 
 save(CT_list, file = "../extdata/CT_list.rda")
-
-
 

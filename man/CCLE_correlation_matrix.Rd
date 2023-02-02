@@ -5,7 +5,7 @@
 \alias{CCLE_correlation_matrix}
 \title{Gene correlations in CCLE cancer cell lines}
 \format{
-A \code{matrix} object with 306 rows and 24327 columns.
+A \code{matrix} object with 307 rows and 24327 columns.
 \itemize{
 \item Rows correspond to CT genes
 \item Columns correspond to all genes from CCLE database
@@ -13,9 +13,6 @@ A \code{matrix} object with 306 rows and 24327 columns.
 }
 \source{
 (see inst/scripts/make_CCLE_correlation_matrix.R for details)
-}
-\usage{
-CCLE_correlation_matrix
 }
 \description{
 Correlation coefficients between Cancer-Testis genes and all
@@ -26,4 +23,3 @@ Correlation coefficients (Pearson) between CT genes and all other
 genes are given in the matrix. These correlation coefficients were calculated
 using log transformed expression values from \code{CCLE_data} (all cell lines).
 }
-\keyword{datasets}
