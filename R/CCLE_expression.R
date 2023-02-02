@@ -6,7 +6,7 @@
 
 #' @param type `character` describing the tumor cell line(s) type to
 #' be plotted. Allowed cell lines are "Ovarian", "Leukemia", "Colorectal",
-#' Skin", "Lung", "Bladder", "Kidney", "Breast", "Pancreatic", "Myeloma",
+#' "Skin", "Lung", "Bladder", "Kidney", "Breast", "Pancreatic", "Myeloma",
 #' "Brain", "Sarcoma", "Lymphoma", "Bone", "Neuroblastoma", "Gastric",
 #' "Uterine", "Head_and_Neck", "Bile_Duct" and "Esophageal".
 #'
