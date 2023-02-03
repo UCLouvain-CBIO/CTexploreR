@@ -87,7 +87,6 @@ DAC_induction <- function(genes = NULL, multimapping = TRUE, return = FALSE) {
                                 show_column_names = FALSE,
                                 cluster_columns = FALSE,
                                 row_names_gp = gpar(fontsize = fontsize),
-                                column_title_gp = gpar(fontsize = 0),
                                 top_annotation = c(column_ha_cell,
                                                    column_ha_treatment)))
 

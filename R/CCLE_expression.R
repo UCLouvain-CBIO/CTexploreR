@@ -108,7 +108,6 @@ CCLE_expression <- function(genes = NULL, type = NULL, units = "TPM",
                                   show_column_names = FALSE,
                                   cluster_columns = TRUE,
                                   show_column_dend = FALSE,
-                                  column_title_gp = gpar(fontsize = label_fontsize),
                                   row_names_gp = gpar(fontsize = fontsize),
                                   heatmap_legend_param = legends_param,
                                   top_annotation = c(column_ha_type)))

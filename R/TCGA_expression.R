@@ -91,7 +91,7 @@ TCGA_expression <- function(tumor = "all", genes = NULL,
 
   h <- suppressMessages(Heatmap(mat[, , drop = FALSE],
                                 name = units,
-                                column_title = "Expression in TCGA samples",
+                                column_title = paste0("Expression in TCGA samples (", tumor, ")"),
                                 column_split = split_by,
                                 col = colorRamp2(seq(0, max(mat), length = 11),
                                                  c("#5E4FA2", "#3288BD",
