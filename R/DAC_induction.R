@@ -35,11 +35,13 @@
 #' DAC_induction(genes = c("MAGEA1", "MAGEA3", "MAGEA4", "MAGEA6", "CTAG1A",
 #' multimapping = FALSE))
 DAC_induction <- function(genes = NULL, multimapping = TRUE, return = FALSE) {
+  
+  CT_genes <- CTdata::CT_genes()
 
   if (multimapping == TRUE) {
-    database <- DAC_treated_cells_multimapping
+    database <- CTdata::DAC_treated_cells_multimapping()
   } else {
-    database <- DAC_treated_cells
+    database <- CTdata::DAC_treated_cells()
   }
 
   if (is.null(genes)) genes <- CT_genes$external_gene_name

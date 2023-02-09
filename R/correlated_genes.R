@@ -30,7 +30,8 @@
 correlated_genes <- function(gene, corr_thr = 0.5,
                              return = FALSE) {
 
-  corr_matrix <- CCLE_correlation_matrix
+  corr_matrix <- CTdata::CCLE_correlation_matrix()
+  CT_genes <- CTdata::CT_genes()
   
   if (missing(gene)) {
     stop("Gene name be specified!")

@@ -35,13 +35,15 @@
 #' @importFrom ComplexHeatmap Heatmap HeatmapAnnotation
 #' @importFrom grid gpar
 #' @importFrom circlize colorRamp2
+#' @import CTdata
 #'
 #' @examples
 #' CCLE_expression(genes = c("MAGEA1", "MAGEA3", "MAGEA4", "MAGEA6", "MAGEA10"),
 #'                 type = c("Skin", "Lung"), units = "log_TPM")
 CCLE_expression <- function(genes = NULL, type = NULL, units = "TPM",
                             return = FALSE) {
-    database <- CCLE_data
+    database <- CTdata::CCLE_data()
+    CT_genes <- CTdata::CT_genes()
 
     database$type <- tolower(database$type)
     valid_tumor_types <- unique(database$type)

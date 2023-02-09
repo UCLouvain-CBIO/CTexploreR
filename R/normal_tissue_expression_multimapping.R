@@ -60,8 +60,10 @@ normal_tissue_expression_multimapping <-
     if (is.null(multimapping)) {
       stop("multimapping parameter should be set to TRUE/FALSE")
     } else {
-        database <- normal_tissues_multimapping_data
+        database <- CTdata::normal_tissues_multimapping_data()
     }
+    
+    CT_genes <- CTdata::CT_genes()
 
     if (is.null(genes)) genes <- CT_genes$external_gene_name
     valid_gene_names <- unique(rowData(database)$external_gene_name)

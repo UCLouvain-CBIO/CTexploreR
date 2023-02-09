@@ -9,21 +9,23 @@ CCLE_expression(genes = NULL, type = NULL, units = "TPM", return = FALSE)
 \arguments{
 \item{genes}{Genes selected (all CT genes by default)}
 
-\item{type}{\code{character} describing the tumor cell line(s) type to
-be plotted. Allowed cell lines are "Ovarian", "Leukemia", "Colorectal",
-Skin", "Lung", "Bladder", "Kidney", "Breast", "Pancreatic", "Myeloma",
-"Brain", "Sarcoma", "Lymphoma", "Bone", "Neuroblastoma", "Gastric",
-"Uterine", "Head_and_Neck", "Bile_Duct" and "Esophageal".}
+\item{type}{\code{character()} describing the tumor cell line(s) type to
+be plotted. Allowed cell lines are "Ovarian", "Leukemia",
+"Colorectal", "Skin", "Lung", "Bladder", "Kidney", "Breast",
+"Pancreatic", "Myeloma", "Brain", "Sarcoma", "Lymphoma",
+"Bone", "Neuroblastoma", "Gastric", "Uterine", "Head_and_Neck",
+"Bile_Duct" and "Esophageal".}
 
-\item{units}{Expression values unit.
-Can be "TPM" (default) or "log_TPM" (log(TPM + 1))}
+\item{units}{\code{character(1)} with expression values unit. Can be
+"TPM" (default) or "log_TPM" (log(TPM + 1))}
 
-\item{return}{If return is set to TRUE, values are returned instead of the
-heatmap (FALSE by default)}
+\item{return}{If \code{TRUE}, values are returned instead of the heatmap
+(\code{FALSE} by default)}
 }
 \value{
-A heatmap of selected genes in CCLE cell lines from specified type.
-If return = TRUE, expression values are returned instead.
+A heatmap of selected genes in CCLE cell lines from
+specified type.  If \code{return} is \code{TRUE}, expression values are
+returned instead.
 }
 \description{
 Plots an expression heatmap of genes in CCLE tumor cell lines.

@@ -33,7 +33,8 @@
 normal_tissues_mean_methylation <- function(genes = NULL, return = FALSE,
                                             include_genes_with_missing_values = FALSE){
 
-  database <- CT_mean_methylation_in_tissues
+  database <- CTdata::CT_mean_methylation_in_tissues()
+  CT_genes <- CTdata::CT_genes()
 
   if (is.null(genes)) genes <- CT_genes$external_gene_name
   valid_gene_names <- unique(rownames(database))

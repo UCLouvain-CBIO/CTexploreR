@@ -7,19 +7,20 @@
 check_names(variable, valid_vector)
 }
 \arguments{
-\item{variable}{\code{vector} Names of variables to check}
+\item{variable}{\code{character()} containing the names of variables to
+check.}
 
-\item{valid_vector}{\code{vector} Valid variable names}
+\item{valid_vector}{\code{character()} with valid variable names.}
 }
 \value{
-A vector with valid variables
+A character with valid variables.
 }
 \description{
-Checks the spelling of a vector of entered variable(s) comparing
-it to a vector of valid names, and removes the ones that are absent from the
-vector of valid names.
+Checks the spelling of a vector of entered variable(s) comparing it
+to a vector of valid names, and removes the ones that are absent
+from the vector of valid names.
 }
 \examples{
 check_names(variable = c("Ovarian", "leukemia", "wrong_name"),
-valid_vector = c("ovarian", "leukemia"))
+            valid_vector = c("ovarian", "leukemia"))
 }

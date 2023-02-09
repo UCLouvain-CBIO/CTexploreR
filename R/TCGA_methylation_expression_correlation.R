@@ -58,7 +58,9 @@ TCGA_methylation_expression_correlation <- function(tumor,
                                                     return = FALSE,
                                                     corr_coeff = FALSE) {
   
-  TPM <- TCGA_TPM
+  CT_genes <- CTdata::CT_genes()
+  
+  TPM <- CTdata::TCGA_TPM()
   TPM$type <- sub(pattern = "TCGA-", x = colData(TPM)$project_id, replacement = '')
   met <- TCGA_CT_methylation
   met$type <- sub(pattern = "TCGA-", x = colData(met)$project_id, replacement = '')
