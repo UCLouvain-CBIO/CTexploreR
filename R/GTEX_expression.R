@@ -62,10 +62,8 @@ GTEX_expression <- function(genes = NULL, units = "TPM", return = FALSE) {
                 column_names_gp = gpar(fontsize = 10),
                 clustering_method_rows = "ward.D"))
 
-    if (!return) {
-        print(h)
-    } else {
-        mat
-    }
+    if (return)
+        return(mat)
 
+    print(h)
 }

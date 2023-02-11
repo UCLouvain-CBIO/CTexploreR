@@ -78,20 +78,6 @@ normal_tissues_methylation <- function(gene, nt_up = NULL, nt_down = NULL,
 
     promoter_methylation <- subsetByOverlaps(database, promoter_gr)
 
-<<<<<<< HEAD
-  methylation_individual_CpG <- suppressWarnings(
-    as_tibble(assay(promoter_methylation)) |>
-      mutate(TSS = promoter_gr$TSS) |>
-      mutate(CG_pos = promoter_methylation@rowRanges@ranges@start) |>
-      mutate(relative_pos = case_when(strand == 1 ~ CG_pos - TSS,
-                                      strand == -1 ~ TSS - CG_pos)) |>
-      dplyr::select(CG_pos, relative_pos, colnames(promoter_methylation)) |>
-      pivot_longer(!c(CG_pos, relative_pos),
-                   names_to = "cell",
-                   values_to = "met") |>
-      dplyr::select(-CG_pos) |>
-      pivot_wider(names_from = relative_pos, values_from = met))
-=======
     methylation_individual_CpG <- suppressWarnings(
         as_tibble(assay(promoter_methylation)) |>
         mutate(TSS = promoter_gr$TSS) |>
@@ -104,7 +90,6 @@ normal_tissues_methylation <- function(gene, nt_up = NULL, nt_down = NULL,
                      values_to = "met") |>
         dplyr::select(-CG_pos) |>
         pivot_wider(names_from = relative_pos, values_from = met))
->>>>>>> c8f4849 (code cleanup)
 
     mat <- as.matrix(methylation_individual_CpG[,-1])
     rownames(mat) <- methylation_individual_CpG$cell
@@ -124,9 +109,8 @@ normal_tissues_methylation <- function(gene, nt_up = NULL, nt_down = NULL,
                  column_names_side = "bottom",
                  row_names_side = "left")
 
-    if (!return) {
-        print(h)
-    } else {
-        mat
-    }
+    if (return)
+        return(mat)
+
+    print(h)
 }

@@ -93,9 +93,8 @@ DAC_induction <- function(genes = NULL, multimapping = TRUE, return = FALSE) {
                                                    column_ha_treatment)))
 
 
-    if (!return) {
-        print(h)
-    } else {
-        mat
-    }
+    if (return)
+        return(mat)
+
+    print(h)
 }
