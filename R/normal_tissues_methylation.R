@@ -29,7 +29,6 @@
 #' @importFrom grid gpar
 #' @importFrom dplyr filter pull mutate select case_when
 #' @importFrom tidyr pivot_longer pivot_wider
-#' @importFrom magrittr %>%
 #' @importFrom circlize colorRamp2
 #' @importFrom grDevices colorRampPalette
 #'
@@ -45,16 +44,16 @@ normal_tissues_methylation <- function(gene, nt_up = NULL, nt_down = NULL,
     stop(paste0(gene, " is not in the CT database"))
   }
 
-  chr <- CT_genes %>%
-    filter(external_gene_name == gene) %>%
+  chr <- CT_genes |>
+    filter(external_gene_name == gene) |>
     pull(chr)
 
-  strand <- CT_genes %>%
-    filter(external_gene_name == gene) %>%
+  strand <- CT_genes |>
+    filter(external_gene_name == gene) |>
     pull(strand)
 
-  TSS <- CT_genes %>%
-    filter(external_gene_name == gene) %>%
+  TSS <- CT_genes |>
+    filter(external_gene_name == gene) |>
     pull(transcription_start_site)
 
   if (is.null(nt_up)) {nt_up <- 1000}
@@ -80,16 +79,16 @@ normal_tissues_methylation <- function(gene, nt_up = NULL, nt_down = NULL,
   promoter_methylation <- subsetByOverlaps(database, promoter_gr)
 
   methylation_individual_CpG <- suppressWarnings(
-    as_tibble(assay(promoter_methylation)) %>%
-      mutate(TSS = promoter_gr$TSS) %>%
-      mutate(CG_pos = promoter_methylation@rowRanges@ranges@start) %>%
+    as_tibble(assay(promoter_methylation)) |>
+      mutate(TSS = promoter_gr$TSS) |>
+      mutate(CG_pos = promoter_methylation@rowRanges@ranges@start) |>
       mutate(relative_pos = case_when(strand == 1 ~ CG_pos - TSS,
-                                      strand == -1 ~ TSS - CG_pos)) %>%
-      dplyr::select(CG_pos, relative_pos, colnames(promoter_methylation)) %>%
+                                      strand == -1 ~ TSS - CG_pos)) |>
+      dplyr::select(CG_pos, relative_pos, colnames(promoter_methylation)) |>
       pivot_longer(!c(CG_pos, relative_pos),
                    names_to = "cell",
-                   values_to = "met") %>%
-      dplyr::select(-CG_pos) %>%
+                   values_to = "met") |>
+      dplyr::select(-CG_pos) |>
       pivot_wider(names_from = relative_pos, values_from = met))
 
   mat <- as.matrix(methylation_individual_CpG[,-1])
@@ -116,4 +115,3 @@ normal_tissues_methylation <- function(gene, nt_up = NULL, nt_down = NULL,
     mat
   }
 }
-
