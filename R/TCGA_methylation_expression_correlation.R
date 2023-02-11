@@ -42,7 +42,7 @@
 #' @importFrom tibble tibble
 #' @importFrom dplyr filter left_join select mutate
 #' @importFrom ggplot2 ggplot aes geom_point geom_smooth ggtitle xlim
-#' @importFrom stats cor.test
+#' @importFrom stats cor.test quantile
 #'
 #' @examples
 #' TCGA_methylation_expression_correlation("LUAD", gene = "TDRD1",
