@@ -62,7 +62,7 @@ normal_tissue_expression_multimapping <-
     } else {
         database <- CTdata::normal_tissues_multimapping_data()
     }
-    
+
     CT_genes <- CTdata::CT_genes()
 
     if (is.null(genes)) genes <- CT_genes$external_gene_name
@@ -109,7 +109,7 @@ normal_tissue_expression_multimapping <-
                                 clustering_method_rows = "ward.D"))
 
 
-  if (return == FALSE) {
+  if (!return) {
     print(h)
   } else {
     mat

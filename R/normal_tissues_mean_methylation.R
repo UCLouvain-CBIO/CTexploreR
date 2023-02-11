@@ -40,8 +40,8 @@ normal_tissues_mean_methylation <- function(genes = NULL, return = FALSE,
   valid_gene_names <- unique(rownames(database))
   genes <- check_names(genes, valid_gene_names)
   database <- database[rownames(database) %in% genes]
-  
-  
+
+
   if (include_genes_with_missing_values == TRUE) {
     mat <- assay(database)
     clustering_option <- FALSE
@@ -74,11 +74,10 @@ normal_tissues_mean_methylation <- function(genes = NULL, return = FALSE,
                column_names_side = "bottom",
                row_names_side = "right")
 
-  if (return == FALSE) {
+  if (!return) {
     print(h)
   } else {
     mat
   }
 
 }
-

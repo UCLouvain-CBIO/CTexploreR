@@ -35,7 +35,7 @@
 #' DAC_induction(genes = c("MAGEA1", "MAGEA3", "MAGEA4", "MAGEA6", "CTAG1A",
 #' multimapping = FALSE))
 DAC_induction <- function(genes = NULL, multimapping = TRUE, return = FALSE) {
-  
+
   CT_genes <- CTdata::CT_genes()
 
   if (multimapping == TRUE) {
@@ -93,11 +93,9 @@ DAC_induction <- function(genes = NULL, multimapping = TRUE, return = FALSE) {
                                                    column_ha_treatment)))
 
 
-  if (return == FALSE) {
-    print(h)
-  } else {
-    mat
-  }
-
+    if (!return) {
+        print(h)
+    } else {
+        mat
+    }
 }
-

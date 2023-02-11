@@ -16,8 +16,8 @@
 #' return the expression values in all samples instead of the heatmap.
 #'
 #' @return A heatmap of selected CT genes expression in TCGA samples.
-#' If return = TRUE, TPM expression data is returned instead. 
-#' 
+#' If return = TRUE, TPM expression data is returned instead.
+#'
 #' @export
 #'
 #' @importFrom SummarizedExperiment assay rowData colData
@@ -32,13 +32,13 @@ TCGA_expression <- function(tumor = "all", genes = NULL,
                             units = "TPM", return = FALSE) {
   database <- CTdata::TCGA_TPM()
   CT_genes <- CTdata::CT_genes()
-  
+
   database$tumor <- sub(pattern = 'TCGA-', x = database$project_id, '')
   valid_tumors <- unique(database$tumor)
   tumor <- check_names(tumor, c(valid_tumors, "all"))
   stopifnot("No valid tumor type entered" = length(tumor) > 0)
   if (!"all" %in% tumor) database <- database[, database$tumor %in% tumor]
-  
+
   database$type <- "Tumor"
   database$type[database$shortLetterCode == "NT"] <- "Peritumoral"
   database <- database[, order(database$tumor, database$type)]
@@ -70,7 +70,7 @@ TCGA_expression <- function(tumor = "all", genes = NULL,
                          "LUSC" = "gray50", "SKCM" = "moccasin")),
     annotation_name_gp = gpar(fontsize = 8),
     annotation_legend_param = legends_param)
-  
+
   # Peritumoral samples are displayed only when a single type of tumor is asked
   if ("all" %in% tumor | length(tumor) > 1) {
     split_by <- factor(database$tumor)
@@ -83,11 +83,11 @@ TCGA_expression <- function(tumor = "all", genes = NULL,
   ## Use gene names instead of ENSEMBL IDs
   mat <- SummarizedExperiment::assay(database)
   rownames(mat) <- rowData(database)$external_gene_name
-  
+
   if (units == "log_TPM") mat <- log1p(mat)
 
-  if (dim(mat)[1] > 100) fontsize <- 4 
-  if (dim(mat)[1] > 50 & dim(mat)[1] <= 100) fontsize <- 5 
+  if (dim(mat)[1] > 100) fontsize <- 4
+  if (dim(mat)[1] > 50 & dim(mat)[1] <= 100) fontsize <- 5
   if (dim(mat)[1] > 20 & dim(mat)[1] <= 50) fontsize <- 6
   if (dim(mat)[1] <= 20) fontsize <- 8
 
@@ -113,12 +113,9 @@ TCGA_expression <- function(tumor = "all", genes = NULL,
                                 heatmap_legend_param = legends_param,
                                 top_annotation = annot))
 
-  if (return == FALSE) {
+  if (!return) {
     print(h)
   } else {
     mat
   }
 }
-
-
-

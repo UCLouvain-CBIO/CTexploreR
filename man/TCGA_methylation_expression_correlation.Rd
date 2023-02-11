@@ -51,10 +51,10 @@ found in promoter regions or if less than 1\% of tumors are positive
 (TPM >= 1) for the gene.
 }
 \examples{
-TCGA_methylation_expression_correlation("LUAD", gene = "TDRD1", 
+TCGA_methylation_expression_correlation("LUAD", gene = "TDRD1",
 return = FALSE)
-TCGA_methylation_expression_correlation(c("LUAD", "LUSC"), 
+TCGA_methylation_expression_correlation(c("LUAD", "LUSC"),
 gene = "MAGEA1", return = FALSE)
-TCGA_methylation_expression_correlation("LUAD", 
+TCGA_methylation_expression_correlation("LUAD",
 gene = "TDRD1", return = TRUE)
 }
