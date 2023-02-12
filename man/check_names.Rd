@@ -21,6 +21,6 @@ to a vector of valid names, and removes the ones that are absent
 from the vector of valid names.
 }
 \examples{
-check_names(variable = c("Ovarian", "leukemia", "wrong_name"),
-            valid_vector = c("ovarian", "leukemia"))
+CTexploreR:::check_names(variable = c("Ovarian", "leukemia", "wrong_name"),
+                         valid_vector = c("ovarian", "leukemia"))
 }

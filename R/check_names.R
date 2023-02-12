@@ -14,8 +14,8 @@
 #' @return A character with valid variables.
 #'
 #' @examples
-#' check_names(variable = c("Ovarian", "leukemia", "wrong_name"),
-#'             valid_vector = c("ovarian", "leukemia"))
+#' CTexploreR:::check_names(variable = c("Ovarian", "leukemia", "wrong_name"),
+#'                          valid_vector = c("ovarian", "leukemia"))
 check_names <- function(variable, valid_vector) {
     in_valid <- variable %in% valid_vector
     if (!all(in_valid)) {

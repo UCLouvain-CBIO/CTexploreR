@@ -23,6 +23,7 @@
 #'
 #' @importFrom SummarizedExperiment assay rowData
 #' @importFrom ggrepel geom_text_repel
+#' @importFrom ggplot2 geom_jitter position_jitter scale_colour_manual geom_hline theme element_blank ylab ylim
 #'
 #' @examples
 #' correlated_genes(gene = "MAGEA3")
