@@ -145,8 +145,8 @@ TCGA_methylation_expression_correlation <- function(tumor,
     methylation_expression$Tissue <- "Tumor"
     methylation_expression$Tissue[methylation_expression$shortLetterCode == "NT"] <- "Peritumoral"
 
-                                        # Color by tissue (Peritumoral / Tumor) if only one tumor type,
-                                        # otherwise color by tumor types.
+    ## Color by tissue (Peritumoral / Tumor) if only one tumor type,
+    ## otherwise color by tumor types.
     if (all(type == "all") | length(type) > 1) {
         p <- ggplot(
             as_tibble(methylation_expression[order(methylation_expression$type,
