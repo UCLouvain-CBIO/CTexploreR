@@ -76,13 +76,13 @@ CCLE_expression <- function(genes = NULL, type = NULL, units = "TPM",
     rownames(df_col) <- rownames(colData(database))
     df_col <- df_col[order(df_col$type), ]
 
-    set.seed(1)
     column_ha_type <- HeatmapAnnotation(
         type = df_col$type,
         border = TRUE,
         annotation_name_gp = gpar(fontsize = 8),
-        annotation_legend_param = legends_param)
-
+        annotation_legend_param = legends_param, 
+        col = list(type = CCLE_colors))
+    
     if (dim(mat)[1] > 100) fontsize <- 4
     if (dim(mat)[1] > 50 & dim(mat)[1] <= 100) fontsize <- 5
     if (dim(mat)[1] > 20 & dim(mat)[1] <= 50) fontsize <- 6
@@ -97,12 +97,7 @@ CCLE_expression <- function(genes = NULL, type = NULL, units = "TPM",
                                   column_title = "Gene Expression in tumor cell lines (CCLE)",
                                   column_split = factor(df_col$type),
                                   col = colorRamp2(seq(0, max(mat), length = 11),
-                                                   c("#5E4FA2", "#3288BD",
-                                                     "#66C2A5", "#ABDDA4",
-                                                     "#E6F598", "#FFFFBF",
-                                                     "#FEE08B", "#FDAE61",
-                                                     "#F46D43", "#D53E4F",
-                                                     "#9E0142")),
+                                                   legend_colors),
                                   clustering_method_rows = "ward.D",
                                   clustering_method_columns = "ward.D",
                                   cluster_rows = TRUE,

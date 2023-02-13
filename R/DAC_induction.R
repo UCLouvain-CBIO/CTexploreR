@@ -67,11 +67,12 @@ DAC_induction <- function(genes = NULL, multimapping = TRUE, return = FALSE) {
   df_col <- df_col[order(df_col$cell, df_col$treatment), ]
 
   column_ha_cell <- HeatmapAnnotation(cell = df_col$cell,
-                                      border = TRUE)
+                                      border = TRUE,
+                                      col = list(cell = DAC_colors))
 
   column_ha_treatment <- HeatmapAnnotation(
     treatment = df_col$treatment,
-    col = list(treatment = c("CTL" = "cyan", "DAC" = "firebrick1")),
+    col = list(treatment = c("CTL" = "dodgerblue3", "DAC" = "firebrick1")),
     border = TRUE)
 
   if (dim(mat)[1] > 100) fontsize <- 4
@@ -84,12 +85,7 @@ DAC_induction <- function(genes = NULL, multimapping = TRUE, return = FALSE) {
                                 column_title = "Gene expression in cells treated or not with 5-Aza",
                                 column_split = factor(df_col$cell),
                                 col = colorRamp2(seq(0, max(mat), length = 11),
-                                                 c("#5E4FA2", "#3288BD",
-                                                   "#66C2A5", "#ABDDA4",
-                                                   "#E6F598", "#FFFFBF",
-                                                   "#FEE08B", "#FDAE61",
-                                                   "#F46D43", "#D53E4F",
-                                                   "#9E0142")),
+                                                 legend_colors),
 
                                 cluster_rows = TRUE,
                                 show_row_dend = FALSE,

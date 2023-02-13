@@ -65,13 +65,11 @@ TCGA_expression <- function(tumor = "all", genes = NULL,
     column_ha_tumor <- HeatmapAnnotation(
         Tumor = database$tumor,
         border = TRUE,
-        col = list(Tumor = c("BRCA" = "pink", "COAD" = "black", "ESCA" = "green",
-                             "HNSC" = "steelblue", "LUAD" = "cyan",
-                             "LUSC" = "gray50", "SKCM" = "moccasin")),
+        col = list(Tumor = TCGA_colors),
         annotation_name_gp = gpar(fontsize = 8),
         annotation_legend_param = legends_param)
 
-                                        # Peritumoral samples are displayed only when a single type of tumor is asked
+    ## Peritumoral samples are displayed only when a single type of tumor is asked
     if ("all" %in% tumor | length(tumor) > 1) {
         split_by <- factor(database$tumor)
         annot <- column_ha_tumor
@@ -96,12 +94,7 @@ TCGA_expression <- function(tumor = "all", genes = NULL,
                                   column_title = paste0("Expression in TCGA samples (", tumor, ")"),
                                   column_split = split_by,
                                   col = colorRamp2(seq(0, max(mat), length = 11),
-                                                   c("#5E4FA2", "#3288BD",
-                                                     "#66C2A5", "#ABDDA4",
-                                                     "#E6F598", "#FFFFBF",
-                                                     "#FEE08B", "#FDAE61",
-                                                     "#F46D43", "#D53E4F",
-                                                     "#9E0142")),
+                                                   legend_colors),
                                   clustering_method_rows = "ward.D",
                                   clustering_method_columns = "ward.D",
                                   cluster_rows = TRUE,

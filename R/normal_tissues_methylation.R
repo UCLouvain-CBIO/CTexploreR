@@ -31,6 +31,7 @@
 #' @importFrom tidyr pivot_longer pivot_wider
 #' @importFrom circlize colorRamp2
 #' @importFrom grDevices colorRampPalette
+#' @importFrom rlang .data
 #'
 #' @examples
 #' normal_tissues_methylation(gene = "TDRD1", 1000, 0)
@@ -45,16 +46,16 @@ normal_tissues_methylation <- function(gene, nt_up = NULL, nt_down = NULL,
     }
 
     chr <- CT_genes |>
-        filter(external_gene_name == gene) |>
-        pull(chr)
+        filter(.data$external_gene_name == gene) |>
+        pull(.data$chr)
 
     strand <- CT_genes |>
-        filter(external_gene_name == gene) |>
-        pull(strand)
+        filter(.data$external_gene_name == gene) |>
+        pull(.data$strand)
 
     TSS <- CT_genes |>
-        filter(external_gene_name == gene) |>
-        pull(transcription_start_site)
+        filter(.data$external_gene_name == gene) |>
+        pull(.data$transcription_start_site)
 
     if (is.null(nt_up)) {nt_up <- 1000}
 
@@ -82,14 +83,14 @@ normal_tissues_methylation <- function(gene, nt_up = NULL, nt_down = NULL,
         as_tibble(assay(promoter_methylation)) |>
         mutate(TSS = promoter_gr$TSS) |>
         mutate(CG_pos = promoter_methylation@rowRanges@ranges@start) |>
-        mutate(relative_pos = case_when(strand == 1 ~ CG_pos - TSS,
-                                        strand == -1 ~ TSS - CG_pos)) |>
-        dplyr::select(CG_pos, relative_pos, colnames(promoter_methylation)) |>
-        pivot_longer(!c(CG_pos, relative_pos),
+        mutate(relative_pos = case_when(strand == 1 ~ .data$CG_pos - TSS,
+                                        strand == -1 ~ TSS - .data$CG_pos)) |>
+        dplyr::select(.data$CG_pos, .data$relative_pos, colnames(promoter_methylation)) |>
+        pivot_longer(!c(.data$CG_pos, .data$relative_pos),
                      names_to = "cell",
                      values_to = "met") |>
-        dplyr::select(-CG_pos) |>
-        pivot_wider(names_from = relative_pos, values_from = met))
+        dplyr::select(-.data$CG_pos) |>
+        pivot_wider(names_from = .data$relative_pos, values_from = .data$met))
 
     mat <- as.matrix(methylation_individual_CpG[,-1])
     rownames(mat) <- methylation_individual_CpG$cell

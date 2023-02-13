@@ -43,6 +43,7 @@
 #' @importFrom dplyr filter left_join select mutate
 #' @importFrom ggplot2 ggplot aes geom_point geom_smooth ggtitle xlim
 #' @importFrom stats cor.test quantile
+#' @importFrom rlang .data
 #'
 #' @examples
 #' TCGA_methylation_expression_correlation("LUAD", gene = "TDRD1",
@@ -61,8 +62,10 @@ TCGA_methylation_expression_correlation <- function(tumor,
     TPM <- CTdata::TCGA_TPM()
     met <- CTdata::TCGA_CT_methylation()
 
-    TPM$type <- sub(pattern = "TCGA-", x = colData(TPM)$project_id, replacement = '')
-    met$type <- sub(pattern = "TCGA-", x = colData(met)$project_id, replacement = '')
+    TPM$type <- sub(pattern = "TCGA-", x = colData(TPM)$project_id, 
+                    replacement = '')
+    met$type <- sub(pattern = "TCGA-", x = colData(met)$project_id, 
+                    replacement = '')
 
     valid_tumor <- c(unique(colData(TPM)$type), "all")
     type <- check_names(variable = tumor, valid_vector = valid_tumor)
@@ -90,16 +93,16 @@ TCGA_methylation_expression_correlation <- function(tumor,
     ## Calculates mean methylation value of promoter probe(s) in each sample
     gene_promoter_gr <- makeGRangesFromDataFrame(
         CT_genes |>
-        dplyr::filter(external_gene_name == gene) |>
-        dplyr::select(ensembl_gene_id, external_gene_name,
-                      external_transcript_name, chr, strand,
-                      transcription_start_site) |>
-        mutate(chr = paste0("chr", chr)) |>
-        mutate(strand = ifelse(strand == 1, '+', '-')) |>
-        mutate(start = case_when(strand == '+' ~ transcription_start_site - nt_up,
-                                 strand == '-' ~ transcription_start_site - nt_down)) |>
-        mutate(stop = case_when(strand == '+' ~ transcription_start_site + nt_down,
-                                strand == '-' ~ transcription_start_site + nt_up)),
+        dplyr::filter(.data$external_gene_name == gene) |>
+        dplyr::select("ensembl_gene_id", "external_gene_name",
+                      "external_transcript_name", "chr", "strand",
+                      "transcription_start_site") |>
+        mutate(chr = paste0("chr", .data$chr)) |>
+        mutate(strand = ifelse(.data$strand == 1, '+', '-')) |>
+        mutate(start = case_when(strand == '+' ~ .data$transcription_start_site - nt_up,
+                                 strand == '-' ~ .data$transcription_start_site - nt_down)) |>
+        mutate(stop = case_when(strand == '+' ~ .data$transcription_start_site + nt_down,
+                                strand == '-' ~ .data$transcription_start_site + nt_up)),
         keep.extra.columns = TRUE,
         seqnames.field = "chr",
         start.field = "start",
@@ -151,17 +154,19 @@ TCGA_methylation_expression_correlation <- function(tumor,
         p <- ggplot(
             as_tibble(methylation_expression[order(methylation_expression$type,
                                                    decreasing = TRUE), ]),
-            aes(x = met, y = log1p(TPM))) +
-            geom_point(alpha = 0.6, aes(color = type, shape = Tissue)) +
+            aes(x = .data$met, y = log1p(.data$TPM))) +
+            geom_point(alpha = 0.8, aes(color = .data$type, shape = .data$Tissue)) +
             ggtitle(paste0(gene, "(Pearson's corr = ", round(cor, 2), ")")) +
+            scale_color_manual(values = TCGA_colors) +
             xlim(0, 1)
     } else {
         p <- ggplot(
             as_tibble(methylation_expression[order(methylation_expression$Tissue,
                                                    decreasing = TRUE), ]),
-            aes(x = met, y = log1p(TPM))) +
-            geom_point(alpha = 0.6, aes(color = Tissue)) +
+            aes(x = .data$met, y = log1p(.data$TPM))) +
+            geom_point(alpha = 0.8, aes(color = .data$Tissue)) +
             ggtitle(paste0(gene, " in ", tumor, " (corr = ", round(cor, 2), ")")) +
+            scale_color_manual(values = TCGA_colors) +
             xlim(0, 1)
     }
 

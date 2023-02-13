@@ -24,6 +24,7 @@
 #' @importFrom SummarizedExperiment assay rowData
 #' @importFrom ggrepel geom_text_repel
 #' @importFrom ggplot2 geom_jitter position_jitter scale_colour_manual geom_hline theme element_blank ylab ylim
+#' @importFrom rlang .data
 #'
 #' @examples
 #' correlated_genes(gene = "MAGEA3")
@@ -49,27 +50,28 @@ correlated_genes <- function(gene, corr_thr = 0.5,
                                                               "external_gene_name"])
     tmp$CT_gene <- ifelse(tmp$external_gene_name %in% CT_genes$external_gene_name,
                           TRUE, FALSE)
-    tmp <- tmp[order(tmp$corr, decreasing = TRUE),]
+    tmp <- tmp[order(tmp$corr, decreasing = TRUE), ]
     highly_correlated <-
         tmp[(!is.na(tmp$corr) & (tmp$corr > corr_thr | tmp$corr < -corr_thr)),
             "external_gene_name"]
 
     p <- ggplot(tmp[tmp$external_gene_name %in% highly_correlated, ],
-                aes(x = gene, y = corr, label = external_gene_name)) +
-        geom_jitter(aes(color = CT_gene), alpha = 0.5,
+                aes(x = gene, y = .data$corr, 
+                    label = .data$external_gene_name)) +
+        geom_jitter(aes(color = .data$CT_gene), alpha = 0.5,
                     position = position_jitter(height = 0, seed = 1)) +
         scale_colour_manual(limits = c(TRUE, FALSE),
                             values = c("red", "deepskyblue")) +
         geom_text_repel(position = position_jitter(height = 0, seed = 1),
                         size = 2.5, max.overlaps = 20) +
         geom_jitter(data = tmp[!tmp$external_gene_name %in% highly_correlated, ],
-                    aes(x = gene, y = corr), alpha = 0.3) +
+                    aes(x = gene, y = .data$corr), alpha = 0.3) +
         ggtitle(paste0("Genes correlated with ", gene)) +
         geom_hline(yintercept = -corr_thr, linetype = "dashed",
-                   size = 0.5, color = "blue") +
-        geom_hline(yintercept = 0, size = 0.5, color = "blue") +
+                   linewidth = 0.5, color = "blue") +
+        geom_hline(yintercept = 0, linewidth = 0.5, color = "blue") +
         geom_hline(yintercept = corr_thr, linetype = "dashed",
-                   size = 0.5,  color = "blue") +
+                   linewidth = 0.5,  color = "blue") +
         theme(axis.title.x = element_blank(),
               axis.text.x = element_blank(),
               axis.ticks.x = element_blank(),
