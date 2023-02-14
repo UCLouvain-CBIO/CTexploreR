@@ -34,6 +34,7 @@ correlated_genes <- function(gene, corr_thr = 0.5,
 
     corr_matrix <- CTdata::CCLE_correlation_matrix()
     CT_genes <- CTdata::CT_genes()
+    CCLE_data <- CTdata::CCLE_data()
 
     if (missing(gene)) {
         stop("Gene name be specified!")
@@ -56,7 +57,7 @@ correlated_genes <- function(gene, corr_thr = 0.5,
             "external_gene_name"]
 
     p <- ggplot(tmp[tmp$external_gene_name %in% highly_correlated, ],
-                aes(x = gene, y = .data$corr, 
+                aes(x = gene, y = .data$corr,
                     label = .data$external_gene_name)) +
         geom_jitter(aes(color = .data$CT_gene), alpha = 0.5,
                     position = position_jitter(height = 0, seed = 1)) +
