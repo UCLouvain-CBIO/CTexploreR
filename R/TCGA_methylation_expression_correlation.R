@@ -62,9 +62,9 @@ TCGA_methylation_expression_correlation <- function(tumor,
     TPM <- CTdata::TCGA_TPM()
     met <- CTdata::TCGA_CT_methylation()
 
-    TPM$type <- sub(pattern = "TCGA-", x = colData(TPM)$project_id, 
+    TPM$type <- sub(pattern = "TCGA-", x = colData(TPM)$project_id,
                     replacement = '')
-    met$type <- sub(pattern = "TCGA-", x = colData(met)$project_id, 
+    met$type <- sub(pattern = "TCGA-", x = colData(met)$project_id,
                     replacement = '')
 
     valid_tumor <- c(unique(colData(TPM)$type), "all")
@@ -157,7 +157,7 @@ TCGA_methylation_expression_correlation <- function(tumor,
             aes(x = .data$met, y = log1p(.data$TPM))) +
             geom_point(alpha = 0.8, aes(color = .data$type, shape = .data$Tissue)) +
             ggtitle(paste0(gene, "(Pearson's corr = ", round(cor, 2), ")")) +
-            scale_color_manual(values = TCGA_colors) +
+            scale_colour_manual(values = TCGA_colors) +
             xlim(0, 1)
     } else {
         p <- ggplot(
@@ -166,7 +166,7 @@ TCGA_methylation_expression_correlation <- function(tumor,
             aes(x = .data$met, y = log1p(.data$TPM))) +
             geom_point(alpha = 0.8, aes(color = .data$Tissue)) +
             ggtitle(paste0(gene, " in ", tumor, " (corr = ", round(cor, 2), ")")) +
-            scale_color_manual(values = TCGA_colors) +
+            scale_colour_manual(values = TCGA_colors) +
             xlim(0, 1)
     }
 
