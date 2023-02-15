@@ -38,8 +38,10 @@
 normal_tissues_methylation <- function(gene, nt_up = NULL, nt_down = NULL,
                                        return = FALSE) {
 
-    database <- CTdata::CT_methylation_in_tissues()
-    CT_genes <- CTdata::CT_genes()
+    suppressMessages({
+        database <- CTdata::CT_methylation_in_tissues()
+        CT_genes <- CTdata::CT_genes()
+    })
 
     if (!gene %in% CT_genes$external_gene_name) {
         stop(paste0(gene, " is not in the CT database"))
@@ -113,5 +115,5 @@ normal_tissues_methylation <- function(gene, nt_up = NULL, nt_down = NULL,
     if (return)
         return(mat)
 
-    print(h)
+    return(h)
 }

@@ -42,8 +42,10 @@
 #'                 type = c("Skin", "Lung"), units = "log_TPM")
 CCLE_expression <- function(genes = NULL, type = NULL, units = "TPM",
                             return = FALSE) {
-    database <- CTdata::CCLE_data()
-    CT_genes <- CTdata::CT_genes()
+    suppressMessages({
+        database <- CTdata::CCLE_data()
+        CT_genes <- CTdata::CT_genes()
+    })
 
     database$type <- tolower(database$type)
     valid_tumor_types <- unique(database$type)
@@ -80,9 +82,9 @@ CCLE_expression <- function(genes = NULL, type = NULL, units = "TPM",
         type = df_col$type,
         border = TRUE,
         annotation_name_gp = gpar(fontsize = 8),
-        annotation_legend_param = legends_param, 
+        annotation_legend_param = legends_param,
         col = list(type = CCLE_colors))
-    
+
     if (dim(mat)[1] > 100) fontsize <- 4
     if (dim(mat)[1] > 50 & dim(mat)[1] <= 100) fontsize <- 5
     if (dim(mat)[1] > 20 & dim(mat)[1] <= 50) fontsize <- 6
@@ -111,5 +113,5 @@ CCLE_expression <- function(genes = NULL, type = NULL, units = "TPM",
 
     if (return)
         return(mat)
-    print(h)
+    return(h)
 }

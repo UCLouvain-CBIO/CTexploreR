@@ -47,29 +47,30 @@
 #' @importFrom circlize colorRamp2
 #'
 #' @examples
-#' normal_tissue_expression_multimapping(genes = c("GAGE13", "CT45A6", "NXF2",
-#' "SSX2", "CTAG1A", "MAGEA3", "MAGEA6"), multimapping = FALSE)
-#' normal_tissue_expression_multimapping(genes = c("GAGE13", "CT45A6", "NXF2",
-#' "SSX2", "CTAG1A", "MAGEA3", "MAGEA6"), multimapping = TRUE)
+#' normal_tissue_expression_multimapping(
+#'    genes = c("GAGE13", "CT45A6", "NXF2","SSX2", "CTAG1A", "MAGEA3", "MAGEA6"),
+#'    multimapping = FALSE)
+#' normal_tissue_expression_multimapping(
+#'    genes = c("GAGE13", "CT45A6", "NXF2", "SSX2", "CTAG1A", "MAGEA3", "MAGEA6"),
+#'    multimapping = TRUE)
 normal_tissue_expression_multimapping <- function(genes = NULL,
                                                   multimapping = NULL,
                                                   units = "TPM",
                                                   return = FALSE) {
-
-    if (is.null(multimapping)) {
+    if (is.null(multimapping))
         stop("multimapping parameter should be set to TRUE/FALSE")
-    } else {
-        database <- CTdata::normal_tissues_multimapping_data()
-    }
 
-    CT_genes <- CTdata::CT_genes()
+    suppressMessages({
+        CT_genes <- CTdata::CT_genes()
+        database <- CTdata::normal_tissues_multimapping_data()
+    })
 
     if (is.null(genes)) genes <- CT_genes$external_gene_name
     valid_gene_names <- unique(rowData(database)$external_gene_name)
     genes <- check_names(genes, valid_gene_names)
     database <- database[rowData(database)$external_gene_name %in% genes, ]
 
-    if (multimapping == TRUE) {
+    if (multimapping) {
         mat <- assay(database, "TPM_with_multimapping")
         title <- "Expression (multi-mapped reads were counted)"
     } else {
@@ -106,5 +107,5 @@ normal_tissue_expression_multimapping <- function(genes = NULL,
     if (return)
         return(mat)
 
-    print(h)
+    return(h)
 }

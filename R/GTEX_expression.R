@@ -26,8 +26,11 @@
 #' GTEX_expression(genes = c("MAGEA1", "MAGEA3"), units = "log_TPM")
 GTEX_expression <- function(genes = NULL, units = "TPM", return = FALSE) {
 
-    database <- CTdata::GTEX_data()
-    CT_genes <- CTdata::CT_genes()
+    suppressMessages({
+        database <- CTdata::GTEX_data()
+        CT_genes <- CTdata::CT_genes()
+    })
+
     if (is.null(genes)) genes <- CT_genes$external_gene_name
     valid_gene_names <- unique(rowData(database)$external_gene_name)
     genes <- check_names(genes, valid_gene_names)
@@ -63,5 +66,5 @@ GTEX_expression <- function(genes = NULL, units = "TPM", return = FALSE) {
     if (return)
         return(mat)
 
-    print(h)
+    return(h)
 }

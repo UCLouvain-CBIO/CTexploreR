@@ -44,61 +44,59 @@
 #'               multimapping = FALSE))
 DAC_induction <- function(genes = NULL, multimapping = TRUE, return = FALSE) {
 
-  CT_genes <- CTdata::CT_genes()
+    suppressMessages({
+        CT_genes <- CTdata::CT_genes()
+        if (multimapping)
+            database <- CTdata::DAC_treated_cells_multimapping()
+        else database <- CTdata::DAC_treated_cells()
+    })
 
-  if (multimapping) {
-    database <- CTdata::DAC_treated_cells_multimapping()
-  } else {
-    database <- CTdata::DAC_treated_cells()
-  }
+    if (is.null(genes)) genes <- CT_genes$external_gene_name
+    valid_gene_names <- unique(rowData(database)$external_gene_name)
+    genes <- check_names(genes, valid_gene_names)
+    database <- database[rowData(database)$external_gene_name %in% genes, ]
 
-  if (is.null(genes)) genes <- CT_genes$external_gene_name
-  valid_gene_names <- unique(rowData(database)$external_gene_name)
-  genes <- check_names(genes, valid_gene_names)
-  database <- database[rowData(database)$external_gene_name %in% genes, ]
+    mat <- assay(database, "log1p")
+    rownames(mat) <- rowData(database)$external_gene_name
 
-  mat <- assay(database, "log1p")
-  rownames(mat) <- rowData(database)$external_gene_name
+    set.seed(1)
+    df_col <- data.frame("cell" = colData(database)$cell,
+                         "treatment" = colData(database)$treatment)
+    rownames(df_col) <- rownames(colData(database))
+    df_col <- df_col[order(df_col$cell, df_col$treatment), ]
 
-  set.seed(1)
-  df_col <- data.frame("cell" = colData(database)$cell,
-                       "treatment" = colData(database)$treatment)
-  rownames(df_col) <- rownames(colData(database))
-  df_col <- df_col[order(df_col$cell, df_col$treatment), ]
+    column_ha_cell <- HeatmapAnnotation(cell = df_col$cell,
+                                        border = TRUE,
+                                        col = list(cell = DAC_colors))
 
-  column_ha_cell <- HeatmapAnnotation(cell = df_col$cell,
-                                      border = TRUE,
-                                      col = list(cell = DAC_colors))
+    column_ha_treatment <- HeatmapAnnotation(
+        treatment = df_col$treatment,
+        col = list(treatment = c("CTL" = "dodgerblue3", "DAC" = "firebrick1")),
+        border = TRUE)
 
-  column_ha_treatment <- HeatmapAnnotation(
-    treatment = df_col$treatment,
-    col = list(treatment = c("CTL" = "dodgerblue3", "DAC" = "firebrick1")),
-    border = TRUE)
+    if (dim(mat)[1] > 100) fontsize <- 4
+    if (dim(mat)[1] > 50 & dim(mat)[1] <= 100) fontsize <- 5
+    if (dim(mat)[1] > 20 & dim(mat)[1] <= 50) fontsize <- 6
+    if (dim(mat)[1] <= 20) fontsize <- 8
 
-  if (dim(mat)[1] > 100) fontsize <- 4
-  if (dim(mat)[1] > 50 & dim(mat)[1] <= 100) fontsize <- 5
-  if (dim(mat)[1] > 20 & dim(mat)[1] <= 50) fontsize <- 6
-  if (dim(mat)[1] <= 20) fontsize <- 8
+    h <- suppressMessages(Heatmap(mat[, rownames(df_col), drop = FALSE],
+                                  name = "logCounts",
+                                  column_title = "Gene expression in cells treated or not with 5-Aza",
+                                  column_split = factor(df_col$cell),
+                                  col = colorRamp2(seq(0, max(mat), length = 11),
+                                                   legend_colors),
 
-  h <- suppressMessages(Heatmap(mat[, rownames(df_col), drop = FALSE],
-                                name = "logCounts",
-                                column_title = "Gene expression in cells treated or not with 5-Aza",
-                                column_split = factor(df_col$cell),
-                                col = colorRamp2(seq(0, max(mat), length = 11),
-                                                 legend_colors),
-
-                                cluster_rows = TRUE,
-                                show_row_dend = FALSE,
-                                clustering_method_rows = "ward.D",
-                                show_column_names = FALSE,
-                                cluster_columns = FALSE,
-                                row_names_gp = gpar(fontsize = fontsize),
-                                top_annotation = c(column_ha_cell,
-                                                   column_ha_treatment)))
+                                  cluster_rows = TRUE,
+                                  show_row_dend = FALSE,
+                                  clustering_method_rows = "ward.D",
+                                  show_column_names = FALSE,
+                                  cluster_columns = FALSE,
+                                  row_names_gp = gpar(fontsize = fontsize),
+                                  top_annotation = c(column_ha_cell,
+                                                     column_ha_treatment)))
 
 
     if (return)
         return(mat)
-
-    print(h)
+    return(h)
 }

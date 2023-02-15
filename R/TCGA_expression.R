@@ -30,8 +30,10 @@
 #' TCGA_expression(tumor = "all", units = "log_TPM")
 TCGA_expression <- function(tumor = "all", genes = NULL,
                             units = "TPM", return = FALSE) {
-    database <- CTdata::TCGA_TPM()
-    CT_genes <- CTdata::CT_genes()
+    suppressMessages({
+        database <- CTdata::TCGA_TPM()
+        CT_genes <- CTdata::CT_genes()
+    })
 
     database$tumor <- sub(pattern = 'TCGA-', x = database$project_id, '')
     valid_tumors <- unique(database$tumor)
@@ -109,5 +111,5 @@ TCGA_expression <- function(tumor = "all", genes = NULL,
     if (return)
         return(mat)
 
-    print(h)
+    return(h)
 }

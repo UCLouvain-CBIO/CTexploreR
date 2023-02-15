@@ -1,37 +1,39 @@
 #' Methylation-Expression correlation of Cancer-Testis genes in TCGA samples
 #'
 #' @description Plots the correlation between methylation and
-#' expression values of a Cancer-Testis (CT) gene in TCGA samples.
+#'     expression values of a Cancer-Testis (CT) gene in TCGA samples.
 #'
 #' @param gene CT gene name
 #'
-#' @param tumor TCGA tumor code. c("SKCM", "LUAD", "LUSC", "COAD", "ESCA",
-#' "BRCA", "HNSC", "all")
+#' @param tumor TCGA tumor code. c("SKCM", "LUAD", "LUSC", "COAD",
+#'     "ESCA", "BRCA", "HNSC", "all")
 #'
-#' @param nt_up Number of nucleotides upstream the TSS to define the promoter
-#' region (1000 by default)
+#' @param nt_up Number of nucleotides upstream the TSS to define the
+#'     promoter region (1000 by default)
 #'
-#' @param nt_down Number of nucleotides downstream the TSS to define the
-#' promoter region (200 by default)
+#' @param nt_down Number of nucleotides downstream the TSS to define
+#'     the promoter region (200 by default)
 #'
-#' @param corr_coeff Boolean (FALSE by default). If set to TRUE, the function
-#' will invisibly return the correlation coefficient (Pearson), between
-#' methylation and expression values for the gene in selected samples.
+#' @param corr_coeff Boolean (FALSE by default). If set to TRUE, the
+#'     function will invisibly return the correlation coefficient
+#'     (Pearson), between methylation and expression values for the
+#'     gene in selected samples.
 #'
-#' @param return Boolean (FALSE by default). If set to TRUE, the function will
-#' return the methylation and expression values in all samples instead of the
-#' heatmap.
+#' @param return Boolean (FALSE by default). If set to TRUE, the
+#'     function will return the methylation and expression values in
+#'     all samples instead of the heatmap.
 #'
-#' @details The coefficient of correlation is set to `NA` if no probes are
-#' found in promoter regions or if less than 1% of tumors are positive
-#' (TPM >= 1) for the gene.
+#' @details The coefficient of correlation is set to `NA` if no probes
+#'     are found in promoter regions or if less than 1% of tumors are
+#'     positive (TPM >= 1) for the gene.
 #'
 #' @return A correlation plot between gene expression and methylation
-#' values of probe(s) located in its promoter region (defined as 1000
-#' nucleotides upstream TSS and 200 nucleotides downstream TSS).
-#' If return = TRUE, methylation and expression values for the gene in
-#' selected tumors are returned in a tibble instead. If `corr_coeff` is
-#' set to TRUE, the correlation coefficient is being returned instead.
+#'     values of probe(s) located in its promoter region (defined as
+#'     1000 nucleotides upstream TSS and 200 nucleotides downstream
+#'     TSS).  If return = TRUE, methylation and expression values for
+#'     the gene in selected tumors are returned in a tibble
+#'     instead. If `corr_coeff` is set to TRUE, the correlation
+#'     coefficient is being returned instead.
 #'
 #' @export
 #'
@@ -47,20 +49,22 @@
 #'
 #' @examples
 #' TCGA_methylation_expression_correlation("LUAD", gene = "TDRD1",
-#' return = FALSE)
+#'                                         return = FALSE)
 #' TCGA_methylation_expression_correlation(c("LUAD", "LUSC"),
-#' gene = "MAGEA1", return = FALSE)
+#'                                         gene = "MAGEA1", return = FALSE)
 #' TCGA_methylation_expression_correlation("LUAD",
-#' gene = "TDRD1", return = TRUE)
+#'                                         gene = "TDRD1", return = TRUE)
 TCGA_methylation_expression_correlation <- function(tumor,
                                                     gene = NULL,
                                                     nt_up = 1000,
                                                     nt_down = 200,
                                                     return = FALSE,
                                                     corr_coeff = FALSE) {
-    CT_genes <- CTdata::CT_genes()
-    TPM <- CTdata::TCGA_TPM()
-    met <- CTdata::TCGA_CT_methylation()
+    suppressMessages{(
+        CT_genes <- CTdata::CT_genes()
+        TPM <- CTdata::TCGA_TPM()
+        met <- CTdata::TCGA_CT_methylation()
+    })
 
     TPM$type <- sub(pattern = "TCGA-", x = colData(TPM)$project_id,
                     replacement = '')
@@ -172,9 +176,8 @@ TCGA_methylation_expression_correlation <- function(tumor,
 
     if (corr_coeff)
         return(unname(cor))
-
     if (return)
         return(methylation_expression)
 
-    suppressMessages(print(p))
+    return(p)
 }
