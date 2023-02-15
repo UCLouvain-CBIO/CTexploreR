@@ -8,9 +8,9 @@
 #'
 #' @param gene CT gene selected
 #'
-#' @param corr_thr Genes with an absolute correlation coefficient
-#'     (Pearson) higher than this threshold will be highlighted
-#'     (default = 0.5)
+#' @param corr_thr `numeric(1)` with default 0.5. Genes with an
+#'     absolute correlation coefficient (Pearson) higher than this
+#'     threshold will be highlighted.
 #'
 #' @param return `logical(1)`, `FALSE` by default. If `TRUE`, the
 #'     function will return the correlation coefficients with all

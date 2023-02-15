@@ -12,50 +12,60 @@ normal_tissue_expression_multimapping(
 )
 }
 \arguments{
-\item{genes}{Genes selected (all CT genes by default)}
+\item{genes}{\code{character} nameing the selected genes. The default
+value, \code{NULL}, takes all CT genes.}
 
-\item{multimapping}{Set to TRUE or FALSE to specify if returned expression
-values must take into account or not multi-mapped reads}
+\item{multimapping}{\code{logical(1)} that specifies if returned
+expression values must take into account or not multi-mapped
+reads}
 
-\item{units}{Expression values units.
-Can be "TPM" (default) or "log_TPM" (log(TPM + 1))}
+\item{units}{\code{character(1)} with expression values unit.  Can be
+\code{"TPM"} (default) or \code{"log_TPM"} (log(TPM + 1)).}
 
-\item{return}{Boolean (FALSE by default). If set to TRUE, the function will
-return the gene's expression values in all samples instead of the heatmap.}
+\item{return}{\code{logical(1)}. If \code{TRUE}, the function will return the
+expression values in all samples instead of the
+heatmap. Default is \code{FALSE}.}
 }
 \value{
-A heatmap of selected gene expression values in a set of normal
-tissues calculated by counting or discarding multi-mapped reads.
-If return = TRUE, gene expression values are returned instead.
+A heatmap of selected gene expression values in a set of
+normal tissues calculated by counting or discarding
+multi-mapped reads.  If \code{return = TRUE}, gene expression values
+are returned instead.
 }
 \description{
 Plots a heatmap of gene expression values in a set of normal
-tissues. Expression values (in TPM) have been evaluated by either counting or
-discarding multi-mapped reads. Indeed, many CT genes belong to gene families
-from which members have identical or nearly identical sequences. Some CT can
-only be detected in RNAseq data in which multimapping reads are not discarded.
+tissues. Expression values (in TPM) have been evaluated by either
+counting or discarding multi-mapped reads. Indeed, many CT genes
+belong to gene families from which members have identical or nearly
+identical sequences. Some CT can only be detected in RNAseq data in
+which multimapping reads are not discarded.
 }
 \details{
-RNAseq data from a set of normal tissues were downloaded from Encode.
-(see inst/scripts/make_CT_normal_tissues_multimapping.R for fastq references)
-Fastq files were processed using a standard RNAseq pipeline including
-\href{https://www.bioinformatics.babraham.ac.uk/projects/fastqc/}{FastQC} for the
-quality control of the raw data, and
-\href{http://www.usadellab.org/cms/?page=trimmomatic}{trimmomatic}
-to remove low quality reads and trim the adapter from the sequences.
-\href{https://ccb.jhu.edu/software/hisat2/index.shtml}{hisat2} was used to align
-reads to grch38 genome.
-\href{https://rdrr.io/bioc/Rsubread/man/featureCounts.html}{featurecounts} was used
-to assign reads to genes using Homo_sapiens.GRCh38.105.gtf.
+RNAseq data from a set of normal tissues were downloaded from
+Encode.  (see inst/scripts/make_CT_normal_tissues_multimapping.R
+for fastq references) Fastq files were processed using a standard
+RNAseq pipeline including
+\href{https://www.bioinformatics.babraham.ac.uk/projects/fastqc/}{FastQC}
+for the quality control of the raw data, and
+\href{http://www.usadellab.org/cms/?page=trimmomatic}{trimmomatic} to
+remove low quality reads and trim the adapter from the sequences.
+\href{https://ccb.jhu.edu/software/hisat2/index.shtml}{hisat2} was used
+to align reads to grch38 genome.
+\href{https://rdrr.io/bioc/Rsubread/man/featureCounts.html}{featurecounts}
+was used to assign reads to genes using
+Homo_sapiens.GRCh38.105.gtf.
 
-Two different pipelines were run in order to remove or not multi-mapping reads.
-When multimapping was allowed, hisat2 was run with -k 20 parameter (reports
-up to 20 alignments per read), and featurecounts was run with -M parameter
-(multi-mapping reads are counted).
+Two different pipelines were run in order to remove or not
+multi-mapping reads.  When multimapping was allowed, hisat2 was run
+with -k 20 parameter (reports up to 20 alignments per read), and
+featurecounts was run with -M parameter (multi-mapping reads are
+counted).
 }
 \examples{
-normal_tissue_expression_multimapping(genes = c("GAGE13", "CT45A6", "NXF2",
-"SSX2", "CTAG1A", "MAGEA3", "MAGEA6"), multimapping = FALSE)
-normal_tissue_expression_multimapping(genes = c("GAGE13", "CT45A6", "NXF2",
-"SSX2", "CTAG1A", "MAGEA3", "MAGEA6"), multimapping = TRUE)
+normal_tissue_expression_multimapping(
+   genes = c("GAGE13", "CT45A6", "NXF2","SSX2", "CTAG1A", "MAGEA3", "MAGEA6"),
+   multimapping = FALSE)
+normal_tissue_expression_multimapping(
+   genes = c("GAGE13", "CT45A6", "NXF2", "SSX2", "CTAG1A", "MAGEA3", "MAGEA6"),
+   multimapping = TRUE)
 }

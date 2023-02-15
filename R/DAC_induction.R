@@ -4,16 +4,17 @@
 #'     (log-transformed) in a selection of cells treated or not by
 #'     5-Aza-2'-Deoxycytidine (DAC), a demethylating agent.
 #'
-#' @param genes Genes selected (all CT genes by default)
+#' @param genes `character` nameing the selected genes. The default
+#'     value, `NULL`, takes all CT genes.
 #'
 #' @param multimapping `logical(1)` defining whether to use
 #'     multi-mapped gene expression dataset
 #'     `CTdata::DAC_treated_cells_multimapping` or
 #'     `DAC_treated_cells`. Default is `TRUE`.
 #'
-#' @param return Boolean (FALSE by default). If set to TRUE, the
-#'     function will return the gene normalised logcounts in all
-#'     samples instead of the heatmap.
+#' @param return `logical(1)`. If `TRUE`, the function will return the
+#'     gene normalised logcounts in all samples instead of the
+#'     heatmap. Default is `FALSE`.
 #'
 #' @details
 #'
@@ -28,7 +29,7 @@
 #' or not to allow or not counting multi-mapping reads.
 #'
 #' @return A heatmap of selected genes in cells treated or not by a
-#'     demethylating agent. If return = TRUE, gene normalised
+#'     demethylating agent. If return is `TRUE`, gene normalised
 #'     logcounts are returned instead.
 #'
 #' @export

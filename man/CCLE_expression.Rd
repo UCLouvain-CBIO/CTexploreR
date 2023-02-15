@@ -7,7 +7,8 @@
 CCLE_expression(genes = NULL, type = NULL, units = "TPM", return = FALSE)
 }
 \arguments{
-\item{genes}{Genes selected (all CT genes by default)}
+\item{genes}{\code{character} nameing the selected genes. The default
+value, \code{NULL}, takes all CT genes.}
 
 \item{type}{\code{character()} describing the tumor cell line(s) type to
 be plotted. Allowed cell lines are "Ovarian", "Leukemia",
@@ -19,8 +20,8 @@ be plotted. Allowed cell lines are "Ovarian", "Leukemia",
 \item{units}{\code{character(1)} with expression values unit. Can be
 "TPM" (default) or "log_TPM" (log(TPM + 1))}
 
-\item{return}{If \code{TRUE}, values are returned instead of the heatmap
-(\code{FALSE} by default)}
+\item{return}{\code{logical(1)}. If \code{TRUE}, values are returned instead
+of the heatmap (\code{FALSE} by default).}
 }
 \value{
 A heatmap of selected genes in CCLE cell lines from

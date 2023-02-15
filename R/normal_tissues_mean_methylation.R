@@ -6,7 +6,8 @@
 #'     in range of 1000 pb upstream and 200 pb downstream from gene
 #'     TSS.
 #'
-#' @param genes CT gene names.
+#' @param genes `character` nameing the selected genes. The default
+#'     value, `NULL`, takes all CT genes.
 #'
 #' @param return `logical(1)`, `FALSE` by default. If `TRUE`, the
 #'     function will return the methylation values in all samples
@@ -18,7 +19,7 @@
 #'     methylation values are missing.
 #'
 #' @return Heatmap of mean promoter methylation of Cancer-Testis (CT)
-#'     genes in normal tissues. If return = TRUE, methylation values
+#'     genes in normal tissues. If `return = TRUE`, methylation values
 #'     are returned instead.
 #'
 #' @export
