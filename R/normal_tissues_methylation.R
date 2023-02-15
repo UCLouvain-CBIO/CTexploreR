@@ -98,7 +98,7 @@ normal_tissues_methylation <- function(gene, nt_up = NULL, nt_down = NULL,
     rownames(mat) <- methylation_individual_CpG$cell
 
     h <- Heatmap(mat,
-                 name = paste0('Meth'),
+                 name = 'Meth',
                  col = colorRamp2(c(1:100),
                                   colorRampPalette(c("moccasin","dodgerblue4"))
                                   (100)),
