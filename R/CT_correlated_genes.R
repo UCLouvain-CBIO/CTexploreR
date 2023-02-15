@@ -31,9 +31,9 @@
 #' @importFrom rlang .data
 #'
 #' @examples
-#' correlated_genes(gene = "MAGEA3")
-#' correlated_genes("TDRD1", 0.3)
-correlated_genes <- function(gene, corr_thr = 0.5,
+#' CT_correlated_genes(gene = "MAGEA3")
+#' CT_correlated_genes("TDRD1", 0.3)
+CT_correlated_genes <- function(gene, corr_thr = 0.5,
                              return = FALSE) {
 
     suppressMessages({
@@ -90,6 +90,5 @@ correlated_genes <- function(gene, corr_thr = 0.5,
     if (return)
         return(tmp)
 
-    ## suppressWarnings(print(p))
     return(p)
 }
