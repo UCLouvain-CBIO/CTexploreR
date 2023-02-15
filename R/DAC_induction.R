@@ -59,7 +59,6 @@ DAC_induction <- function(genes = NULL, multimapping = TRUE, return = FALSE) {
     mat <- assay(database, "log1p")
     rownames(mat) <- rowData(database)$external_gene_name
 
-    set.seed(1)
     df_col <- data.frame("cell" = colData(database)$cell,
                          "treatment" = colData(database)$treatment)
     rownames(df_col) <- rownames(colData(database))
