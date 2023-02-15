@@ -38,6 +38,10 @@ Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.2.3
 Depends:
     R (>= 4.3)
+biocViews: Transcriptomics,
+           Epigenetics,
+           DifferentialExpression,
+           DNAMethylation
 Imports:
     BiocGenerics,
     ComplexHeatmap,
