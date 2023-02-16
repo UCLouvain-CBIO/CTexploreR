@@ -41,6 +41,7 @@ Depends:
 biocViews: Transcriptomics,
            Epigenetics,
            DifferentialExpression,
+           GeneExpression,
            DNAMethylation
 Imports:
     BiocGenerics,
