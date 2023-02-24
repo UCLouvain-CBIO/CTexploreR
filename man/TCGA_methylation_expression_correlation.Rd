@@ -14,47 +14,53 @@ TCGA_methylation_expression_correlation(
 )
 }
 \arguments{
-\item{tumor}{TCGA tumor code. c("SKCM", "LUAD", "LUSC", "COAD", "ESCA",
-"BRCA", "HNSC", "all")}
+\item{tumor}{\code{character} defining the TCGA tumor type. Can be one
+of "SKCM", "LUAD", "LUSC", "COAD", "ESCA", "BRCA", "HNSC", or
+"all" (default).}
 
-\item{gene}{CT gene name}
+\item{gene}{\code{character} nameing the selected genes. The default
+value, \code{NULL}, takes all CT genes.}
 
-\item{nt_up}{Number of nucleotides upstream the TSS to define the promoter
-region (1000 by default)}
+\item{nt_up}{\code{numeric(1)} indicating the number of nucleotides
+upstream the TSS to define the promoter region (1000 by
+default)}
 
-\item{nt_down}{Number of nucleotides downstream the TSS to define the
-promoter region (200 by default)}
+\item{nt_down}{\code{numeric(1)} indicating the number of nucleotides
+downstream the TSS to define the promoter region (200 by
+default)}
 
-\item{return}{Boolean (FALSE by default). If set to TRUE, the function will
-return the methylation and expression values in all samples instead of the
-heatmap.}
+\item{return}{\code{logical(1)}. If \code{TRUE}, the function will return the
+methylation and expression values in all samples instead of the
+heatmap. Default is \code{FALSE}.}
 
-\item{corr_coeff}{Boolean (FALSE by default). If set to TRUE, the function
-will invisibly return the correlation coefficient (Pearson), between
-methylation and expression values for the gene in selected samples.}
+\item{corr_coeff}{\code{logical(1)}. If \code{TRUE}, the function will
+invisibly return the correlation coefficient (Pearson), between
+methylation and expression values for the gene in selected
+samples. Default is \code{FALSE}.}
 }
 \value{
 A correlation plot between gene expression and methylation
-values of probe(s) located in its promoter region (defined as 1000
-nucleotides upstream TSS and 200 nucleotides downstream TSS).
-If return = TRUE, methylation and expression values for the gene in
-selected tumors are returned in a tibble instead. If \code{corr_coeff} is
-set to TRUE, the correlation coefficient is being returned instead.
+values of probe(s) located in its promoter region (defined as
+1000 nucleotides upstream TSS and 200 nucleotides downstream
+TSS).  If return = TRUE, methylation and expression values for
+the gene in selected tumors are returned in a tibble
+instead. If \code{corr_coeff} is set to TRUE, the correlation
+coefficient is being returned instead.
 }
 \description{
-Plots the correlation between methylation and
-expression values of a Cancer-Testis (CT) gene in TCGA samples.
+Plots the correlation between methylation and expression values of
+a Cancer-Testis (CT) gene in TCGA samples.
 }
 \details{
-The coefficient of correlation is set to \code{NA} if no probes are
-found in promoter regions or if less than 1\% of tumors are positive
-(TPM >= 1) for the gene.
+The coefficient of correlation is set to \code{NA} if no probes
+are found in promoter regions or if less than 1\% of tumors are
+positive (TPM >= 1) for the gene.
 }
 \examples{
 TCGA_methylation_expression_correlation("LUAD", gene = "TDRD1",
-return = FALSE)
+                                        return = FALSE)
 TCGA_methylation_expression_correlation(c("LUAD", "LUSC"),
-gene = "MAGEA1", return = FALSE)
+                                        gene = "MAGEA1", return = FALSE)
 TCGA_methylation_expression_correlation("LUAD",
-gene = "TDRD1", return = TRUE)
+                                        gene = "TDRD1", return = TRUE)
 }

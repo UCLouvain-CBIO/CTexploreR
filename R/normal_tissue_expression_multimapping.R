@@ -1,43 +1,54 @@
 #' Expression values (TPM) of genes in normal tissues with or without multimapping
 #'
-#' @description Plots a heatmap of gene expression values in a set of normal
-#' tissues. Expression values (in TPM) have been evaluated by either counting or
-#' discarding multi-mapped reads. Indeed, many CT genes belong to gene families
-#' from which members have identical or nearly identical sequences. Some CT can
-#' only be detected in RNAseq data in which multimapping reads are not discarded.
+#' @description
 #'
-#' @param genes Genes selected (all CT genes by default)
+#' Plots a heatmap of gene expression values in a set of normal
+#' tissues. Expression values (in TPM) have been evaluated by either
+#' counting or discarding multi-mapped reads. Indeed, many CT genes
+#' belong to gene families from which members have identical or nearly
+#' identical sequences. Some CT can only be detected in RNAseq data in
+#' which multimapping reads are not discarded.
 #'
-#' @param multimapping Set to TRUE or FALSE to specify if returned expression
-#' values must take into account or not multi-mapped reads
+#' @param genes `character` nameing the selected genes. The default
+#'     value, `NULL`, takes all CT genes.
 #'
-#' @param units Expression values units.
-#' Can be "TPM" (default) or "log_TPM" (log(TPM + 1))
+#' @param multimapping `logical(1)` that specifies if returned
+#'     expression values must take into account or not multi-mapped
+#'     reads
 #'
-#' @param return Boolean (FALSE by default). If set to TRUE, the function will
-#' return the gene's expression values in all samples instead of the heatmap.
+#' @param units `character(1)` with expression values unit.  Can be
+#'     `"TPM"` (default) or `"log_TPM"` (log(TPM + 1)).
+#'
+#' @param return `logical(1)`. If `TRUE`, the function will return the
+#'     expression values in all samples instead of the
+#'     heatmap. Default is `FALSE`.
 #'
 #' @details
-#' RNAseq data from a set of normal tissues were downloaded from Encode.
-#' (see inst/scripts/make_CT_normal_tissues_multimapping.R for fastq references)
-#' Fastq files were processed using a standard RNAseq pipeline including
-#' [FastQC](https://www.bioinformatics.babraham.ac.uk/projects/fastqc/) for the
-#' quality control of the raw data, and
-#' [trimmomatic](http://www.usadellab.org/cms/?page=trimmomatic)
-#' to remove low quality reads and trim the adapter from the sequences.
-#' [hisat2](https://ccb.jhu.edu/software/hisat2/index.shtml) was used to align
-#' reads to grch38 genome.
-#' [featurecounts](https://rdrr.io/bioc/Rsubread/man/featureCounts.html) was used
-#' to assign reads to genes using Homo_sapiens.GRCh38.105.gtf.
 #'
-#' Two different pipelines were run in order to remove or not multi-mapping reads.
-#' When multimapping was allowed, hisat2 was run with -k 20 parameter (reports
-#' up to 20 alignments per read), and featurecounts was run with -M parameter
-#' (multi-mapping reads are counted).
+#' RNAseq data from a set of normal tissues were downloaded from
+#' Encode.  (see inst/scripts/make_CT_normal_tissues_multimapping.R
+#' for fastq references) Fastq files were processed using a standard
+#' RNAseq pipeline including
+#' [FastQC](https://www.bioinformatics.babraham.ac.uk/projects/fastqc/)
+#' for the quality control of the raw data, and
+#' [trimmomatic](http://www.usadellab.org/cms/?page=trimmomatic) to
+#' remove low quality reads and trim the adapter from the sequences.
+#' [hisat2](https://ccb.jhu.edu/software/hisat2/index.shtml) was used
+#' to align reads to grch38 genome.
+#' [featurecounts](https://rdrr.io/bioc/Rsubread/man/featureCounts.html)
+#' was used to assign reads to genes using
+#' Homo_sapiens.GRCh38.105.gtf.
 #'
-#' @return A heatmap of selected gene expression values in a set of normal
-#' tissues calculated by counting or discarding multi-mapped reads.
-#' If return = TRUE, gene expression values are returned instead.
+#' Two different pipelines were run in order to remove or not
+#' multi-mapping reads.  When multimapping was allowed, hisat2 was run
+#' with -k 20 parameter (reports up to 20 alignments per read), and
+#' featurecounts was run with -M parameter (multi-mapping reads are
+#' counted).
+#'
+#' @return A heatmap of selected gene expression values in a set of
+#'     normal tissues calculated by counting or discarding
+#'     multi-mapped reads.  If `return = TRUE`, gene expression values
+#'     are returned instead.
 #'
 #' @export
 #'

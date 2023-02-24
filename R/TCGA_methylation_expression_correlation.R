@@ -1,27 +1,33 @@
 #' Methylation-Expression correlation of Cancer-Testis genes in TCGA samples
 #'
-#' @description Plots the correlation between methylation and
-#'     expression values of a Cancer-Testis (CT) gene in TCGA samples.
+#' @description
 #'
-#' @param gene CT gene name
+#' Plots the correlation between methylation and expression values of
+#' a Cancer-Testis (CT) gene in TCGA samples.
 #'
-#' @param tumor TCGA tumor code. c("SKCM", "LUAD", "LUSC", "COAD",
-#'     "ESCA", "BRCA", "HNSC", "all")
+#' @param gene `character` nameing the selected genes. The default
+#'     value, `NULL`, takes all CT genes.
 #'
-#' @param nt_up Number of nucleotides upstream the TSS to define the
-#'     promoter region (1000 by default)
+#' @param tumor `character` defining the TCGA tumor type. Can be one
+#'     of "SKCM", "LUAD", "LUSC", "COAD", "ESCA", "BRCA", "HNSC", or
+#'     "all" (default).
 #'
-#' @param nt_down Number of nucleotides downstream the TSS to define
-#'     the promoter region (200 by default)
+#' @param nt_up `numeric(1)` indicating the number of nucleotides
+#'     upstream the TSS to define the promoter region (1000 by
+#'     default)
 #'
-#' @param corr_coeff Boolean (FALSE by default). If set to TRUE, the
-#'     function will invisibly return the correlation coefficient
-#'     (Pearson), between methylation and expression values for the
-#'     gene in selected samples.
+#' @param nt_down `numeric(1)` indicating the number of nucleotides
+#'     downstream the TSS to define the promoter region (200 by
+#'     default)
 #'
-#' @param return Boolean (FALSE by default). If set to TRUE, the
-#'     function will return the methylation and expression values in
-#'     all samples instead of the heatmap.
+#' @param corr_coeff `logical(1)`. If `TRUE`, the function will
+#'     invisibly return the correlation coefficient (Pearson), between
+#'     methylation and expression values for the gene in selected
+#'     samples. Default is `FALSE`.
+#'
+#' @param return `logical(1)`. If `TRUE`, the function will return the
+#'     methylation and expression values in all samples instead of the
+#'     heatmap. Default is `FALSE`.
 #'
 #' @details The coefficient of correlation is set to `NA` if no probes
 #'     are found in promoter regions or if less than 1% of tumors are
@@ -60,7 +66,7 @@ TCGA_methylation_expression_correlation <- function(tumor,
                                                     nt_down = 200,
                                                     return = FALSE,
                                                     corr_coeff = FALSE) {
-    suppressMessages{(
+    suppressMessages({
         CT_genes <- CTdata::CT_genes()
         TPM <- CTdata::TCGA_TPM()
         met <- CTdata::TCGA_CT_methylation()

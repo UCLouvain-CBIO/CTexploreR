@@ -4,13 +4,15 @@
 #'
 #' Plots an expression heatmap of genes in CCLE tumor cell lines.
 #'
-#' @param genes Genes selected (all CT genes by default)
-
+#' @param genes `character` nameing the selected genes. The default
+#'     value, `NULL`, takes all CT genes.
+#'
 #' @param type `character` describing the tumor cell line(s) type to
-#' be plotted. Allowed cell lines are "Ovarian", "Leukemia", "Colorectal",
-#' "Skin", "Lung", "Bladder", "Kidney", "Breast", "Pancreatic", "Myeloma",
-#' "Brain", "Sarcoma", "Lymphoma", "Bone", "Neuroblastoma", "Gastric",
-#' "Uterine", "Head_and_Neck", "Bile_Duct" and "Esophageal".
+#'     be plotted. Allowed cell lines are "Ovarian", "Leukemia",
+#'     "Colorectal", "Skin", "Lung", "Bladder", "Kidney", "Breast",
+#'     "Pancreatic", "Myeloma", "Brain", "Sarcoma", "Lymphoma",
+#'     "Bone", "Neuroblastoma", "Gastric", "Uterine", "Head_and_Neck",
+#'     "Bile_Duct" and "Esophageal".
 #'
 #' @param type `character()` describing the tumor cell line(s) type to
 #'     be plotted. Allowed cell lines are "Ovarian", "Leukemia",
@@ -22,8 +24,8 @@
 #' @param units `character(1)` with expression values unit. Can be
 #'     "TPM" (default) or "log_TPM" (log(TPM + 1))
 #'
-#' @param return If `TRUE`, values are returned instead of the heatmap
-#'     (`FALSE` by default)
+#' @param return `logical(1)`. If `TRUE`, values are returned instead
+#'     of the heatmap (`FALSE` by default).
 #'
 #' @return A heatmap of selected genes in CCLE cell lines from
 #'     specified type.  If `return` is `TRUE`, expression values are

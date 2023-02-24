@@ -7,25 +7,28 @@
 TCGA_expression(tumor = "all", genes = NULL, units = "TPM", return = FALSE)
 }
 \arguments{
-\item{tumor}{TCGA tumor code. Can be one of "SKCM", "LUAD", "LUSC", "COAD",
-"ESCA", "BRCA", "HNSC", or "all" (default).}
+\item{tumor}{\code{character} defining the TCGA tumor type. Can be one
+of "SKCM", "LUAD", "LUSC", "COAD", "ESCA", "BRCA", "HNSC", or
+"all" (default).}
 
-\item{genes}{Genes selected (All CT genes by default)}
+\item{genes}{\code{character} nameing the selected genes. The default
+value, \code{NULL}, takes all CT genes.}
 
-\item{units}{Expression values unit.
-Can be "TPM" (default) or "log_TPM" (log(TPM + 1))}
+\item{units}{\code{character(1)} with expression values unit.  Can be
+\code{"TPM"} (default) or \code{"log_TPM"} (log(TPM + 1)).}
 
-\item{return}{Boolean (FALSE by default). If set to TRUE, the function will
-return the expression values in all samples instead of the heatmap.}
+\item{return}{\code{logical(1)}. If \code{TRUE}, the function will return the
+expression values in all samples instead of the
+heatmap. Default is \code{FALSE}.}
 }
 \value{
 A heatmap of selected CT genes expression in TCGA samples.
-If return = TRUE, TPM expression data is returned instead.
+If \code{return = TRUE}, TPM expression data is returned instead.
 }
 \description{
-Plots a heatmap of genes expression in TCGA samples
-(peritumoral and tumor samples when a specific tumor type is specified, or
-tumor samples only when tumor option is set to "all")
+Plots a heatmap of genes expression in TCGA samples (peritumoral
+and tumor samples when a specific tumor type is specified, or tumor
+samples only when tumor option is set to "all")
 }
 \examples{
 TCGA_expression(tumor = "LUAD", genes = c("MAGEA1", "MAGEA3"), units = "log_TPM")

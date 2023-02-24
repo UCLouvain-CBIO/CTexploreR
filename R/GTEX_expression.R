@@ -1,18 +1,20 @@
 #' Gene expression in normal tissues (GTEx)
 #'
-#' @description Plots an expression heatmap of genes in normal
-#' tissues (GTEx database)
+#' @description Plots an expression heatmap of genes in normal tissues
+#'     (GTEx database).
 #'
-#' @param genes Genes selected (all CT genes by default)
+#' @param genes `character` nameing the selected genes. The default
+#'     value, `NULL`, takes all CT genes.
 #'
-#' @param units Expression values unit.
-#' Can be "TPM" (default) or "log_TPM" (log(TPM + 1))
+#' @param units `character(1)` with expression values unit.  Can be
+#'     `"TPM"` (default) or `"log_TPM"` (log(TPM + 1)).
 #'
-#' @param return Boolean (FALSE by default). If set to TRUE, the function will
-#' return the expression values in all samples instead of the heatmap.
+#' @param return `logical(1)`. If `TRUE`, the function will return the
+#'     expression values in all samples instead of the
+#'     heatmap. Default is `FALSE`.
 #'
 #' @return A heatmap of selected genes expression in normal tissues.
-#' If return = TRUE, expression values are returned instead.
+#'     If `return = TRUE`, expression values are returned instead.
 #'
 #' @export
 #'

@@ -7,21 +7,23 @@
 GTEX_expression(genes = NULL, units = "TPM", return = FALSE)
 }
 \arguments{
-\item{genes}{Genes selected (all CT genes by default)}
+\item{genes}{\code{character} nameing the selected genes. The default
+value, \code{NULL}, takes all CT genes.}
 
-\item{units}{Expression values unit.
-Can be "TPM" (default) or "log_TPM" (log(TPM + 1))}
+\item{units}{\code{character(1)} with expression values unit.  Can be
+\code{"TPM"} (default) or \code{"log_TPM"} (log(TPM + 1)).}
 
-\item{return}{Boolean (FALSE by default). If set to TRUE, the function will
-return the expression values in all samples instead of the heatmap.}
+\item{return}{\code{logical(1)}. If \code{TRUE}, the function will return the
+expression values in all samples instead of the
+heatmap. Default is \code{FALSE}.}
 }
 \value{
 A heatmap of selected genes expression in normal tissues.
-If return = TRUE, expression values are returned instead.
+If \code{return = TRUE}, expression values are returned instead.
 }
 \description{
-Plots an expression heatmap of genes in normal
-tissues (GTEx database)
+Plots an expression heatmap of genes in normal tissues
+(GTEx database).
 }
 \examples{
 GTEX_expression(units = "log_TPM")

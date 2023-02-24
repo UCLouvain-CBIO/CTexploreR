@@ -1,22 +1,27 @@
 #' Gene expression in TCGA tumors
 #'
-#' @description Plots a heatmap of genes expression in TCGA samples
-#' (peritumoral and tumor samples when a specific tumor type is specified, or
-#' tumor samples only when tumor option is set to "all")
+#' @description
 #'
-#' @param tumor TCGA tumor code. Can be one of "SKCM", "LUAD", "LUSC", "COAD",
-#' "ESCA", "BRCA", "HNSC", or "all" (default).
+#' Plots a heatmap of genes expression in TCGA samples (peritumoral
+#' and tumor samples when a specific tumor type is specified, or tumor
+#' samples only when tumor option is set to "all")
 #'
-#' @param genes Genes selected (All CT genes by default)
+#' @param tumor `character` defining the TCGA tumor type. Can be one
+#'     of "SKCM", "LUAD", "LUSC", "COAD", "ESCA", "BRCA", "HNSC", or
+#'     "all" (default).
 #'
-#' @param units Expression values unit.
-#' Can be "TPM" (default) or "log_TPM" (log(TPM + 1))
+#' @param genes `character` nameing the selected genes. The default
+#'     value, `NULL`, takes all CT genes.
 #'
-#' @param return Boolean (FALSE by default). If set to TRUE, the function will
-#' return the expression values in all samples instead of the heatmap.
+#' @param units `character(1)` with expression values unit.  Can be
+#'     `"TPM"` (default) or `"log_TPM"` (log(TPM + 1)).
+#'
+#' @param return `logical(1)`. If `TRUE`, the function will return the
+#'     expression values in all samples instead of the
+#'     heatmap. Default is `FALSE`.
 #'
 #' @return A heatmap of selected CT genes expression in TCGA samples.
-#' If return = TRUE, TPM expression data is returned instead.
+#'     If `return = TRUE`, TPM expression data is returned instead.
 #'
 #' @export
 #'

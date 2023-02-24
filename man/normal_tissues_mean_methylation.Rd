@@ -4,36 +4,36 @@
 \alias{normal_tissues_mean_methylation}
 \title{Promoter methylation of Cancer-Testis genes in normal tissues}
 \usage{
-normal_tissues_mean_methylation(
-  genes = NULL,
-  return = FALSE,
-  include_genes_with_missing_values = FALSE
-)
+normal_tissues_mean_methylation(genes = NULL, return = FALSE, na.omit = TRUE)
 }
 \arguments{
-\item{genes}{Name of CT gene selected}
+\item{genes}{\code{character} nameing the selected genes. The default
+value, \code{NULL}, takes all CT genes.}
 
-\item{return}{Boolean (FALSE by default). If set to TRUE, the function will
-return the methylation values in all samples instead of the heatmap.}
+\item{return}{\code{logical(1)}, \code{FALSE} by default. If \code{TRUE}, the
+function will return the methylation values in all samples
+instead of the heatmap.}
 
-\item{include_genes_with_missing_values}{Set to TRUE or FALSE to specify if
-genes with missing methylation values in some tissues should be included
-(set to FALSE by default). Note that no gene clustering will be done when
-some methylation values are missing.}
+\item{na.omit}{\code{logical(1)} specifying if genes with missing
+methylation values in some tissues should be removed (\code{TRUE} by
+default). Note that no gene clustering will be done when
+methylation values are missing.}
 }
 \value{
-Heatmap of mean promoter methylation of Cancer-Testis (CT) genes
-in normal tissues. If return = TRUE, methylation values are returned instead.
+Heatmap of mean promoter methylation of Cancer-Testis (CT)
+genes in normal tissues. If \code{return = TRUE}, methylation values
+are returned instead.
 }
 \description{
 Plots a heatmap of mean promoter methylation levels of
-Cancer-Testis (CT) genes in normal tissues. Methylation levels in
-tissues correspond to the mean methylation of CpGs located in range of
-1000 pb upstream and 200 pb downstream from gene TSS.
+Cancer-Testis (CT) genes in normal tissues. Methylation levels
+in tissues correspond to the mean methylation of CpGs located
+in range of 1000 pb upstream and 200 pb downstream from gene
+TSS.
 }
 \examples{
 normal_tissues_mean_methylation()
 normal_tissues_mean_methylation(c("MAGEA1", "MAGEA2", "MAGEA3", "MAGEA4"))
 normal_tissues_mean_methylation(c("MAGEA1", "MAGEA2", "MAGEA3", "MAGEA4"),
-include_genes_with_missing_values = TRUE)
+                                na.omit = FALSE)
 }
