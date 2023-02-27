@@ -6,6 +6,7 @@ package: CTexploreR
 output:
   BiocStyle::html_document:
     toc_float: true
+    df_print : paged
 vignette: >
   %\VignetteIndexEntry{Cancer Testis Explorer}
   %\VignetteEngine{knitr::rmarkdown}
@@ -19,38 +20,50 @@ BiocStyle::markdown()
 
 # Introduction
 
-The CTexploreR package re-defines the list of Cancer Testis (CT) genes (also 
+The `CTexploreR` package re-defines the list of Cancer Testis (CT) genes (also 
 known a Cancer Germline genes) based on publicly available RNAseq databases 
 (GTEx, CCLE and TCGA) and summarises their main characteristics. Several 
 visualisation functions allow to explore their expression in different types of 
 tissues and cancer cells, or to inspect the methylation status of their 
 promoters in normal tissues.
 
+It has appeared while working on CT genes that there was no reliable database. 
+One existing database, CTdatabase (2009) showed different issues : problematic 
+gene names, no precise chromosomal location, expression profiles based on old 
+methods (no RNAseq data), no data about DNA methylation, missing genes identified
+recently and not in an importable format. 
 
-**Explain why we created both (other databases that were older etc) and explain**
-**difference with other databases to motivate our choice**
+Another known database is the one from Wang's team (2016), however there are 
+other caveats : just a list of genes in  supplemental data, selection criteria 
+are not at all stringent, based on RPKM values, multi-mapping problem is not 
+addressed and no individual data about promoter DNA methylation. 
 
-**Link with CTdata**
+We thus decided to create a new CT gene resource satisfying all of our needs 
+for the analysis of CT genes. We provide a list of 307 CT genes, see table below, 
+selected based on their expression in normal and tumoral tissues (selection 
+details in the next section). Information about gene location, expression in 
+normal tissues, expression in tumor sample and cell lines, methylation of 
+promoter can also be found in the table. 
+
+```{r CT_genes}
+library(CTexploreR)
+CT_genes
+```
 
 
-`CTdata` is the companion Package for `CTexploreR` and provides omics
-data to select and characterise cancer testis genes. Data come from
-public databases and include expression and methylation values of
-genes in normal and tumor samples as well as in tumor cell lines, and
-expression in cells treated with a demethylating agent is also
-available.
-
-The data are served through the `ExperimentHub` infrastructure, which
-allows download them only ones and cache them for further
-use. Currently available data are summarised in the table below and
-details in the next section.
+`CTdata` is the companion Package for `CTexploreR` and provides the omics
+data that was necessary to select and characterise cancer testis genes as well 
+as exploring them. Data come from public databases and include expression and 
+methylation values of genes in normal and tumor samples as well as in tumor cell
+lines, and expression in cells treated with a demethylating agent is also
+available. The data are served through the `ExperimentHub` infrastructure. 
+Currently available data are summarised in the table below and details can be 
+found in `CTdata` vignette or manuals.
 
 ```{r data}
 library("CTdata")
-DT::datatable(CTdata())
+CTdata()
 ```
-
-**refer to CTdata vignette saying that if more info is needed on a dataset or how it has been created its there**
 
 
 # Installation
@@ -73,27 +86,119 @@ if (!require("BiocManager"))
 BiocManager::install("UCLouvain-CBIO/CTexploreR")
 ```
 
-# Available functions
+# CT gene selection
 
-For details about each data, see their respective manual pages.
-
-**Explain a bit with examples and interp to present the use of the package and link between functions**
-
-## CT genes determination
-
-We datasets above, we generated a list of 307 CT genes (see figure below for 
-details). 
-
-We use multimapping because many CT genes belong to gene families from which 
-members have identical or nearly identical sequences. This is likely the reason 
-why these genes are not detected in GTEx database, as GTEx processing pipeline 
-specifies that overlapping intervals between genes are excluded from all genes 
-for counting. Some CT can thus only be detected in RNAseq data in which 
-multimapping reads are not discarded.
+In order to generate the list of CT genes, we followed an specific selection 
+(see figure below).
 
 ```{r, echo=FALSE, fig.align='center', out.width = '100%'}
-knitr::include_graphics("figs/CT_selection.svg")
+knitr::include_graphics("CT_selection.svg")
 ```
+
+## Testis-specific expression
+
+Testis-specific genes (expressed exclusively in testis) and testis-preferential 
+genes (expressed in a few somatic tissues at a level lower than 10x testis 
+expression) were first selected using GTEx database.
+
+Note that some genes were undetectable in GTEx database due to multimapping 
+issues (these were flagged as "lowly expressed" in `GTEX_category` column). 
+A careful inspection of these genes showed that many of them are well-known 
+Cancer-Testis genes, belonging to gene families (MAGEA, SSX, CT45A, GAGE, …) 
+from which members have identical or nearly identical sequences. This is likely 
+the reason why these genes are not detected in GTEx database, as GTEX processing
+pipeline specifies that overlapping intervals between genes are excluded from 
+all genes for counting.
+
+For these genes, as testis-specificity could not be assessed using GTEx database,
+RNAseq data from a set of normal tissues were home-processed in order to allow 
+multimapping. Expression of several genes became detectable in some tissues. 
+Genes showing a testis-specific expression (expression at least 10x higher in 
+testis than in any somatic tissues when multimapping was allowed) were selected, 
+and flagged as testis-specific in `multimapping_analysis` column.
+
+
+## Activation in cancer cell lines and TCGA tumors
+
+RNAseq data from cancer cell lines from CCLE were used to select among 
+testis-specific and testis-prefential genes those that are activated in cancers.
+In the `CCLE_category` column, genes are tagged as "activated" when they are 
+highly expressed in at least one cancer cell line (TPM >= 10). However genes that 
+were found to be expressed in all -or almost all- cancer cell lines were removed,
+as this probably reflects a constitutive expression rather than a true 
+activation. We filtered out genes that were not completely repressed in at 
+least 20 % of cell lines (TPM <= 0.1).
+
+RNAseq data from TCGA cancer samples were used to select among testis-specific 
+and testis-prefential genes those that are activated in cancers. In the 
+`TCGA_category` column, genes are tagged as "activated" when they are highly 
+expressed in at least one cancer sample (TPM >= 10). But genes that were found 
+to be expressed in all -or almost all- cancer samples were removed, as this 
+probably reflects a constitutive expression rather than a true activation. We 
+filtered out genes that were not completely repressed in at least 20 % of cancer
+samples (TPM <= 0.1).
+
+
+## IGV visualisation
+
+All selected CT genes were visualised on IGV using a RNA-seq alignment from 
+testis, to ensure that expression in testis really corresponded to the canonical
+transcript. For some genes for which the canonical transcript did not correspond
+to the transcript that we could see in the testis sample, we manually modified  
+the `external_transcript_name` accordingly, to ensure that the TSS and the 
+promoter region are correctly defined. This is particularly important for 
+methylation analysis that must be focused on true promoter regions.
+
+## Regulation by methylation
+
+Genes flagged as `TRUE` in `regulated_by_methylation` column correspond to
+
+* Genes that are significantly induced by a demethylating agent (RNAseq analysis
+of cell lines reated with DAC (5-Aza-2′-Deoxycytidine)).
+
+* Genes that have a highly methylated promoter in normal somatic tissues but 
+less methylated in germ cells (WGBS analysis of a set of normal tissues).
+
+For some genes showing a strong activation in cells treated with 
+5-Aza-2′-Deoxycytidine, methylation analysis was not possible due to multimapping
+issues. In this case, genes were still considered as regulated by methylation 
+unless their promoter appeared unmethylated in somatic tissues or methylated in 
+germ cells.
+
+
+# Available functions
+
+For details about functions, see their respective manual pages.
+
+**Explain a bit with examples and interp to present the use of the package and link between functions**
+**Mention how we selected in the examples ? **
+
+## Expression in normal tissues
+
+### `GTEX_expression()`
+
+### `normal_tissue_expression_multimapping()`
+
+
+## Expression in cancer cells and samples
+
+### `CCLE_expression()`
+
+### `CT_correlated_genes()`
+
+### `TCGA_expression()`
+
+
+
+## Methylation analysis
+
+### `DAC_induction()`
+
+### `normal_tissues_tissues_methylation()`
+
+### `normal_tissues_mean_methylation()`
+
+### `TCGA_methylation_expression_correlation()`
 
 
 
