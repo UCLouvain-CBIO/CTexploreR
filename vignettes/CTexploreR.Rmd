@@ -47,7 +47,8 @@ promoter can also be found in the table.
 
 ```{r CT_genes}
 library(CTexploreR)
-CT_genes
+library(CTdata)
+CT_genes <- CT_genes()
 ```
 
 
@@ -61,7 +62,6 @@ Currently available data are summarised in the table below and details can be
 found in `CTdata` vignette or manuals.
 
 ```{r data}
-library("CTdata")
 CTdata()
 ```
 
@@ -168,25 +168,147 @@ germ cells.
 
 # Available functions
 
-For details about functions, see their respective manual pages.
+For details about functions, see their respective manual pages. For all functions,
+an option `return` can  be set to `TRUE` in order to get the values instead of the
+visualisation.
 
-**Explain a bit with examples and interp to present the use of the package and link between functions**
-**Mention how we selected in the examples ? **
 
 ## Expression in normal tissues
 
 ### `GTEX_expression()`
 
+Allows to visualise gene expression in GTEx tissues. We can for example see the 
+difference of expression between testis-specific and testis-preferential genes.
+
+* Applied to testis-specific genes : we can clearly see the expression only in 
+testis as well as genes lowly expressed in GTEx.
+
+```{r}
+testis_specific <- dplyr::filter(CT_genes, testis_specificity == "testis_specific")
+GTEX_expression(testis_specific$external_gene_name, units = "log_TPM")
+```
+
+* Applied to testis-preferential genes : we can see here that the expression is 
+less stringent to testis, as expected.
+
+```{r}
+testis_preferential <- dplyr::filter(CT_genes, 
+                                     testis_specificity == "testis_preferential")
+GTEX_expression(testis_preferential$external_gene_name, units = "log_TPM")
+```
+
 ### `normal_tissue_expression_multimapping()`
+
+Allows to visualise the expression values obtained by counting or not 
+multi-mapped reads in normal tissues. We can apply that to genes that are lowly
+expressed in GTEx (as seen above) in order to visualise them. First heatmap 
+shows expression without multimapping while multimapping was allowed in the second
+one, where we now see expression.
+
+```{r}
+testis_specific_in_multimapping_analysis <- 
+  dplyr::filter(CT_genes, lowly_expressed_in_GTEX)
+
+normal_tissue_expression_multimapping(
+  testis_specific_in_multimapping_analysis$external_gene_name,
+  multimapping = FALSE, units = "log_TPM")
+
+normal_tissue_expression_multimapping(
+  testis_specific_in_multimapping_analysis$external_gene_name,
+  multimapping = TRUE, units = "log_TPM")
+
+```
 
 
 ## Expression in cancer cells and samples
 
 ### `CCLE_expression()`
 
+Allows to visualise gene expression in different histological types of CCLE 
+cancer cell lines. We can thus compare genes that are or not activated in tumoral
+cell lines. 
+
+* Applied to CT genes frequently activated in CCLE cell lines
+
+```{r}
+frequently_activated <- dplyr::filter(CT_genes,
+                                      percent_of_positive_CCLE_cell_lines >= 5)
+
+CCLE_expression(genes = frequently_activated$external_gene_name, 
+                type = c("lung", "skin", "bile_duct", "bladder", "colorectal", 
+                         "lymphoma", "uterine", "myeloma", "kidney", 
+                         "pancreatic", "brain", "gastric", "breast", "bone",
+                         "head_and_neck", "ovarian", "sarcoma", "leukemia", 
+                         "esophageal", "neuroblastoma"),
+                units = "log_TPM")
+
+```
+
+
+
+* Applied to CT genes not frequently activated in CCLE cell lines
+
+```{r}
+not_frequently_activated <- dplyr::filter(CT_genes,
+                                      percent_of_negative_CCLE_cell_lines >= 95)
+
+CCLE_expression(genes = not_frequently_activated$external_gene_name, 
+                type = c("lung", "skin", "bile_duct", "bladder", "colorectal", 
+                         "lymphoma", "uterine", "myeloma", "kidney", 
+                         "pancreatic", "brain", "gastric", "breast", "bone",
+                         "head_and_neck", "ovarian", "sarcoma", "leukemia", 
+                         "esophageal", "neuroblastoma"),
+                units = "log_TPM")
+
+```
+
 ### `CT_correlated_genes()`
 
+A function that use expression data from all CCLE cell lines and returns genes 
+correlated (or anti-correlated) with specified CT gene.
+
+Here with MAGEA3, we can see all genes (CT or not) whose expression is correlated
+with it, like MAGEA6.
+
+
+```{r}
+CT_correlated_genes("MAGEA3", 0.3)
+```
+
+
 ### `TCGA_expression()`
+
+Allows to visualise gene expression in cancer samples from TCGA. We can thus for
+example compare with activation in CCLE cell lines.
+
+* Applied to CT genes frequently activated in CCLE cell lines
+
+```{r}
+TCGA_expression(genes = frequently_activated$external_gene_name, 
+                tumor = "all",
+                units = "log_TPM")
+
+```
+
+
+* Applied to CT genes not frequently activated in CCLE cell lines
+
+```{r}
+TCGA_expression(genes = not_frequently_activated$external_gene_name, 
+                tumor = "all",
+                units = "log_TPM")
+
+```
+
+
+When visualising only one tumor, there is a separation between tumoral and 
+peritumoral tissue.
+
+```{r}
+TCGA_expression(genes = frequently_activated$external_gene_name, 
+                tumor = "LUAD", 
+                units = "log_TPM")
+```
 
 
 
@@ -194,11 +316,86 @@ For details about functions, see their respective manual pages.
 
 ### `DAC_induction()`
 
-### `normal_tissues_tissues_methylation()`
+Allows to visualise gene induction upon DAC treatment in a series of cell lines.
+We can see the difference between CT genes regulated by methylation or not
+
+* Applied to genes controled by methylation
+
+```{r}
+controled_by_methylation <- dplyr::filter(CT_genes, regulated_by_methylation)
+DAC_induction(genes = controled_by_methylation$external_gene_name)
+
+```
+
+* Applied to genes not controled by methylation
+
+```{r}
+not_controled_by_methylation <- dplyr::filter(CT_genes, !regulated_by_methylation)
+DAC_induction(genes = not_controled_by_methylation$external_gene_name)
+```
+
+### `normal_tissues_methylation()`
+
+Gives the methylation level of all CpGs located in each promoter region 
+(by default defined as 1000 nt upstream TSS and 200 nt downstream TSS) in a set 
+of normal tissues. Can be used to analyse more precisely the methylation of a 
+particular promoter in normal tissues as methylation values are given CpG by CpG.
+
+* Applied to a gene controled by methylation
+
+```{r}
+normal_tissues_methylation("MAGEB2")
+```
+
+* Applied to a gene not controled by methylation
+
+```{r}
+normal_tissues_methylation("LIN28A")
+```
+
+
+
 
 ### `normal_tissues_mean_methylation()`
 
+Gives the mean methylation level of CpGs located in each promoter region 
+(by default defined as 1000 nt upstream TSS and 200 nt downstream TSS) in a set 
+of normal tissues. When comparing genes controled or not by methylation, we can
+see a specific methylation pattern in the first group.
+
+* Applied to genes controled by methylation
+
+```{r}
+normal_tissues_mean_methylation(genes = 
+                                  controled_by_methylation$external_gene_name)
+```
+
+
+* Applied to genes not controled by methylation
+
+```{r}
+normal_tissues_mean_methylation(genes = 
+                                  not_controled_by_methylation$external_gene_name)
+```
+
 ### `TCGA_methylation_expression_correlation()`
+
+Shows the correlation between gene expression and promoter methylation in 
+TCGA samples.
+
+* Applied to a gene controled by methylation
+
+```{r}
+TCGA_methylation_expression_correlation(tumor = "all", 
+                                        gene = "TDRD1")
+```
+
+* Applied to a gene not controled by methylation
+
+```{r}
+TCGA_methylation_expression_correlation(tumor = "all", 
+                                        gene = "LIN28A")
+```
 
 
 
