@@ -47,8 +47,7 @@ promoter can also be found in the table.
 
 ```{r CT_genes}
 library(CTexploreR)
-library(CTdata)
-CT_genes <- CT_genes()
+CT_genes
 ```
 
 

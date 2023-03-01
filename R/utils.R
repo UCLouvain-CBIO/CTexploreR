@@ -59,3 +59,40 @@ TCGA_colors <- c("BRCA" = "pink", "COAD" = "midnightblue",
                  "ESCA" = "wheat3", "HNSC" = "deeppink2",
                  "LUAD" = "turquoise3", "LUSC" = "seagreen3",
                  "SKCM" = "red3")
+
+
+
+#' CT genes description table
+#'
+#' @description
+#'
+#' Cancer-Testis (CT) genes description, imported from `CTdata`
+#'
+#' @format
+#'
+#' A `tibble` object with 307 rows and 34 columns.
+#'
+#' - Rows correspond to CT genes
+#'
+#' - Columns give CT genes characteristics
+#'
+#' @details
+#'
+#' See `CTdata::CT_genes` documentation for details
+#' 
+#' @source
+#'
+#' See `scripts/make_CT_genes.R` in `CTdata` for details on how this list of
+#' curated CT genes was created.
+#' 
+#' @export
+#' 
+#' @name CT_genes
+#'
+#' @docType data
+CT_genes <- CTdata::CT_genes()
+
+
+
+
+

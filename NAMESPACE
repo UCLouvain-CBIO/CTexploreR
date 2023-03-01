@@ -2,6 +2,7 @@
 
 export(CCLE_expression)
 export(CT_correlated_genes)
+export(CT_genes)
 export(DAC_induction)
 export(GTEX_expression)
 export(TCGA_expression)
