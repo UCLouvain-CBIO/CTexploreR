@@ -131,8 +131,9 @@ TCGA_methylation_expression_correlation <- function(tumor,
     met_mean <- met_mean[!duplicated(names(met_mean))]
     
     methylation_expression <-
-      left_join(tibble(sample = names(met_mean), met = met_mean),
-                tibble(sample = colnames(TPM), TPM = as.vector(assay(TPM))))
+      suppressMessages(left_join(
+        tibble(sample = names(met_mean), met = met_mean),
+        tibble(sample = colnames(TPM), TPM = as.vector(assay(TPM)))))
 
     ## stop if no probes or no methylation values for probes within the region
     if (all(is.na(methylation_expression$met))) {
