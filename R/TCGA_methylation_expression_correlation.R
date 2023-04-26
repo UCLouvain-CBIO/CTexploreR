@@ -137,7 +137,7 @@ TCGA_methylation_expression_correlation <- function(tumor,
 
     ## stop if no probes or no methylation values for probes within the region
     if (all(is.na(methylation_expression$met))) {
-        message(paste0("No probes or no methylation values for probes for ", gene))
+        message(paste0("No methylation data for ", gene))
         cor <- NA
     }
 
