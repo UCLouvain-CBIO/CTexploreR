@@ -147,9 +147,11 @@ TCGA_methylation_expression_correlation <- function(tumor,
         message(paste0("Too few positive samples to estimate a correlation for ",
                        gene))
         cor <- NA
-    } else {
-        cor <- cor.test(methylation_expression$met,
-                        log1p(methylation_expression$TPM))$estimate
+    }
+    
+    if (!is.na(cor)) {
+      cor <- cor.test(methylation_expression$met,
+                      log1p(methylation_expression$TPM))$estimate
     }
 
     methylation_expression <-
