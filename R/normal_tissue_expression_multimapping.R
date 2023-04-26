@@ -101,18 +101,18 @@ normal_tissue_expression_multimapping <- function(genes = NULL,
     if (dim(mat)[1] > 20 & dim(mat)[1] <= 50) fontsize <- 6
     if (dim(mat)[1] <= 20) fontsize <- 8
 
-    h <- suppressMessages(Heatmap(mat,
-                                  name = name,
-                                  col = colorRamp2(seq(0, max(mat), length = 11),
-                                                   legend_colors),
-                                  column_title = title,
-                                  cluster_rows = TRUE,
-                                  show_row_dend = FALSE,
-                                  cluster_columns = TRUE,
-                                  show_column_dend = FALSE,
-                                  row_names_gp = gpar(fontsize = fontsize),
-                                  column_names_gp = gpar(fontsize = 6),
-                                  clustering_method_rows = "ward.D"))
+    h <- Heatmap(mat,
+                 name = name,
+                 col = colorRamp2(seq(0, max(mat), length = 11),
+                                  legend_colors),
+                 column_title = title,
+                 cluster_rows = TRUE,
+                 show_row_dend = FALSE,
+                 cluster_columns = TRUE,
+                 show_column_dend = FALSE,
+                 row_names_gp = gpar(fontsize = fontsize),
+                 column_names_gp = gpar(fontsize = 6),
+                 clustering_method_rows = "ward.D")
 
 
     if (return)

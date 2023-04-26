@@ -96,22 +96,22 @@ TCGA_expression <- function(tumor = "all", genes = NULL,
     if (dim(mat)[1] > 20 & dim(mat)[1] <= 50) fontsize <- 6
     if (dim(mat)[1] <= 20) fontsize <- 8
 
-    h <- suppressMessages(Heatmap(mat[, , drop = FALSE],
-                                  name = units,
-                                  column_title = paste0("Expression in TCGA samples (", tumor, ")"),
-                                  column_split = split_by,
-                                  col = colorRamp2(seq(0, max(mat), length = 11),
-                                                   legend_colors),
-                                  clustering_method_rows = "ward.D",
-                                  clustering_method_columns = "ward.D",
-                                  cluster_rows = TRUE,
-                                  show_column_names = FALSE,
-                                  cluster_columns = TRUE,
-                                  show_column_dend = FALSE,
-                                  show_row_dend = FALSE,
-                                  row_names_gp = gpar(fontsize = fontsize),
-                                  heatmap_legend_param = legends_param,
-                                  top_annotation = annot))
+    h <- Heatmap(mat[, , drop = FALSE],
+                 name = units,
+                 column_title = paste0("Expression in TCGA samples (", tumor, ")"),
+                 column_split = split_by,
+                 col = colorRamp2(seq(0, max(mat), length = 11),
+                                  legend_colors),
+                 clustering_method_rows = "ward.D",
+                 clustering_method_columns = "ward.D",
+                 cluster_rows = TRUE,
+                 show_column_names = FALSE,
+                 cluster_columns = TRUE,
+                 show_column_dend = FALSE,
+                 show_row_dend = FALSE,
+                 row_names_gp = gpar(fontsize = fontsize),
+                 heatmap_legend_param = legends_param,
+                 top_annotation = annot)
 
     if (return)
         return(mat)

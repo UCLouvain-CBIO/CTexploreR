@@ -79,21 +79,21 @@ DAC_induction <- function(genes = NULL, multimapping = TRUE, return = FALSE) {
     if (dim(mat)[1] > 20 & dim(mat)[1] <= 50) fontsize <- 6
     if (dim(mat)[1] <= 20) fontsize <- 8
 
-    h <- suppressMessages(Heatmap(mat[, rownames(df_col), drop = FALSE],
-                                  name = "logCounts",
-                                  column_title = "Gene expression in cells treated or not with 5-Aza",
-                                  column_split = factor(df_col$cell),
-                                  col = colorRamp2(seq(0, max(mat), length = 11),
-                                                   legend_colors),
-
-                                  cluster_rows = TRUE,
-                                  show_row_dend = FALSE,
-                                  clustering_method_rows = "ward.D",
-                                  show_column_names = FALSE,
-                                  cluster_columns = FALSE,
-                                  row_names_gp = gpar(fontsize = fontsize),
-                                  top_annotation = c(column_ha_cell,
-                                                     column_ha_treatment)))
+    h <- Heatmap(mat[, rownames(df_col), drop = FALSE],
+                 name = "logCounts",
+                 column_title = "Gene expression in cells treated or not with 5-Aza",
+                 column_split = factor(df_col$cell),
+                 col = colorRamp2(seq(0, max(mat), length = 11),
+                                  legend_colors),
+                 
+                 cluster_rows = TRUE,
+                 show_row_dend = FALSE,
+                 clustering_method_rows = "ward.D",
+                 show_column_names = FALSE,
+                 cluster_columns = FALSE,
+                 row_names_gp = gpar(fontsize = fontsize),
+                 top_annotation = c(column_ha_cell,
+                                    column_ha_treatment))
 
 
     if (return)

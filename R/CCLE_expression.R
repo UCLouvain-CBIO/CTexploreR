@@ -96,22 +96,22 @@ CCLE_expression <- function(genes = NULL, type = NULL, units = "TPM",
     if (length(type) > 5 & length(type) < 10) label_fontsize <- 4
     if (length(type) >= 10 | is.null(type)) label_fontsize <- 0
 
-    h <- suppressMessages(Heatmap(mat[, rownames(df_col), drop = FALSE],
-                                  name = name,
-                                  column_title = "Gene Expression in tumor cell lines (CCLE)",
-                                  column_split = factor(df_col$type),
-                                  col = colorRamp2(seq(0, max(mat), length = 11),
-                                                   legend_colors),
-                                  clustering_method_rows = "ward.D",
-                                  clustering_method_columns = "ward.D",
-                                  cluster_rows = TRUE,
-                                  show_row_dend = FALSE,
-                                  show_column_names = FALSE,
-                                  cluster_columns = TRUE,
-                                  show_column_dend = FALSE,
-                                  row_names_gp = gpar(fontsize = fontsize),
-                                  heatmap_legend_param = legends_param,
-                                  top_annotation = c(column_ha_type)))
+    h <- Heatmap(mat[, rownames(df_col), drop = FALSE],
+                 name = name,
+                 column_title = "Gene Expression in tumor cell lines (CCLE)",
+                 column_split = factor(df_col$type),
+                 col = colorRamp2(seq(0, max(mat), length = 11),
+                                  legend_colors),
+                 clustering_method_rows = "ward.D",
+                 clustering_method_columns = "ward.D",
+                 cluster_rows = TRUE,
+                 show_row_dend = FALSE,
+                 show_column_names = FALSE,
+                 cluster_columns = TRUE,
+                 show_column_dend = FALSE,
+                 row_names_gp = gpar(fontsize = fontsize),
+                 heatmap_legend_param = legends_param,
+                 top_annotation = c(column_ha_type))
 
     if (return)
         return(mat)

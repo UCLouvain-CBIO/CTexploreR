@@ -51,8 +51,7 @@ GTEX_expression <- function(genes = NULL, units = "TPM", return = FALSE) {
     if (dim(mat)[1] > 20 & dim(mat)[1] <= 50) fontsize <- 6
     if (dim(mat)[1] <= 20) fontsize <- 8
 
-    h <- suppressMessages(
-        Heatmap(mat,
+    h <- Heatmap(mat,
                 name = name,
                 column_title = "Gene Expression in normal tissues (GTEx)",
                 col = colorRamp2(seq(0, max(mat), length = 11),
@@ -63,7 +62,7 @@ GTEX_expression <- function(genes = NULL, units = "TPM", return = FALSE) {
                 show_column_dend = FALSE,
                 row_names_gp = gpar(fontsize = fontsize),
                 column_names_gp = gpar(fontsize = 10),
-                clustering_method_rows = "ward.D"))
+                clustering_method_rows = "ward.D")
 
     if (return)
         return(mat)
