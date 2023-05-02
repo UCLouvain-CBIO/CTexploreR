@@ -28,15 +28,15 @@ tissues and cancer cells, or to inspect the methylation status of their
 promoters in normal tissues.
 
 It has appeared while working on CT genes that there was no reliable database.
-One existing database, CTdatabase (2009) showed different issues : problematic
-gene names, no precise chromosomal location, expression profiles based on old
-methods (no RNAseq data), no data about DNA methylation, missing genes identified
-recently and not in an importable format.
+One existing database, CTdatabase (Almeida et al., 2009) showed different issues
+: problematic gene names, no precise chromosomal location, expression profiles 
+based on old methods (no RNAseq data), no data about DNA methylation, missing 
+genes identified recently and not in an importable format.
 
-Another known database is the one from Wang's team (2016), however there are
-other caveats : just a list of genes in  supplemental data, selection criteria
-are not at all stringent, based on RPKM values, multi-mapping problem is not
-addressed and no individual data about promoter DNA methylation.
+Another known database is the one from Wang's team (Wang et al., 2016), however 
+there are other caveats : just a list of genes in  supplemental data, selection 
+criteria are not at all stringent, based on FPKM values, multi-mapping problem is
+not addressed and no individual data about promoter DNA methylation.
 
 We thus decided to create a new CT gene resource satisfying all of our needs
 for the analysis of CT genes. We provide a list of 307 CT genes, see table below,
@@ -98,7 +98,7 @@ knitr::include_graphics("CT_selection.svg")
 
 Testis-specific genes (expressed exclusively in testis) and testis-preferential
 genes (expressed in a few somatic tissues at a level lower than 10x testis
-expression) were first selected using GTEx database.
+expression) were first selected using GTEx database (Aguet et al., 2020).
 
 Note that some genes were undetectable in GTEx database due to multimapping
 issues (these were flagged as "lowly expressed" in `GTEX_category` column).
@@ -119,34 +119,35 @@ and flagged as testis-specific in `multimapping_analysis` column.
 
 ## Activation in cancer cell lines and TCGA tumors
 
-RNAseq data from cancer cell lines from CCLE were used to select among
-testis-specific and testis-prefential genes those that are activated in cancers.
-In the `CCLE_category` column, genes are tagged as "activated" when they are
-highly expressed in at least one cancer cell line (TPM >= 10). However genes that
-were found to be expressed in all -or almost all- cancer cell lines were removed,
-as this probably reflects a constitutive expression rather than a true
-activation. We filtered out genes that were not completely repressed in at
-least 20 % of cell lines (TPM <= 0.1).
+RNAseq data from cancer cell lines from CCLE (Barretina et al., 2012) were used 
+to select among testis-specific and testis-prefential genes those that are 
+activated in cancers. In the `CCLE_category` column, genes are tagged as 
+"activated" when they are highly expressed in at least one cancer cell line 
+(TPM >= 10). However genes that were found to be expressed in all -or almost all-
+cancer cell lines were removed, as this probably reflects a constitutive 
+expression rather than a true activation. We filtered out genes that were not 
+completely repressed in at least 20 % of cell lines (TPM <= 0.1).
 
-RNAseq data from TCGA cancer samples were used to select among testis-specific
-and testis-prefential genes those that are activated in cancers. In the
-`TCGA_category` column, genes are tagged as "activated" when they are highly
-expressed in at least one cancer sample (TPM >= 10). But genes that were found
-to be expressed in all -or almost all- cancer samples were removed, as this
-probably reflects a constitutive expression rather than a true activation. We
-filtered out genes that were not completely repressed in at least 20 % of cancer
-samples (TPM <= 0.1).
+RNAseq data from TCGA cancer samples (Cancer Genome Atlas Research Network et al., 2013)
+were used to select among testis-specific and testis-prefential genes those that
+are activated in cancers. In the `TCGA_category` column, genes are tagged as 
+"activated" when they are highly expressed in at least one cancer sample 
+(TPM >= 10). But genes that were found to be expressed in all -or almost all- 
+cancer samples were removed, as this probably reflects a constitutive expression
+rather than a true activation. We filtered out genes that were not completely 
+repressed in at least 20 % of cancer samples (TPM <= 0.1).
 
 
 ## IGV visualisation
 
-All selected CT genes were visualised on IGV using a RNA-seq alignment from
-testis, to ensure that expression in testis really corresponded to the canonical
-transcript. For some genes for which the canonical transcript did not correspond
-to the transcript that we could see in the testis sample, we manually modified
-the `external_transcript_name` accordingly, to ensure that the TSS and the
-promoter region are correctly defined. This is particularly important for
-methylation analysis that must be focused on true promoter regions.
+All selected CT genes were visualised on IGV (Thorvaldsdóttir et al., 2013) using
+a RNA-seq alignment from testis, to ensure that expression in testis really 
+corresponded to the canonical transcript. For some genes for which the canonical
+transcript did not correspond to the transcript that we could see in the testis 
+sample, we manually modified the `external_transcript_name` accordingly, to 
+ensure that the TSS and the promoter region are correctly defined. This is 
+particularly important for methylation analysis that must be focused on true 
+promoter regions.
 
 ## Regulation by methylation
 
@@ -397,6 +398,19 @@ TCGA_methylation_expression_correlation(tumor = "all",
 ```
 
 
+# Bibliography 
+
+Aguet, F., Anand, S., Ardlie, K. G., Gabriel, S., Getz, G. A., Graubert, A., Hadley, K., Handsaker, R. E., Huang, K. H., Kashin, S., Li, X., MacArthur, D. G., Meier, S. R., Nedzel, J. L., Nguyen, D. T., Segrè, A. V., Todres, E., Balliu, B., Barbeira, A. N., … Volpi, S. (2020). The GTEx Consortium atlas of genetic regulatory effects across human tissues. Science. https://science.sciencemag.org/content/369/6509/1318.abstract
+
+Almeida, L. G., Sakabe, N. J., deOliveira, A. R., Silva, M. C. C., Mundstein, A. S., Cohen, T., Chen, Y.-T., Chua, R., Gurung, S., Gnjatic, S., Jungbluth, A. A., Caballero, O. L., Bairoch, A., Kiesler, E., White, S. L., Simpson, A. J. G., Old, L. J., Camargo, A. A., & Vasconcelos, A. T. R. (2009). CTdatabase: a knowledge-base of high-throughput and curated data on cancer-testis antigens. Nucleic Acids Research, 37(Database issue), D816–D819.
+
+Barretina, J., Caponigro, G., Stransky, N., Venkatesan, K., Margolin, A. A., Kim, S., Wilson, C. J., Lehár, J., Kryukov, G. V., Sonkin, D., Reddy, A., Liu, M., Murray, L., Berger, M. F., Monahan, J. E., Morais, P., Meltzer, J., Korejwa, A., Jané-Valbuena, J., … Garraway, L. A. (2012). The Cancer Cell Line Encyclopedia enables predictive modelling of anticancer drug sensitivity. Nature, 483(7391), 603–607.
+
+Cancer Genome Atlas Research Network, Weinstein, J. N., Collisson, E. A., Mills, G. B., Shaw, K. R. M., Ozenberger, B. A., Ellrott, K., Shmulevich, I., Sander, C., & Stuart, J. M. (2013). The Cancer Genome Atlas Pan-Cancer analysis project. Nature Genetics, 45(10), 1113–1120.
+
+Thorvaldsdóttir, H., Robinson, J. T., & Mesirov, J. P. (2013). Integrative Genomics Viewer (IGV): high-performance genomics data visualization and exploration. Briefings in Bioinformatics, 14(2), 178–192.
+
+Wang, C., Gu, Y., Zhang, K., Xie, K., Zhu, M., Dai, N., Jiang, Y., Guo, X., Liu, M., Dai, J., Wu, L., Jin, G., Ma, H., Jiang, T., Yin, R., Xia, Y., Liu, L., Wang, S., Shen, B., … Hu, Z. (2016). Systematic identification of genes with a cancer-testis expression pattern in 19 cancer types. Nature Communications, 7, 10499.
 
 # Session information {-}
 
