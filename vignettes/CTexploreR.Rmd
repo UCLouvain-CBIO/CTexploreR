@@ -87,8 +87,8 @@ BiocManager::install("UCLouvain-CBIO/CTexploreR")
 
 # CT gene selection
 
-In order to generate the list of CT genes, we followed an specific selection
-(see figure below).
+In order to generate the list of CT genes, we followed a specific
+selection procedure (see figure below).
 
 ```{r, echo=FALSE, fig.align='center', out.width = '100%'}
 knitr::include_graphics("CT_selection.svg")
@@ -98,19 +98,19 @@ knitr::include_graphics("CT_selection.svg")
 
 Testis-specific genes (expressed exclusively in testis) and testis-preferential
 genes (expressed in a few somatic tissues at a level lower than 10x testis
-expression) were first selected using GTEx database.
+expression) were first selected using the GTEx database.
 
-Note that some genes were undetectable in GTEx database due to multimapping
+Note that some genes were undetectable in the GTEx database due to multimapping
 issues (these were flagged as "lowly expressed" in `GTEX_category` column).
 A careful inspection of these genes showed that many of them are well-known
 Cancer-Testis genes, belonging to gene families (MAGEA, SSX, CT45A, GAGE, …)
 from which members have identical or nearly identical sequences. This is likely
-the reason why these genes are not detected in GTEx database, as GTEX processing
+the reason why these genes are not detected in the GTEx database, as GTEX processing
 pipeline specifies that overlapping intervals between genes are excluded from
 all genes for counting.
 
 For these genes, as testis-specificity could not be assessed using GTEx database,
-RNAseq data from a set of normal tissues were home-processed in order to allow
+RNAseq data from a set of normal tissues were reprocessed in order to allow
 multimapping. Expression of several genes became detectable in some tissues.
 Genes showing a testis-specific expression (expression at least 10x higher in
 testis than in any somatic tissues when multimapping was allowed) were selected,
@@ -140,13 +140,14 @@ samples (TPM <= 0.1).
 
 ## IGV visualisation
 
-All selected CT genes were visualised on IGV using a RNA-seq alignment from
-testis, to ensure that expression in testis really corresponded to the canonical
-transcript. For some genes for which the canonical transcript did not correspond
-to the transcript that we could see in the testis sample, we manually modified
-the `external_transcript_name` accordingly, to ensure that the TSS and the
-promoter region are correctly defined. This is particularly important for
-methylation analysis that must be focused on true promoter regions.
+All selected CT genes were visualised on IGV using a RNA-seq alignment
+from testis, to ensure that expression in testis really corresponded
+to the canonical transcript. For some genes for which the canonical
+transcript did not correspond to the transcript that we could see in
+the testis sample, we manually modified the `external_transcript_name`
+accordingly, to ensure that the TSS and the promoter region are
+correctly defined. This is particularly important for methylation
+analysis that must be focused on true promoter regions.
 
 ## Regulation by methylation
 
