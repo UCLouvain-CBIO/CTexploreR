@@ -39,11 +39,6 @@ RoxygenNote: 7.2.3
 Depends:
     R (>= 4.3),
     CTdata
-biocViews: Transcriptomics,
-           Epigenetics,
-           DifferentialExpression,
-           GeneExpression,
-           DNAMethylation
 Imports:
     BiocGenerics,
     ComplexHeatmap,
@@ -61,3 +56,11 @@ Imports:
     circlize,
     ggrepel,
     CTdata
+Suggests:
+    BiocStyle
+biocViews: Transcriptomics,
+           Epigenetics,
+           DifferentialExpression,
+           GeneExpression,
+           DNAMethylation
+VignetteBuilder: knitr
