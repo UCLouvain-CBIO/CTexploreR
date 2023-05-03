@@ -119,23 +119,17 @@ and flagged as testis-specific in `multimapping_analysis` column.
 
 ## Activation in cancer cell lines and TCGA tumors
 
-RNAseq data from cancer cell lines from CCLE (Barretina et al., 2012) were used 
-to select among testis-specific and testis-prefential genes those that are 
-activated in cancers. In the `CCLE_category` column, genes are tagged as 
-"activated" when they are highly expressed in at least one cancer cell line 
-(TPM >= 10). However genes that were found to be expressed in all -or almost all-
-cancer cell lines were removed, as this probably reflects a constitutive 
-expression rather than a true activation. We filtered out genes that were not 
-completely repressed in at least 20 % of cell lines (TPM <= 0.1).
+To assess activation in cancers, RNAseq data from cancer cell lines from CCLE 
+(Barretina et al., 2012) and from TCGA cancer samples (Cancer Genome Atlas 
+Research Network et al., 2013) were used. This allowed to to select among 
+testis-specific and testis-preferential genes those that are activated in cancers.
 
-RNAseq data from TCGA cancer samples (Cancer Genome Atlas Research Network et al., 2013)
-were used to select among testis-specific and testis-prefential genes those that
-are activated in cancers. In the `TCGA_category` column, genes are tagged as 
-"activated" when they are highly expressed in at least one cancer sample 
-(TPM >= 10). But genes that were found to be expressed in all -or almost all- 
-cancer samples were removed, as this probably reflects a constitutive expression
-rather than a true activation. We filtered out genes that were not completely 
-repressed in at least 20 % of cancer samples (TPM <= 0.1).
+In the `CCLE_category` and `TCGA_category` columns, genes are tagged as 
+"activated" when they are highly expressed in at least one cancer cell line/sample 
+(TPM >= 10). However genes that were found to be expressed in all -or almost all-
+cancer cell lines/samples were removed, as this probably reflects a constitutive 
+expression rather than a true activation. We filtered out genes that were not 
+completely repressed in at least 20 % of cancer cell lines/samples (TPM <= 0.1).
 
 
 ## IGV visualisation
