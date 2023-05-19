@@ -39,11 +39,11 @@ criteria are not at all stringent, based on FPKM values, multi-mapping problem i
 not addressed and no individual data about promoter DNA methylation.
 
 We thus decided to create a new CT gene resource satisfying all of our needs
-for the analysis of CT genes. We provide a list of 307 CT genes, see table below,
-selected based on their expression in normal and tumoral tissues (selection
-details in the next section). Information about gene location, expression in
-normal tissues, expression in tumor sample and cell lines, methylation of
-promoter can also be found in the table.
+for the analysis of CT genes. We provide a list of `r nrow(CTexploreR::CT_genes)`
+CT genes, see table below, selected based on their expression in normal and 
+tumoral tissues (selection details in the next section). Information about gene 
+location, expression in normal tissues, expression in tumor sample and cell 
+lines, methylation of promoter can also be found in the table.
 
 ```{r CT_genes}
 library(CTexploreR)
@@ -394,17 +394,40 @@ TCGA_methylation_expression_correlation(tumor = "all",
 
 # Bibliography 
 
-Aguet, F., Anand, S., Ardlie, K. G., Gabriel, S., Getz, G. A., Graubert, A., Hadley, K., Handsaker, R. E., Huang, K. H., Kashin, S., Li, X., MacArthur, D. G., Meier, S. R., Nedzel, J. L., Nguyen, D. T., Segrè, A. V., Todres, E., Balliu, B., Barbeira, A. N., … Volpi, S. (2020). The GTEx Consortium atlas of genetic regulatory effects across human tissues. Science. https://science.sciencemag.org/content/369/6509/1318.abstract
+Aguet, F., Anand, S., Ardlie, K. G., Gabriel, S., Getz, G. A., Graubert, A., 
+Hadley, K., Handsaker, R. E., Huang, K. H., Kashin, S., Li, X., MacArthur, D. G.,
+Meier, S. R., Nedzel, J. L., Nguyen, D. T., Segrè, A. V., Todres, E., Balliu, B.,
+Barbeira, A. N., … Volpi, S. (2020). The GTEx Consortium atlas of genetic 
+regulatory effects across human tissues. Science. https://science.sciencemag.org/content/369/6509/1318.abstract
 
-Almeida, L. G., Sakabe, N. J., deOliveira, A. R., Silva, M. C. C., Mundstein, A. S., Cohen, T., Chen, Y.-T., Chua, R., Gurung, S., Gnjatic, S., Jungbluth, A. A., Caballero, O. L., Bairoch, A., Kiesler, E., White, S. L., Simpson, A. J. G., Old, L. J., Camargo, A. A., & Vasconcelos, A. T. R. (2009). CTdatabase: a knowledge-base of high-throughput and curated data on cancer-testis antigens. Nucleic Acids Research, 37(Database issue), D816–D819.
+Almeida, L. G., Sakabe, N. J., deOliveira, A. R., Silva, M. C. C., Mundstein, A.
+S., Cohen, T., Chen, Y.-T., Chua, R., Gurung, S., Gnjatic, S., Jungbluth, A. A.,
+Caballero, O. L., Bairoch, A., Kiesler, E., White, S. L., Simpson, A. J. G., Old,
+L. J., Camargo, A. A., & Vasconcelos, A. T. R. (2009). CTdatabase: a knowledge-base
+of high-throughput and curated data on cancer-testis antigens. Nucleic Acids 
+Research, 37(Database issue), D816–D819.
 
-Barretina, J., Caponigro, G., Stransky, N., Venkatesan, K., Margolin, A. A., Kim, S., Wilson, C. J., Lehár, J., Kryukov, G. V., Sonkin, D., Reddy, A., Liu, M., Murray, L., Berger, M. F., Monahan, J. E., Morais, P., Meltzer, J., Korejwa, A., Jané-Valbuena, J., … Garraway, L. A. (2012). The Cancer Cell Line Encyclopedia enables predictive modelling of anticancer drug sensitivity. Nature, 483(7391), 603–607.
+Barretina, J., Caponigro, G., Stransky, N., Venkatesan, K., Margolin, A. A., Kim,
+S., Wilson, C. J., Lehár, J., Kryukov, G. V., Sonkin, D., Reddy, A., Liu, M., 
+Murray, L., Berger, M. F., Monahan, J. E., Morais, P., Meltzer, J., Korejwa, A.,
+Jané-Valbuena, J., … Garraway, L. A. (2012). The Cancer Cell Line Encyclopedia 
+enables predictive modelling of anticancer drug sensitivity. Nature, 483(7391), 
+603–607.
 
-Cancer Genome Atlas Research Network, Weinstein, J. N., Collisson, E. A., Mills, G. B., Shaw, K. R. M., Ozenberger, B. A., Ellrott, K., Shmulevich, I., Sander, C., & Stuart, J. M. (2013). The Cancer Genome Atlas Pan-Cancer analysis project. Nature Genetics, 45(10), 1113–1120.
+Cancer Genome Atlas Research Network, Weinstein, J. N., Collisson, E. A., Mills,
+G. B., Shaw, K. R. M., Ozenberger, B. A., Ellrott, K., Shmulevich, I., Sander, C.,
+& Stuart, J. M. (2013). The Cancer Genome Atlas Pan-Cancer analysis project. 
+Nature Genetics, 45(10), 1113–1120.
 
-Thorvaldsdóttir, H., Robinson, J. T., & Mesirov, J. P. (2013). Integrative Genomics Viewer (IGV): high-performance genomics data visualization and exploration. Briefings in Bioinformatics, 14(2), 178–192.
+Thorvaldsdóttir, H., Robinson, J. T., & Mesirov, J. P. (2013). Integrative 
+Genomics Viewer (IGV): high-performance genomics data visualization and 
+exploration. Briefings in Bioinformatics, 14(2), 178–192.
 
-Wang, C., Gu, Y., Zhang, K., Xie, K., Zhu, M., Dai, N., Jiang, Y., Guo, X., Liu, M., Dai, J., Wu, L., Jin, G., Ma, H., Jiang, T., Yin, R., Xia, Y., Liu, L., Wang, S., Shen, B., … Hu, Z. (2016). Systematic identification of genes with a cancer-testis expression pattern in 19 cancer types. Nature Communications, 7, 10499.
+Wang, C., Gu, Y., Zhang, K., Xie, K., Zhu, M., Dai, N., Jiang, Y., Guo, X., Liu,
+M., Dai, J., Wu, L., Jin, G., Ma, H., Jiang, T., Yin, R., Xia, Y., Liu, L., Wang,
+S., Shen, B., … Hu, Z. (2016). Systematic identification of genes with a 
+cancer-testis expression pattern in 19 cancer types. Nature Communications, 7, 
+10499.
 
 # Session information {-}
 
