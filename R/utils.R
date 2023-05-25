@@ -70,7 +70,7 @@ TCGA_colors <- c("BRCA" = "pink", "COAD" = "midnightblue",
 #'
 #' @format
 #'
-#' A `tibble` object with 307 rows and 34 columns.
+#' A `tibble` object with 308 rows and 34 columns.
 #'
 #' - Rows correspond to CT genes
 #'
@@ -91,8 +91,5 @@ TCGA_colors <- c("BRCA" = "pink", "COAD" = "midnightblue",
 #'
 #' @docType data
 CT_genes <- CTdata::CT_genes()
-
-
-
 
 
