@@ -1,0 +1,126 @@
+#' Gene expression in testis cells
+#'
+#' @description
+#'
+#' Plots a heatmap of genes expression in the different types of testis cells, 
+#' using scRNAseq data from "The adult human testis transcriptional cell atlas" 
+#' (Guo et al. 2018)
+#'
+#' @param cells `character` defining the testis cell type. Can be "germ_cells",
+#'  "somatic_cells", or "all" (default).
+#'
+#' @param genes `character` nameing the selected genes. The default
+#'     value, `NULL`, takes all CT genes.
+#'     
+#' @param scale_lims `vector of length 2` setting the lower and upper limits of 
+#'    the heatmap colorbar. By default, the lower limit is 0, and the upper limit
+#'    corresponds to the third quartile of the logcounts values.
+#'
+#' @param return `logical(1)`. If `TRUE`, the function will return the
+#'     SingleCellExperiment instead of the heatmap. Default is `FALSE`.
+#'
+#' @return A heatmap of selected CT genes expression in single cells from adult 
+#'     testis. If `return = TRUE`, a SingleCellExperiment instead of the heatmap 
+#'     is returned instead.
+#'
+#' @export
+#'
+#' @importFrom SingleCellExperiment logcounts colData
+#' @importFrom ComplexHeatmap Heatmap HeatmapAnnotation
+#' @importFrom grid gpar
+#' @importFrom circlize colorRamp2
+#'
+#' @examples
+#'
+#' testis_expression(cells = "germ_cells", genes = c("MAGEA1", "MAGEA3", "MAGEA4"))
+#' testis_expression(cells = "all", scale_lims = c(0, 4))
+testis_expression <- function(cells = "all", genes = NULL, 
+                              scale_lims = NULL, return = FALSE) {
+    suppressMessages({
+      load("~/cluster/Packages/CTdata/eh_data/testis_sce.rda")
+      database <- testis_sce
+      #database <- CTdata::testis_sce()
+      #CT_genes <- CTdata::CT_genes()
+    })
+    
+    germ_cells <- c("SSC", "Spermatogonia", "Early_spermatocyte", 
+                  "Late_spermatocyte","Round_spermatid", "Elongated_spermatid",
+                  "Sperm1", "Sperm2")
+  
+    somatic_cells <- c("Macrophage", "Endothelial", "Myoid", "Sertoli", "Leydig")
+  
+    valid_cell_names <- c("germ_cells", "somatic_cells", "all")
+    cells <- check_names(cells, valid_cell_names)
+    if (is_empty(cells)) cells <- "all"
+    
+    if (cells == "germ_cells") database <- database[, database$type %in% germ_cells]
+    if (cells == "somatic_cells") database <- database[, database$type %in% somatic_cells]
+
+    if (is.null(genes)) genes <- CT_genes$external_gene_name
+    valid_gene_names <- unique(rownames(database))
+    genes <- check_names(genes, valid_gene_names)
+    database <- database[genes, ]
+  
+    mat <- SingleCellExperiment::logcounts(database)
+
+    legends_param <- list(
+        labels_gp = gpar(col = "black", fontsize = 6),
+        title_gp = gpar(col = "black", fontsize = 6),
+        row_names_gp = gpar(fontsize = 4),
+        annotation_name_side = "left")
+    
+    df_col <- data.frame(clusters = colData(database)$clusters,
+                         type = colData(database)$type,
+                         Donor = colData(database)$Donor)
+    rownames(df_col) <- colnames(database)
+    df_col <- df_col[order(df_col$type),]
+    
+    column_ha_type = HeatmapAnnotation(
+      type = df_col$type,
+      border = TRUE,
+      col = list(type = c("SSC" = "floralwhite", "Spermatogonia" = "moccasin",
+                          "Early_spermatocyte" = "yellow", 
+                          "Late_spermatocyte" = "orange",
+                          "Round_spermatid" = "red", 
+                          "Elongated_spermatid" = "darkred",
+                          "Sperm1" = "violet", "Sperm2" = "purple", 
+                          "Sertoli" = "gray", 
+                          "Leydig" = "cyan", "Myoid" = "green", 
+                          "Macrophage" = "gray10",
+                          "Endothelial" = "steelblue")),
+      annotation_name_gp = gpar(fontsize = 8),
+      annotation_legend_param = legends_param)
+      
+    if (dim(mat)[1] > 100) fontsize <- 4
+    if (dim(mat)[1] > 50 & dim(mat)[1] <= 100) fontsize <- 5
+    if (dim(mat)[1] > 20 & dim(mat)[1] <= 50) fontsize <- 6
+    if (dim(mat)[1] <= 20) fontsize <- 8
+    
+    if (is.null(scale_lims)) scale_lims <- c(0, quantile(rowMax(mat), 0.75))
+    
+    h <- Heatmap(mat[genes, rownames(df_col), drop = FALSE],
+            name = "logCounts",
+            use_raster = FALSE,
+            column_title = "Expression in testis cells (scRNAseq)",
+            column_split = df_col$type,
+            show_column_names = FALSE,
+            show_column_dend = FALSE,
+            clustering_method_rows = "ward.D",
+            clustering_method_columns = "ward.D",
+            cluster_rows = TRUE,
+            cluster_columns = FALSE,
+            show_row_dend = FALSE,
+            row_names_gp = gpar(fontsize = fontsize),
+            col = colorRamp2(seq(scale_lims[1], scale_lims[2], length = 11),                 
+                             c("#5E4FA2", "#3288BD", "#66C2A5", "#ABDDA4",
+                               "#E6F598", "#FFFFBF", "#FEE08B", "#FDAE61",
+                               "#F46D43", "#D53E4F", "#9E0142")),
+            top_annotation = column_ha_type,
+            heatmap_legend_param = legends_param)
+
+    if (return)
+        return(database)
+
+    return(h)
+}
+
