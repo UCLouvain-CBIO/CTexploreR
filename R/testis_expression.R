@@ -45,7 +45,7 @@ testis_expression <- function(cells = "all", genes = NULL,
       database <- testis_sce
       load("~/cluster/Packages/CTdata/eh_data/CT_genes.rda")
       #database <- CTdata::testis_sce()
-      CT_genes <- CTdata::CT_genes()
+      #CT_genes <- CTdata::CT_genes()
     })
     
     germ_cells <- c("SSC", "Spermatogonia", "Early_spermatocyte", 

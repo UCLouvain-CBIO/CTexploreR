@@ -12,8 +12,11 @@ testis_expression(
 )
 }
 \arguments{
-\item{cells}{\code{character} defining the testis cell type. Can be "germ_cells",
-"somatic_cells", or "all" (default).}
+\item{cells}{\code{character} defining the testis cell types to be plotted.
+Can be "germ_cells", "somatic_cells", "all" (default), or any or a combination
+of "SSC", "Spermatogonia", "Early_spermatocyte", "Late_spermatocyte",
+"Round_spermatid", "Elongated_spermatid", "Sperm1", "Sperm2", "Macrophage",
+"Endothelial", "Myoid", "Sertoli", "Leydig".}
 
 \item{genes}{\code{character} nameing the selected genes. The default
 value, \code{NULL}, takes all CT genes.}
