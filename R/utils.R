@@ -60,7 +60,16 @@ TCGA_colors <- c("BRCA" = "pink", "COAD" = "midnightblue",
                  "LUAD" = "turquoise3", "LUSC" = "seagreen3",
                  "SKCM" = "red3")
 
-
+testis_colors <- c("SSC" = "floralwhite", "Spermatogonia" = "moccasin",
+                   "Early_spermatocyte" = "yellow", 
+                   "Late_spermatocyte" = "orange",
+                   "Round_spermatid" = "red", 
+                   "Elongated_spermatid" = "darkred",
+                   "Sperm1" = "violet", "Sperm2" = "purple", 
+                   "Sertoli" = "gray", 
+                   "Leydig" = "cyan", "Myoid" = "green", 
+                   "Macrophage" = "gray10",
+                   "Endothelial" = "steelblue")
 
 #' CT genes description table
 #'
@@ -90,6 +99,8 @@ TCGA_colors <- c("BRCA" = "pink", "COAD" = "midnightblue",
 #' @name CT_genes
 #'
 #' @docType data
-CT_genes <- CTdata::CT_genes()
+load("inst/extdata/CT_genes.rda")
+
+# CT_genes <- CTdata::CT_genes()
 
 

@@ -29,6 +29,8 @@
 #' @importFrom ComplexHeatmap Heatmap HeatmapAnnotation
 #' @importFrom grid gpar
 #' @importFrom circlize colorRamp2
+#' @importFrom rlang is_empty
+#' @importFrom Biobase rowMax
 #'
 #' @examples
 #'
@@ -40,7 +42,7 @@ testis_expression <- function(cells = "all", genes = NULL,
       load("~/cluster/Packages/CTdata/eh_data/testis_sce.rda")
       database <- testis_sce
       #database <- CTdata::testis_sce()
-      #CT_genes <- CTdata::CT_genes()
+      CT_genes <- CTdata::CT_genes()
     })
     
     germ_cells <- c("SSC", "Spermatogonia", "Early_spermatocyte", 
@@ -78,16 +80,7 @@ testis_expression <- function(cells = "all", genes = NULL,
     column_ha_type = HeatmapAnnotation(
       type = df_col$type,
       border = TRUE,
-      col = list(type = c("SSC" = "floralwhite", "Spermatogonia" = "moccasin",
-                          "Early_spermatocyte" = "yellow", 
-                          "Late_spermatocyte" = "orange",
-                          "Round_spermatid" = "red", 
-                          "Elongated_spermatid" = "darkred",
-                          "Sperm1" = "violet", "Sperm2" = "purple", 
-                          "Sertoli" = "gray", 
-                          "Leydig" = "cyan", "Myoid" = "green", 
-                          "Macrophage" = "gray10",
-                          "Endothelial" = "steelblue")),
+      col = list(type = testis_colors),
       annotation_name_gp = gpar(fontsize = 8),
       annotation_legend_param = legends_param)
       
@@ -112,9 +105,7 @@ testis_expression <- function(cells = "all", genes = NULL,
             show_row_dend = FALSE,
             row_names_gp = gpar(fontsize = fontsize),
             col = colorRamp2(seq(scale_lims[1], scale_lims[2], length = 11),                 
-                             c("#5E4FA2", "#3288BD", "#66C2A5", "#ABDDA4",
-                               "#E6F598", "#FFFFBF", "#FEE08B", "#FDAE61",
-                               "#F46D43", "#D53E4F", "#9E0142")),
+                             legend_colors),
             top_annotation = column_ha_type,
             heatmap_legend_param = legends_param)
 
