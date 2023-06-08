@@ -6,8 +6,11 @@
 #' using scRNAseq data from "The adult human testis transcriptional cell atlas" 
 #' (Guo et al. 2018)
 #'
-#' @param cells `character` defining the testis cell type. Can be "germ_cells",
-#'  "somatic_cells", or "all" (default).
+#' @param cells `character` defining the testis cell types to be plotted. 
+#' Can be "germ_cells", "somatic_cells", "all" (default), or any or a combination 
+#' of "SSC", "Spermatogonia", "Early_spermatocyte", "Late_spermatocyte", 
+#' "Round_spermatid", "Elongated_spermatid", "Sperm1", "Sperm2", "Macrophage", 
+#' "Endothelial", "Myoid", "Sertoli", "Leydig".
 #'
 #' @param genes `character` nameing the selected genes. The default
 #'     value, `NULL`, takes all CT genes.
@@ -41,6 +44,7 @@ testis_expression <- function(cells = "all", genes = NULL,
     suppressMessages({
       load("~/cluster/Packages/CTdata/eh_data/testis_sce.rda")
       database <- testis_sce
+      load("~/cluster/Packages/CTdata/eh_data/CT_genes.rda")
       #database <- CTdata::testis_sce()
       CT_genes <- CTdata::CT_genes()
     })
@@ -51,12 +55,17 @@ testis_expression <- function(cells = "all", genes = NULL,
   
     somatic_cells <- c("Macrophage", "Endothelial", "Myoid", "Sertoli", "Leydig")
   
-    valid_cell_names <- c("germ_cells", "somatic_cells", "all")
+    valid_cell_names <- c("germ_cells", "somatic_cells", "all", germ_cells, 
+                          somatic_cells)
     cells <- check_names(cells, valid_cell_names)
-    if (is_empty(cells)) cells <- "all"
     
-    if (cells == "germ_cells") database <- database[, database$type %in% germ_cells]
-    if (cells == "somatic_cells") database <- database[, database$type %in% somatic_cells]
+    if (all(cells %in% c("germ_cells"))) {
+      database <- database[, database$type %in% germ_cells]
+    } else if ((all(cells %in% c("somatic_cells")))) {
+      database <- database[, database$type %in% somatic_cells]
+    } else if (all(cells %in% c(germ_cells, somatic_cells))) {
+      database <- database[, database$type %in% cells]
+    }
 
     if (is.null(genes)) genes <- CT_genes$external_gene_name
     valid_gene_names <- unique(rownames(database))
@@ -76,11 +85,20 @@ testis_expression <- function(cells = "all", genes = NULL,
                          Donor = colData(database)$Donor)
     rownames(df_col) <- colnames(database)
     df_col <- df_col[order(df_col$type),]
+    df_col$lineage <- "germ cells"
+    df_col$lineage[df_col$type %in% somatic_cells] <- "somatic_cells"
     
     column_ha_type = HeatmapAnnotation(
       type = df_col$type,
       border = TRUE,
       col = list(type = testis_colors),
+      annotation_name_gp = gpar(fontsize = 8),
+      annotation_legend_param = legends_param)
+    
+    column_ha_lineage = HeatmapAnnotation(
+      lineage = df_col$lineage,
+      border = TRUE,
+      col = list(lineage = c("germ cells" = "salmon", "somatic_cells" = "cyan4")),
       annotation_name_gp = gpar(fontsize = 8),
       annotation_legend_param = legends_param)
       
@@ -91,9 +109,14 @@ testis_expression <- function(cells = "all", genes = NULL,
     
     if (is.null(scale_lims)) scale_lims <- c(0, quantile(rowMax(mat), 0.75))
     
+    if (any(database$type %in% germ_cells) & 
+        any(database$type %in% somatic_cells)) {
+      top_annot <- c(column_ha_lineage, column_ha_type)
+    } else { top_annot <- column_ha_type
+    }
+    
     h <- Heatmap(mat[genes, rownames(df_col), drop = FALSE],
             name = "logCounts",
-            use_raster = FALSE,
             column_title = "Expression in testis cells (scRNAseq)",
             column_split = df_col$type,
             show_column_names = FALSE,
@@ -106,7 +129,7 @@ testis_expression <- function(cells = "all", genes = NULL,
             row_names_gp = gpar(fontsize = fontsize),
             col = colorRamp2(seq(scale_lims[1], scale_lims[2], length = 11),                 
                              legend_colors),
-            top_annotation = column_ha_type,
+            top_annotation = top_annot,
             heatmap_legend_param = legends_param)
 
     if (return)
