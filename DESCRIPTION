@@ -55,7 +55,8 @@ Imports:
     stats,
     circlize,
     ggrepel,
-    CTdata
+    CTdata,
+    SingleCellExperiment
 Suggests:
     BiocStyle
 biocViews: Transcriptomics,
