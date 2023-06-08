@@ -32,7 +32,6 @@
 #' @importFrom ComplexHeatmap Heatmap HeatmapAnnotation
 #' @importFrom grid gpar
 #' @importFrom circlize colorRamp2
-#' @importFrom rlang is_empty
 #' @importFrom Biobase rowMax
 #'
 #' @examples
