@@ -84,8 +84,8 @@ testis_expression <- function(cells = "all", genes = NULL,
                          Donor = colData(database)$Donor)
     rownames(df_col) <- colnames(database)
     df_col <- df_col[order(df_col$type),]
-    df_col$lineage <- "germ cells"
-    df_col$lineage[df_col$type %in% somatic_cells] <- "somatic_cells"
+    df_col$lineage <- "Germ cells"
+    df_col$lineage[df_col$type %in% somatic_cells] <- "Somatic cells"
     
     column_ha_type = HeatmapAnnotation(
       type = df_col$type,
@@ -97,7 +97,7 @@ testis_expression <- function(cells = "all", genes = NULL,
     column_ha_lineage = HeatmapAnnotation(
       lineage = df_col$lineage,
       border = TRUE,
-      col = list(lineage = c("germ cells" = "salmon", "somatic_cells" = "cyan4")),
+      col = list(lineage = c("Germ cells" = "salmon", "Somatic cells" = "cyan4")),
       annotation_name_gp = gpar(fontsize = 8),
       annotation_legend_param = legends_param)
       

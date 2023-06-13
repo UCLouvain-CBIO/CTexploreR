@@ -61,13 +61,13 @@ TCGA_colors <- c("BRCA" = "pink", "COAD" = "midnightblue",
                  "SKCM" = "red3")
 
 testis_colors <- c("SSC" = "floralwhite", "Spermatogonia" = "moccasin",
-                   "Early_spermatocyte" = "yellow", 
+                   "Early_spermatocyte" = "gold", 
                    "Late_spermatocyte" = "orange",
-                   "Round_spermatid" = "red", 
+                   "Round_spermatid" = "red2", 
                    "Elongated_spermatid" = "darkred",
                    "Sperm1" = "violet", "Sperm2" = "purple", 
                    "Sertoli" = "gray", 
-                   "Leydig" = "cyan", "Myoid" = "green", 
+                   "Leydig" = "cadetblue2", "Myoid" = "springgreen3", 
                    "Macrophage" = "gray10",
                    "Endothelial" = "steelblue")
 
