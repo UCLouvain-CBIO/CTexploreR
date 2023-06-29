@@ -5,7 +5,7 @@
 \alias{CT_genes}
 \title{CT genes description table}
 \format{
-A \code{tibble} object with 308 rows and 34 columns.
+A \code{tibble} object with 308 rows and 37 columns.
 \itemize{
 \item Rows correspond to CT genes
 \item Columns give CT genes characteristics

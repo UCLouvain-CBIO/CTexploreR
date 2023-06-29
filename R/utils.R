@@ -79,7 +79,7 @@ testis_colors <- c("SSC" = "floralwhite", "Spermatogonia" = "moccasin",
 #'
 #' @format
 #'
-#' A `tibble` object with 308 rows and 34 columns.
+#' A `tibble` object with 308 rows and 37 columns.
 #'
 #' - Rows correspond to CT genes
 #'
