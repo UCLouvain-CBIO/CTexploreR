@@ -33,9 +33,12 @@
 #'
 #' @examples
 #' 
-#' HPA_cell_type_expression(genes = NULL, units = "scaled", scale_lims = NULL, return = FALSE)
-#' HPA_cell_type_expression(genes = c("MAGEA1", "MAGEA3", "MAGEA4"), units = "TPM", scale_lims = c(0, 50), return = FALSE)
-HPA_cell_type_expression <- function(genes = NULL, units = "scaled", scale_lims = NULL, return = FALSE) {
+#' HPA_cell_type_expression(genes = NULL, units = "scaled", scale_lims = NULL, 
+#'                          return = FALSE)
+#' HPA_cell_type_expression(genes = c("MAGEA1", "MAGEA3", "MAGEA4"), 
+#'                          units = "TPM", scale_lims = c(0, 50), return = FALSE)
+HPA_cell_type_expression <- function(genes = NULL, units = "scaled", 
+                                     scale_lims = NULL, return = FALSE) {
     suppressMessages({
       load("~/cluster/Packages/CTdata/eh_data/scRNAseq_HPA.rda")
       database <- scRNAseq_HPA

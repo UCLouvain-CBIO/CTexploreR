@@ -46,7 +46,9 @@ CCLE_expression <- function(genes = NULL, type = NULL, units = "TPM",
                             return = FALSE) {
     suppressMessages({
         database <- CTdata::CCLE_data()
-        CT_genes <- CTdata::CT_genes()
+        load("~/cluster/Packages/CTdata/eh_data/CT_genes.rda")  
+        #CT_genes <- CTdata::CT_genes()
+        
     })
 
     database$type <- tolower(database$type)

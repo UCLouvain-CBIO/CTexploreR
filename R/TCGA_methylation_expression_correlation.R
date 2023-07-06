@@ -67,9 +67,14 @@ TCGA_methylation_expression_correlation <- function(tumor,
                                                     return = FALSE,
                                                     corr_coeff = FALSE) {
     suppressMessages({
-        CT_genes <- CTdata::CT_genes()
-        TPM <- CTdata::TCGA_TPM()
-        met <- CTdata::TCGA_CT_methylation()
+      load("~/cluster/Packages/CTdata/eh_data/TCGA_TPM.rda")
+      TPM <- TCGA_TPM
+      load("~/cluster/Packages/CTdata/eh_data/TCGA_CT_methylation.rda")
+      met <- TCGA_CT_methylation
+      load("~/cluster/Packages/CTdata/eh_data/CT_genes.rda")
+      #CT_genes <- CTdata::CT_genes()
+      #TPM <- CTdata::TCGA_TPM()
+      #met <- CTdata::TCGA_CT_methylation()
     })
 
     TPM$type <- sub(pattern = "TCGA-", x = colData(TPM)$project_id,
