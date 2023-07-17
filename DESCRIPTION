@@ -55,10 +55,11 @@ Imports:
     stats,
     circlize,
     ggrepel,
-    CTdata,
-    SingleCellExperiment
+    SingleCellExperiment,
+    Biobase
 Suggests:
-    BiocStyle
+    BiocStyle,
+    knitr
 biocViews: Transcriptomics,
            Epigenetics,
            DifferentialExpression,
