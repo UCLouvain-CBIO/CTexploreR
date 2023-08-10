@@ -46,7 +46,8 @@
 DAC_induction <- function(genes = NULL, multimapping = TRUE, return = FALSE) {
 
     suppressMessages({
-        CT_genes <- CTdata::CT_genes()
+      load("~/cluster/Packages/CTdata/eh_data/CT_genes.rda")  
+      #CT_genes <- CTdata::CT_genes()
         if (multimapping)
             database <- CTdata::DAC_treated_cells_multimapping()
         else database <- CTdata::DAC_treated_cells()

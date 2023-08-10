@@ -71,6 +71,18 @@ testis_colors <- c("SSC" = "floralwhite", "Spermatogonia" = "moccasin",
                    "Macrophage" = "gray10",
                    "Endothelial" = "steelblue")
 
+cell_type_colors <- c("Germ_cells" = "mediumvioletred", 
+                      "Trophoblast_cells" = "brown4",
+                      "Adipocyte_cells" = "lightgoldenrod1", 
+                      "Blood_immune_cells" = "ivory2",
+                      "Endocrine_cells" = "lightslateblue", 
+                      "Endothelial_cells" = "plum2",
+                      "Glandular_cells" = "deepskyblue", 
+                      "Glial_cells" = "sienna1", 
+                      "Mesenchymal_cells" = "peachpuff", 
+                      "Pigment_cells" = "palegreen2", "Myoid" = "gray54", 
+                      "Specialized_epithelial_cells" = "indianred1")
+
 #' CT genes description table
 #'
 #' @description

@@ -37,7 +37,8 @@ TCGA_expression <- function(tumor = "all", genes = NULL,
                             units = "TPM", return = FALSE) {
     suppressMessages({
         database <- CTdata::TCGA_TPM()
-        CT_genes <- CTdata::CT_genes()
+        load("~/cluster/Packages/CTdata/eh_data/CT_genes.rda")  
+        #CT_genes <- CTdata::CT_genes()
     })
 
     database$tumor <- sub(pattern = 'TCGA-', x = database$project_id, '')

@@ -117,6 +117,23 @@ testis than in any somatic tissues when multimapping was allowed) were selected,
 and flagged as testis-specific in `multimapping_analysis` column.
 
 
+In order to assess the testis cell type in which each gene is expressed, we used
+the single cell RNA-Seq from the adult human testis transcriptional cell atlas 
+(Guo et al., 2018). 251 genes out of our 298 CT genes were in the dataset so we 
+have not been able to determine the cell type for all genes. For each gene, the 
+testis cell type has been determined as the cell type showing the highest mean 
+expression for that gene, if they are detected (count > 0) in at least 1% of that
+specific cell-type. This allowed us to remove the genes for which this cell type
+corresponds to a testis somatic cell type (macrophage, endothelial, myoid, 
+Sertoli or Leydig cells).
+
+We also used scRNAseq data of normal tissues from the Human Protein Atlas (Uhlén
+et al., 2015) to compute the maximum expression in germ and somatic cells. Genes
+have been removed if the somatic value was higher than the germ cell value. Note
+that Hofbauer cells have been removed from the analysis as they derive from the 
+placenta where CT genes are sometimes expressed.
+
+
 ## Activation in cancer cell lines and TCGA tumors
 
 To assess activation in cancers, RNAseq data from cancer cell lines from CCLE 
@@ -418,6 +435,13 @@ Cancer Genome Atlas Research Network, Weinstein, J. N., Collisson, E. A., Mills,
 G. B., Shaw, K. R. M., Ozenberger, B. A., Ellrott, K., Shmulevich, I., Sander, C.,
 & Stuart, J. M. (2013). The Cancer Genome Atlas Pan-Cancer analysis project. 
 Nature Genetics, 45(10), 1113–1120.
+
+Guo, J. et al. The adult human testis transcriptional cell atlas. Cell Res. 28, 
+1141–1157 (2018).
+
+Uhlén, M. et al. Proteomics. Tissue-based map of the human proteome. Science 347,
+1260419 (2015).
+
 
 Thorvaldsdóttir, H., Robinson, J. T., & Mesirov, J. P. (2013). Integrative 
 Genomics Viewer (IGV): high-performance genomics data visualization and 

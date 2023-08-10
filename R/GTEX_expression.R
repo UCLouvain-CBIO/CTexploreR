@@ -29,8 +29,9 @@
 GTEX_expression <- function(genes = NULL, units = "TPM", return = FALSE) {
 
     suppressMessages({
-        database <- CTdata::GTEX_data()
-        CT_genes <- CTdata::CT_genes()
+      load("~/cluster/Packages/CTdata/eh_data/CT_genes.rda")  
+      database <- CTdata::GTEX_data()
+      #CT_genes <- CTdata::CT_genes()
     })
 
     if (is.null(genes)) genes <- CT_genes$external_gene_name
