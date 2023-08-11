@@ -37,16 +37,17 @@ legend_colors <- c("#5E4FA2", "#3288BD", "#66C2A5", "#ABDDA4", "#E6F598",
                    "#9E0142")
 
 
-CCLE_colors <- c("lung" = "lightcoral", "skin" = "turquoise3",
-                 "bile_duct" = "seagreen3", "bladder" = "mediumpurple1",
-                 "colorectal" = "deeppink2", "lymphoma" = "steelblue2",
-                 "uterine" = "red3", "myeloma" = "wheat3", "kidney" = "khaki",
-                 "pancreatic" = "olivedrab2", "brain" = "tomato1",
-                 "gastric" = "mistyrose2", "breast" = "palegreen",
-                 "bone" = "sandybrown", "head_and_neck" = "midnightblue",
-                 "ovarian" = "plum", "sarcoma" = "steelblue4",
-                 "leukemia" = "darkmagenta", "esophageal"= "darkorange4",
-                 "neuroblastoma" = "thistle4")
+CCLE_colors <- c("lung" = "seagreen3", "skin" = "red3",
+                 "bile_duct" = "mediumpurple1", "bladder" = "mistyrose2",
+                 "colorectal" = "plum", "lymphoma" = "steelblue1",
+                 "uterine" = "darkorange4", "myeloma" = "turquoise3", 
+                 "kidney" = "thistle4",
+                 "pancreatic" = "darkmagenta", "brain" = "palegreen2",
+                 "gastric" = "wheat3", "breast" = "midnightblue",
+                 "bone" = "sienna1", "head_and_neck" = "deeppink2",
+                 "ovarian" = "tan3", "sarcoma" = "lightcoral",
+                 "leukemia" = "steelblue4", "esophageal"= "khaki",
+                 "neuroblastoma" = "olivedrab1")
 
 
 DAC_colors <- c("B2-1" = "olivedrab2", "HCT116" = "lightcoral",
@@ -55,9 +56,9 @@ DAC_colors <- c("B2-1" = "olivedrab2", "HCT116" = "lightcoral",
                 "NCH612" = "red3", "TS603" = "darkmagenta")
 
 
-TCGA_colors <- c("BRCA" = "pink", "COAD" = "midnightblue",
-                 "ESCA" = "wheat3", "HNSC" = "deeppink2",
-                 "LUAD" = "turquoise3", "LUSC" = "seagreen3",
+TCGA_colors <- c("BRCA" = "midnightblue", "COAD" = "darkorchid2",
+                 "ESCA" = "gold", "HNSC" = "deeppink2",
+                 "LUAD" = "seagreen", "LUSC" = "seagreen3",
                  "SKCM" = "red3")
 
 testis_colors <- c("SSC" = "floralwhite", "Spermatogonia" = "moccasin",
