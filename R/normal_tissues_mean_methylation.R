@@ -39,11 +39,8 @@ normal_tissues_mean_methylation <- function(genes = NULL, return = FALSE,
                                             na.omit = TRUE) {
 
     suppressMessages({
-      load("~/cluster/Packages/CTdata/eh_data/CT_mean_methylation_in_tissues.rda")
-      database <- CT_mean_methylation_in_tissues
-      load("~/cluster/Packages/CTdata/eh_data/CT_genes.rda")
-      #database <- CTdata::CT_mean_methylation_in_tissues()
-      #CT_genes <- CTdata::CT_genes()
+      database <- CTdata::CT_mean_methylation_in_tissues()
+      CT_genes <- CTdata::CT_genes()
     })
 
     if (is.null(genes)) genes <- CT_genes$external_gene_name

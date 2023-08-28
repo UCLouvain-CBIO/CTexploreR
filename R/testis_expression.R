@@ -41,11 +41,8 @@
 testis_expression <- function(cells = "all", genes = NULL, 
                               scale_lims = NULL, return = FALSE) {
     suppressMessages({
-      load("~/cluster/Packages/CTdata/eh_data/testis_sce.rda")
-      database <- testis_sce
-      load("~/cluster/Packages/CTdata/eh_data/CT_genes.rda")
-      #database <- CTdata::testis_sce()
-      #CT_genes <- CTdata::CT_genes()
+      database <- CTdata::testis_sce()
+      CT_genes <- CTdata::CT_genes()
     })
     
     germ_cells <- c("SSC", "Spermatogonia", "Early_spermatocyte", 

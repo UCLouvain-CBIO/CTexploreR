@@ -37,11 +37,8 @@ CT_correlated_genes <- function(gene, corr_thr = 0.5,
                              return = FALSE) {
 
     suppressMessages({
-      load("~/cluster/Packages/CTdata/eh_data/CCLE_correlation_matrix.rda")
-      corr_matrix <- CCLE_correlation_matrix
-      load("~/cluster/Packages/CTdata/eh_data/CT_genes.rda")  
-      #corr_matrix <- CTdata::CCLE_correlation_matrix()
-      #CT_genes <- CTdata::CT_genes()
+      corr_matrix <- CTdata::CCLE_correlation_matrix()
+      CT_genes <- CTdata::CT_genes()
       CCLE_data <- CTdata::CCLE_data()
         
     })

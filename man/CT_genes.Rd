@@ -15,9 +15,13 @@ A \code{tibble} object with 308 rows and 37 columns.
 See \code{scripts/make_CT_genes.R} in \code{CTdata} for details on how this list of
 curated CT genes was created.
 }
+\usage{
+CT_genes
+}
 \description{
 Cancer-Testis (CT) genes description, imported from \code{CTdata}
 }
 \details{
 See \code{CTdata::CT_genes} documentation for details
 }
+\keyword{datasets}

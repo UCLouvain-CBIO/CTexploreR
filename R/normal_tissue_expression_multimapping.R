@@ -72,8 +72,7 @@ normal_tissue_expression_multimapping <- function(genes = NULL,
         stop("multimapping parameter should be set to TRUE/FALSE")
 
     suppressMessages({
-      load("~/cluster/Packages/CTdata/eh_data/CT_genes.rda")  
-      #CT_genes <- CTdata::CT_genes()
+      CT_genes <- CTdata::CT_genes()
       database <- CTdata::normal_tissues_multimapping_data()
     })
 

@@ -40,11 +40,8 @@
 HPA_cell_type_expression <- function(genes = NULL, units = "scaled", 
                                      scale_lims = NULL, return = FALSE) {
     suppressMessages({
-      load("~/cluster/Packages/CTdata/eh_data/scRNAseq_HPA.rda")
-      database <- scRNAseq_HPA
-      load("~/cluster/Packages/CTdata/eh_data/CT_genes.rda")
-      #database <- CTdata::testis_sce()
-      #CT_genes <- CTdata::CT_genes()
+      database <- CTdata::scRNAseq_HPA()
+      CT_genes <- CTdata::CT_genes()
     })
 
     if (is.null(genes)) genes <- CT_genes$external_gene_name

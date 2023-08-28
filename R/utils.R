@@ -112,8 +112,6 @@ cell_type_colors <- c("Germ_cells" = "mediumvioletred",
 #' @name CT_genes
 #'
 #' @docType data
-load("inst/extdata/CT_genes.rda")
-
-# CT_genes <- CTdata::CT_genes()
+CT_genes <- CTdata::CT_genes()
 
 
