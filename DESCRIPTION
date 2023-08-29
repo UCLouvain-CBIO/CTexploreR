@@ -59,7 +59,8 @@ Imports:
     Biobase
 Suggests:
     BiocStyle,
-    knitr
+    knitr,
+    rmarkdown
 biocViews: Transcriptomics,
            Epigenetics,
            DifferentialExpression,
