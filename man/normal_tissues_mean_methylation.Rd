@@ -35,5 +35,5 @@ TSS.
 normal_tissues_mean_methylation()
 normal_tissues_mean_methylation(c("MAGEA1", "MAGEA2", "MAGEA3", "MAGEA4"))
 normal_tissues_mean_methylation(c("MAGEA1", "MAGEA2", "MAGEA3", "MAGEA4"),
-                                na.omit = FALSE)
+    na.omit = FALSE)
 }

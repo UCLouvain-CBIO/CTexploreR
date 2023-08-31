@@ -2,25 +2,26 @@
 #'
 #' @description
 #'
-#' Plots a heatmap of genes expression in the different human cell types based 
-#' on scRNAseq data obtained from the Human Protein Atlas 
+#' Plots a heatmap of genes expression in the different human cell types based
+#' on scRNAseq data obtained from the Human Protein Atlas
 #' (https://www.proteinatlas.org)
 #'
 #' @param genes `character` nameing the selected genes. The default
 #'     value, `NULL`, takes all CT genes.
-#'     
+#'
 #' @param units `character(1)` with expression values unit.  Can be
-#'     `"TPM"`, `"log_TPM"` (log(TPM + 1)) or `"scaled"` (scaled TPM 
+#'     `"TPM"`, `"log_TPM"` (log(TPM + 1)) or `"scaled"` (scaled TPM
 #'     values). Default is `"scaled"`.
-#'     
-#' @param scale_lims `vector of length 2` setting the lower and upper limits of 
-#'    the heatmap colorbar. 
+#'
+#' @param scale_lims `vector of length 2` setting the lower and upper limits
+#' of the heatmap colorbar.
 #'
 #' @param return `logical(1)`. If `TRUE`, the function will return the
 #'     SummarizedExperiment instead of the heatmap. Default is `FALSE`.
 #'
-#' @return A heatmap of selected CT genes expression in different human cell types. 
-#' If `return = TRUE`, a SummarizedExperiment instead of the heatmap 
+#' @return A heatmap of selected CT genes expression in
+#' different human cell types.
+#' If `return = TRUE`, a SummarizedExperiment instead of the heatmap
 #'     is returned instead.
 #'
 #' @export
@@ -32,76 +33,70 @@
 #' @importFrom Biobase rowMax
 #'
 #' @examples
-#' 
-#' HPA_cell_type_expression(genes = NULL, units = "scaled", scale_lims = NULL, 
-#'                          return = FALSE)
-#' HPA_cell_type_expression(genes = c("MAGEA1", "MAGEA3", "MAGEA4"), 
-#'                          units = "TPM", scale_lims = c(0, 50), return = FALSE)
-HPA_cell_type_expression <- function(genes = NULL, units = "scaled", 
+#'
+#' HPA_cell_type_expression(
+#'     genes = NULL, units = "scaled", scale_lims = NULL,
+#'     return = FALSE)
+#' HPA_cell_type_expression(
+#'     genes = c("MAGEA1", "MAGEA3", "MAGEA4"),
+#'     units = "TPM", scale_lims = c(0, 50),
+#'     return = FALSE)
+HPA_cell_type_expression <- function(genes = NULL, units = "scaled",
                                      scale_lims = NULL, return = FALSE) {
     suppressMessages({
-      database <- CTdata::scRNAseq_HPA()
-      CT_genes <- CTdata::CT_genes()
+        database <- CTdata::scRNAseq_HPA()
+        CT_genes <- CTdata::CT_genes()
     })
+  
+    database <- subset_database(genes, database)
 
-    if (is.null(genes)) genes <- CT_genes$external_gene_name
-    valid_gene_names <- unique(rowData(database)$external_gene_name)
-    genes <- check_names(genes, valid_gene_names)
-    database <- database[rowData(database)$external_gene_name %in% genes, ]
-    
     ## Use gene names instead of ENSEMBL IDs
     mat <- SummarizedExperiment::assay(database)
     rownames(mat) <- rowData(database)$external_gene_name
-    
-    legends_param <- list(
-        labels_gp = gpar(col = "black", fontsize = 6),
-        title_gp = gpar(col = "black", fontsize = 6),
-        row_names_gp = gpar(fontsize = 4),
-        annotation_name_side = "left")
-    
+
     df_col <- data.frame(group = database$group)
     rownames(df_col) <- database$Cell_type
     not_somatic_group <- c("Germ_cells", "Trophoblast_cells")
-    somatic_groups <- unique(database$group[!database$group %in% not_somatic_group])
-    df_col$group <- factor(df_col$group, levels = c(not_somatic_group, somatic_groups))
-    
-    column_ha_group = HeatmapAnnotation(
-      group = df_col$group,
-      border = TRUE,
-      col = list(group = cell_type_colors),
-      annotation_name_gp = gpar(fontsize = 8),
-      annotation_legend_param = legends_param)
-    
-    if (dim(mat)[1] > 100) fontsize <- 4
-    if (dim(mat)[1] > 50 & dim(mat)[1] <= 100) fontsize <- 5
-    if (dim(mat)[1] > 20 & dim(mat)[1] <= 50) fontsize <- 6
-    if (dim(mat)[1] <= 20) fontsize <- 8
-    
+    somatic_groups <- unique(database$group[!database$group %in%
+        not_somatic_group])
+    df_col$group <- factor(df_col$group,
+        levels = c(not_somatic_group, somatic_groups))
+
+    column_ha_group <- HeatmapAnnotation(
+        group = df_col$group,
+        border = TRUE,
+        col = list(group = cell_type_colors),
+        annotation_name_gp = gpar(fontsize = 8),
+        annotation_legend_param = legends_param)
+
+    fontsize <- setFontSize(mat)
+
     if (units == "log_TPM") mat <- log1p(mat)
     if (units == "scaled") mat <- na.omit(t(scale(t(mat))))
     if (is.null(scale_lims)) scale_lims <- c(0, rowMax(mat))
-    
+
     h <- Heatmap(mat[, rownames(df_col), drop = FALSE],
-            name = units,
-            column_title = "Expression in human cell types",
-            column_split = df_col$group,
-            show_column_names = TRUE,
-            show_column_dend = FALSE,
-            clustering_method_rows = "ward.D",
-            clustering_method_columns = "ward.D",
-            cluster_rows = TRUE,
-            cluster_columns = FALSE,
-            show_row_dend = FALSE,
-            row_names_gp = gpar(fontsize = fontsize),
-            column_names_gp = gpar(fontsize = 8),
-            col = colorRamp2(seq(scale_lims[1], scale_lims[2], length = 11),                 
-                              legend_colors),
-            top_annotation = column_ha_group,
-            heatmap_legend_param = legends_param)
-    
-    if (return)
+        name = units,
+        column_title = "Expression in human cell types",
+        column_split = df_col$group,
+        show_column_names = TRUE,
+        show_column_dend = FALSE,
+        clustering_method_rows = "ward.D",
+        clustering_method_columns = "ward.D",
+        cluster_rows = TRUE,
+        cluster_columns = FALSE,
+        show_row_dend = FALSE,
+        row_names_gp = gpar(fontsize = fontsize),
+        column_names_gp = gpar(fontsize = 8),
+        col = colorRamp2(
+            seq(scale_lims[1], scale_lims[2], length = 11),
+            legend_colors),
+        top_annotation = column_ha_group,
+        heatmap_legend_param = legends_param)
+
+    if (return) {
         return(database)
+    }
 
     return(h)
 }
-

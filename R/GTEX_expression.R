@@ -27,16 +27,13 @@
 #' GTEX_expression(units = "log_TPM")
 #' GTEX_expression(genes = c("MAGEA1", "MAGEA3"), units = "log_TPM")
 GTEX_expression <- function(genes = NULL, units = "TPM", return = FALSE) {
-
-    suppressMessages({
-      database <- CTdata::GTEX_data()
-      CT_genes <- CTdata::CT_genes()
+    
+  suppressMessages({
+    database <- CTdata::GTEX_data()
+    CT_genes <- CTdata::CT_genes()
     })
 
-    if (is.null(genes)) genes <- CT_genes$external_gene_name
-    valid_gene_names <- unique(rowData(database)$external_gene_name)
-    genes <- check_names(genes, valid_gene_names)
-    database <- database[rowData(database)$external_gene_name %in% genes, ]
+    database <- subset_database(genes, database)
 
     mat <- assay(database)
     rownames(mat) <- rowData(database)$external_gene_name
@@ -46,26 +43,23 @@ GTEX_expression <- function(genes = NULL, units = "TPM", return = FALSE) {
         name <- "log_TPM"
     }
 
-    if (dim(mat)[1] > 100) fontsize <- 4
-    if (dim(mat)[1] > 50 & dim(mat)[1] <= 100) fontsize <- 5
-    if (dim(mat)[1] > 20 & dim(mat)[1] <= 50) fontsize <- 6
-    if (dim(mat)[1] <= 20) fontsize <- 8
+    fontsize <- setFontSize(mat)
 
     h <- Heatmap(mat,
-                name = name,
-                column_title = "Gene Expression in normal tissues (GTEx)",
-                col = colorRamp2(seq(0, max(mat), length = 11),
-                                 legend_colors),
-                cluster_rows = TRUE,
-                cluster_columns = TRUE,
-                show_row_dend = FALSE,
-                show_column_dend = FALSE,
-                row_names_gp = gpar(fontsize = fontsize),
-                column_names_gp = gpar(fontsize = 10),
-                clustering_method_rows = "ward.D")
+        name = name,
+        column_title = "Gene Expression in normal tissues (GTEx)",
+        col = colorRamp2(seq(0, max(mat), length = 11), legend_colors),
+        cluster_rows = TRUE,
+        cluster_columns = TRUE,
+        show_row_dend = FALSE,
+        show_column_dend = FALSE,
+        row_names_gp = gpar(fontsize = fontsize),
+        column_names_gp = gpar(fontsize = 10),
+        clustering_method_rows = "ward.D")
 
-    if (return)
+    if (return) {
         return(mat)
+    }
 
     return(h)
 }

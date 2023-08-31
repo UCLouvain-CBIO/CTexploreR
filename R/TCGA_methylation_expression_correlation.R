@@ -1,4 +1,5 @@
-#' Methylation-Expression correlation of Cancer-Testis genes in TCGA samples
+#' Methylation-Expression correlation of Cancer-Testis genes in TCGA
+#' samples
 #'
 #' @description
 #'
@@ -54,12 +55,13 @@
 #' @importFrom rlang .data
 #'
 #' @examples
-#' TCGA_methylation_expression_correlation("LUAD", gene = "TDRD1",
-#'                                         return = FALSE)
-#' TCGA_methylation_expression_correlation(c("LUAD", "LUSC"),
-#'                                         gene = "MAGEA1", return = FALSE)
 #' TCGA_methylation_expression_correlation("LUAD",
-#'                                         gene = "TDRD1", return = TRUE)
+#'     gene = "TDRD1",
+#'     return = FALSE)
+#' TCGA_methylation_expression_correlation(c("LUAD", "LUSC"),
+#'     gene = "MAGEA1", return = FALSE)
+#' TCGA_methylation_expression_correlation("LUAD",
+#'     gene = "TDRD1", return = TRUE)
 TCGA_methylation_expression_correlation <- function(tumor,
                                                     gene = NULL,
                                                     nt_up = 1000,
@@ -67,15 +69,17 @@ TCGA_methylation_expression_correlation <- function(tumor,
                                                     return = FALSE,
                                                     corr_coeff = FALSE) {
     suppressMessages({
-      CT_genes <- CTdata::CT_genes()
-      TPM <- CTdata::TCGA_TPM()
-      met <- CTdata::TCGA_CT_methylation()
+        CT_genes <- CTdata::CT_genes()
+        TPM <- CTdata::TCGA_TPM()
+        met <- CTdata::TCGA_CT_methylation()
     })
 
-    TPM$type <- sub(pattern = "TCGA-", x = colData(TPM)$project_id,
-                    replacement = '')
-    met$type <- sub(pattern = "TCGA-", x = colData(met)$project_id,
-                    replacement = '')
+    TPM$type <- sub(
+        pattern = "TCGA-", x = colData(TPM)$project_id,
+        replacement = "")
+    met$type <- sub(
+        pattern = "TCGA-", x = colData(met)$project_id,
+        replacement = "")
 
     valid_tumor <- c(unique(colData(TPM)$type), "all")
     type <- check_names(variable = tumor, valid_vector = valid_tumor)
@@ -87,9 +91,11 @@ TCGA_methylation_expression_correlation <- function(tumor,
 
     stopifnot("No valid gene name entered" = !is.null(gene))
     valid_gene_names <- CT_genes$external_gene_name
-    valid_gene_names <- valid_gene_names[valid_gene_names %in% rowData(TPM)$external_gene_name]
+    valid_gene_names <- valid_gene_names[valid_gene_names %in%
+        rowData(TPM)$external_gene_name]
     gene <- check_names(gene, valid_gene_names)
-    stopifnot("Gene not in TCGA database" = gene %in% rowData(TPM)$external_gene_name)
+    stopifnot("Gene not in TCGA database" = gene %in%
+        rowData(TPM)$external_gene_name)
     stopifnot(length(gene) == 1)
     TPM <- TPM[rowData(TPM)$external_gene_name %in% gene, ]
 
@@ -103,16 +109,23 @@ TCGA_methylation_expression_correlation <- function(tumor,
     ## Calculates mean methylation value of promoter probe(s) in each sample
     gene_promoter_gr <- makeGRangesFromDataFrame(
         CT_genes |>
-        dplyr::filter(.data$external_gene_name == gene) |>
-        dplyr::select("ensembl_gene_id", "external_gene_name",
-                      "external_transcript_name", "chr", "strand",
-                      "transcription_start_site") |>
-        mutate(chr = paste0("chr", .data$chr)) |>
-        mutate(strand = ifelse(.data$strand == 1, '+', '-')) |>
-        mutate(start = case_when(strand == '+' ~ .data$transcription_start_site - nt_up,
-                                 strand == '-' ~ .data$transcription_start_site - nt_down)) |>
-        mutate(stop = case_when(strand == '+' ~ .data$transcription_start_site + nt_down,
-                                strand == '-' ~ .data$transcription_start_site + nt_up)),
+            dplyr::filter(.data$external_gene_name == gene) |>
+            dplyr::select(
+                "ensembl_gene_id", "external_gene_name",
+                "external_transcript_name", "chr", "strand",
+                "transcription_start_site") |>
+            mutate(chr = paste0("chr", .data$chr)) |>
+            mutate(strand = ifelse(.data$strand == 1, "+", "-")) |>
+            mutate(start = case_when(
+                strand == "+" ~
+                    .data$transcription_start_site - nt_up,
+                strand == "-" ~
+                    .data$transcription_start_site - nt_down)) |>
+            mutate(stop = case_when(
+                strand == "+" ~
+                    .data$transcription_start_site + nt_down,
+                strand == "-" ~
+                    .data$transcription_start_site + nt_up)),
         keep.extra.columns = TRUE,
         seqnames.field = "chr",
         start.field = "start",
@@ -129,29 +142,29 @@ TCGA_methylation_expression_correlation <- function(tumor,
     ## Rm duplicated samples
     TPM <- TPM[, !duplicated(colnames(TPM))]
     met_mean <- met_mean[!duplicated(names(met_mean))]
-    
+
     methylation_expression <-
-      suppressMessages(left_join(
-        tibble(sample = names(met_mean), met = met_mean),
-        tibble(sample = colnames(TPM), TPM = as.vector(assay(TPM)))))
+        suppressMessages(left_join(
+            tibble(sample = names(met_mean), met = met_mean),
+            tibble(sample = colnames(TPM), TPM = as.vector(assay(TPM)))))
 
     ## stop if no probes or no methylation values for probes within the region
     if (all(is.na(methylation_expression$met))) {
-        message(paste0("No methylation data for ", gene))
+        message("No methylation data for ", gene)
         cor <- NA
     }
 
     ## Gene has to be expressed (TPM >= 1) in at least 1%
     ## of the samples to evaluate correlation
     if (quantile(methylation_expression$TPM, 0.99) < 1) {
-        message(paste0("Too few positive samples to estimate a correlation for ",
-                       gene))
+        message("Too few positive samples to estimate a correlation for ",
+                gene)
         cor <- NA
     }
-    
+
     if (!is.na(cor)) {
-      cor <- cor.test(methylation_expression$met,
-                      log1p(methylation_expression$TPM))$estimate
+        cor <- cor.test(methylation_expression$met,
+                        log1p(methylation_expression$TPM))$estimate
     }
 
     methylation_expression <-
@@ -161,34 +174,40 @@ TCGA_methylation_expression_correlation <- function(tumor,
     ## shortLetterCode TP and TM <=> primary / metastatic tumors
     ## shortLetterCode NT <=> Normal peritumoral tissue
     methylation_expression$Tissue <- "Tumor"
-    methylation_expression$Tissue[methylation_expression$shortLetterCode == "NT"] <- "Peritumoral"
+    methylation_expression$Tissue[methylation_expression$shortLetterCode ==
+        "NT"] <- "Peritumoral"
 
     ## Color by tissue (Peritumoral / Tumor) if only one tumor type,
     ## otherwise color by tumor types.
     if (all(type == "all") | length(type) > 1) {
         p <- ggplot(
             as_tibble(methylation_expression[order(methylation_expression$type,
-                                                   decreasing = TRUE), ]),
+                decreasing = TRUE), ]),
             aes(x = .data$met, y = log1p(.data$TPM))) +
-            geom_point(alpha = 0.8, aes(color = .data$type, shape = .data$Tissue)) +
+            geom_point(alpha = 0.8, aes(color = .data$type,
+                                        shape = .data$Tissue)) +
             ggtitle(paste0(gene, "(Pearson's corr = ", round(cor, 2), ")")) +
             scale_colour_manual(values = TCGA_colors) +
             xlim(0, 1)
     } else {
         p <- ggplot(
-            as_tibble(methylation_expression[order(methylation_expression$Tissue,
-                                                   decreasing = TRUE), ]),
+            as_tibble(
+                methylation_expression[order(methylation_expression$Tissue,
+                    decreasing = TRUE), ]),
             aes(x = .data$met, y = log1p(.data$TPM))) +
             geom_point(alpha = 0.8, aes(color = .data$Tissue)) +
-            ggtitle(paste0(gene, " in ", tumor, " (corr = ", round(cor, 2), ")")) +
+            ggtitle(paste0(gene, " in ", tumor, " (corr = ", 
+                           round(cor, 2), ")")) +
             scale_colour_manual(values = TCGA_colors) +
             xlim(0, 1)
     }
 
-    if (corr_coeff)
+    if (corr_coeff) {
         return(unname(cor))
-    if (return)
+    }
+    if (return) {
         return(methylation_expression)
+    }
 
     return(p)
 }

@@ -34,20 +34,17 @@
 #' normal_tissues_mean_methylation()
 #' normal_tissues_mean_methylation(c("MAGEA1", "MAGEA2", "MAGEA3", "MAGEA4"))
 #' normal_tissues_mean_methylation(c("MAGEA1", "MAGEA2", "MAGEA3", "MAGEA4"),
-#'                                 na.omit = FALSE)
+#'     na.omit = FALSE)
 normal_tissues_mean_methylation <- function(genes = NULL, return = FALSE,
                                             na.omit = TRUE) {
-
     suppressMessages({
-      database <- CTdata::CT_mean_methylation_in_tissues()
-      CT_genes <- CTdata::CT_genes()
+        database <- CTdata::CT_mean_methylation_in_tissues()
+        CT_genes <- CTdata::CT_genes()
     })
 
-    if (is.null(genes)) genes <- CT_genes$external_gene_name
-    valid_gene_names <- unique(rownames(database))
-    genes <- check_names(genes, valid_gene_names)
-    database <- database[rownames(database) %in% genes]
-
+    rowData(database)$external_gene_name <- rownames(database)
+    database <- subset_database(genes, database)
+    
     if (na.omit) {
         mat <- na.omit(assay(database))
         clustering_option <- TRUE
@@ -55,32 +52,29 @@ normal_tissues_mean_methylation <- function(genes = NULL, return = FALSE,
         mat <- assay(database)
         clustering_option <- FALSE
     }
-
-    if (dim(mat)[1] > 140 ) fontsize <- 3
-    if (dim(mat)[1] > 100 & dim(mat)[1] <= 140) fontsize <- 4
-    if (dim(mat)[1] > 50 & dim(mat)[1] <= 100) fontsize <- 5
-    if (dim(mat)[1] > 20 & dim(mat)[1] <= 50) fontsize <- 6
-    if (dim(mat)[1] <= 20) fontsize <- 8
+    
+    fontsize <- setFontSize(mat)
 
     h <- Heatmap(mat,
-                 column_title = 'Promoter mean methylation level by tissue',
-                 name = 'Meth',
-                 col = colorRamp2(c(1:100),
-                                  colorRampPalette(c("moccasin","dodgerblue4"))
-                                  (100)),
-                 na_col = "gray80",
-                 cluster_rows = clustering_option,
-                 cluster_columns = FALSE,
-                 show_row_names = TRUE,
-                 show_heatmap_legend = TRUE,
-                 show_row_dend = FALSE,
-                 row_names_gp = gpar(fontsize = fontsize),
-                 column_names_gp = gpar(fontsize = 8),
-                 column_names_side = "bottom",
-                 row_names_side = "right")
+        column_title = "Promoter mean methylation level by tissue",
+        name = "Meth",
+        col = colorRamp2(
+            seq_len(100),
+            colorRampPalette(c("moccasin", "dodgerblue4"))(100)),
+        na_col = "gray80",
+        cluster_rows = clustering_option,
+        cluster_columns = FALSE,
+        show_row_names = TRUE,
+        show_heatmap_legend = TRUE,
+        show_row_dend = FALSE,
+        row_names_gp = gpar(fontsize = fontsize),
+        column_names_gp = gpar(fontsize = 8),
+        column_names_side = "bottom",
+        row_names_side = "right")
 
-    if (return)
+    if (return) {
         return(mat)
+    }
 
     return(h)
 }

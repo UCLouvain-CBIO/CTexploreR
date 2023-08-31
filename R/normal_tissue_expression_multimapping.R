@@ -1,4 +1,5 @@
-#' Expression values (TPM) of genes in normal tissues with or without multimapping
+#' Expression values (TPM) of genes in normal tissues with or
+#' without multimapping
 #'
 #' @description
 #'
@@ -59,28 +60,26 @@
 #'
 #' @examples
 #' normal_tissue_expression_multimapping(
-#'    genes = c("GAGE13", "CT45A6", "NXF2","SSX2", "CTAG1A", "MAGEA3", "MAGEA6"),
-#'    multimapping = FALSE)
+#'     genes = c("GAGE13", "CT45A6", "NXF2", "SSX2", "CTAG1A",
+#'     "MAGEA3", "MAGEA6"), multimapping = FALSE)
 #' normal_tissue_expression_multimapping(
-#'    genes = c("GAGE13", "CT45A6", "NXF2", "SSX2", "CTAG1A", "MAGEA3", "MAGEA6"),
-#'    multimapping = TRUE)
+#'     genes = c("GAGE13", "CT45A6", "NXF2", "SSX2", "CTAG1A",
+#'     "MAGEA3", "MAGEA6"), multimapping = TRUE)
 normal_tissue_expression_multimapping <- function(genes = NULL,
                                                   multimapping = NULL,
                                                   units = "TPM",
                                                   return = FALSE) {
-    if (is.null(multimapping))
+    if (is.null(multimapping)) {
         stop("multimapping parameter should be set to TRUE/FALSE")
+    }
 
     suppressMessages({
-      CT_genes <- CTdata::CT_genes()
-      database <- CTdata::normal_tissues_multimapping_data()
+        CT_genes <- CTdata::CT_genes()
+        database <- CTdata::normal_tissues_multimapping_data()
     })
 
-    if (is.null(genes)) genes <- CT_genes$external_gene_name
-    valid_gene_names <- unique(rowData(database)$external_gene_name)
-    genes <- check_names(genes, valid_gene_names)
-    database <- database[rowData(database)$external_gene_name %in% genes, ]
-
+    database <- subset_database(genes, database)
+    
     if (multimapping) {
         mat <- assay(database, "TPM_with_multimapping")
         title <- "Expression (multi-mapped reads were counted)"
@@ -96,27 +95,25 @@ normal_tissue_expression_multimapping <- function(genes = NULL,
         name <- "log_TPM"
     }
 
-    if (dim(mat)[1] > 100) fontsize <- 4
-    if (dim(mat)[1] > 50 & dim(mat)[1] <= 100) fontsize <- 5
-    if (dim(mat)[1] > 20 & dim(mat)[1] <= 50) fontsize <- 6
-    if (dim(mat)[1] <= 20) fontsize <- 8
+    fontsize <- setFontSize(mat)
 
     h <- Heatmap(mat,
-                 name = name,
-                 col = colorRamp2(seq(0, max(mat), length = 11),
-                                  legend_colors),
-                 column_title = title,
-                 cluster_rows = TRUE,
-                 show_row_dend = FALSE,
-                 cluster_columns = TRUE,
-                 show_column_dend = FALSE,
-                 row_names_gp = gpar(fontsize = fontsize),
-                 column_names_gp = gpar(fontsize = 6),
-                 clustering_method_rows = "ward.D")
+        name = name,
+        col = colorRamp2(
+            seq(0, max(mat), length = 11),
+            legend_colors),
+        column_title = title,
+        cluster_rows = TRUE,
+        show_row_dend = FALSE,
+        cluster_columns = TRUE,
+        show_column_dend = FALSE,
+        row_names_gp = gpar(fontsize = fontsize),
+        column_names_gp = gpar(fontsize = 6),
+        clustering_method_rows = "ward.D")
 
-
-    if (return)
+    if (return) {
         return(mat)
+    }
 
     return(h)
 }

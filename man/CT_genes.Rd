@@ -5,23 +5,30 @@
 \alias{CT_genes}
 \title{CT genes description table}
 \format{
-A \code{tibble} object with 308 rows and 37 columns.
+A \code{tibble} object with 298 rows and 36 columns.
 \itemize{
 \item Rows correspond to CT genes
 \item Columns give CT genes characteristics
 }
 }
 \source{
-See \code{scripts/make_CT_genes.R} in \code{CTdata} for details on how this list of
-curated CT genes was created.
+See \code{scripts/make_CT_genes.R} in \code{CTdata} for details on how this
+list of curated CT genes was created.
 }
 \usage{
 CT_genes
+}
+\value{
+A tibble of all 298 CT genes with their characteristics
 }
 \description{
 Cancer-Testis (CT) genes description, imported from \code{CTdata}
 }
 \details{
 See \code{CTdata::CT_genes} documentation for details
+}
+\examples{
+CT_genes
+
 }
 \keyword{datasets}

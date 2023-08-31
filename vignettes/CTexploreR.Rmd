@@ -10,7 +10,8 @@ output:
 vignette: >
   %\VignetteIndexEntry{Cancer Testis Explorer}
   %\VignetteEngine{knitr::rmarkdown}
-  %%\VignetteKeywords{Cancer, Testis, Gene expression, methylation, Homo sapiens}
+  %%\VignetteKeywords{Cancer, Testis, Gene expression, methylation, 
+  Homo sapiens}
   %\VignetteEncoding{UTF-8}
 ---
 
@@ -35,15 +36,16 @@ genes identified recently and not in an importable format.
 
 Another known database is the one from Wang's team (Wang et al., 2016), however 
 there are other caveats : just a list of genes in  supplemental data, selection 
-criteria are not at all stringent, based on FPKM values, multi-mapping problem is
-not addressed and no individual data about promoter DNA methylation.
+criteria are not at all stringent, based on FPKM values, multi-mapping problem 
+is not addressed and no individual data about promoter DNA methylation.
 
 We thus decided to create a new CT gene resource satisfying all of our needs
-for the analysis of CT genes. We provide a list of `r nrow(CTexploreR::CT_genes)`
-CT genes, see table below, selected based on their expression in normal and 
-tumoral tissues (selection details in the next section). Information about gene 
-location, expression in normal tissues, expression in tumor sample and cell 
-lines, methylation of promoter can also be found in the table.
+for the analysis of CT genes. We provide a list of 
+`r nrow(CTexploreR::CT_genes)` CT genes, see table below, selected based on 
+their expression in normal and tumoral tissues (selection details in the next 
+section). Information about gene  location, expression in normal tissues, 
+expression in tumor sample and cell  lines, methylation of promoter can also be 
+found in the table.
 
 ```{r CT_genes}
 library(CTexploreR)
@@ -70,8 +72,9 @@ CTdata()
 To install the package:
 
 ```{r install1, eval = FALSE}
-if (!require("BiocManager"))
+if (!require("BiocManager")) {
     install.packages("CTexploreR")
+}
 
 BiocManager::install("CTexploreR")
 ```
@@ -79,8 +82,9 @@ BiocManager::install("CTexploreR")
 To install the package from GitHub:
 
 ```{r install2, eval = FALSE}
-if (!require("BiocManager"))
+if (!require("BiocManager")) {
     install.packages("BiocManager")
+}
 
 BiocManager::install("UCLouvain-CBIO/CTexploreR")
 ```
@@ -105,16 +109,16 @@ issues (these were flagged as "lowly expressed" in `GTEX_category` column).
 A careful inspection of these genes showed that many of them are well-known
 Cancer-Testis genes, belonging to gene families (MAGEA, SSX, CT45A, GAGE, …)
 from which members have identical or nearly identical sequences. This is likely
-the reason why these genes are not detected in the GTEx database, as GTEX processing
-pipeline specifies that overlapping intervals between genes are excluded from
-all genes for counting.
+the reason why these genes are not detected in the GTEx database, as GTEX 
+processing pipeline specifies that overlapping intervals between genes are 
+excluded from all genes for counting.
 
-For these genes, as testis-specificity could not be assessed using GTEx database,
-RNAseq data from a set of normal tissues were reprocessed in order to allow
-multimapping. Expression of several genes became detectable in some tissues.
-Genes showing a testis-specific expression (expression at least 10x higher in
-testis than in any somatic tissues when multimapping was allowed) were selected,
-and flagged as testis-specific in `multimapping_analysis` column.
+For these genes, as testis-specificity could not be assessed using GTEx 
+database, RNAseq data from a set of normal tissues were reprocessed in order 
+to allow multimapping. Expression of several genes became detectable in some 
+tissues. Genes showing a testis-specific expression (expression at least 10x 
+higher in testis than in any somatic tissues when multimapping was allowed) were
+selected, and flagged as testis-specific in `multimapping_analysis` column.
 
 
 In order to assess the testis cell type in which each gene is expressed, we used
@@ -122,9 +126,9 @@ the single cell RNA-Seq from the adult human testis transcriptional cell atlas
 (Guo et al., 2018). 251 genes out of our 298 CT genes were in the dataset so we 
 have not been able to determine the cell type for all genes. For each gene, the 
 testis cell type has been determined as the cell type showing the highest mean 
-expression for that gene, if they are detected (count > 0) in at least 1% of that
-specific cell-type. This allowed us to remove the genes for which this cell type
-corresponds to a testis somatic cell type (macrophage, endothelial, myoid, 
+expression for that gene, if they are detected (count > 0) in at least 1% of 
+that specific cell-type. This allowed us to remove the genes for which this cell
+type corresponds to a testis somatic cell type (macrophage, endothelial, myoid, 
 Sertoli or Leydig cells).
 
 We also used scRNAseq data of normal tissues from the Human Protein Atlas (Uhlén
@@ -139,26 +143,28 @@ placenta where CT genes are sometimes expressed.
 To assess activation in cancers, RNAseq data from cancer cell lines from CCLE 
 (Barretina et al., 2012) and from TCGA cancer samples (Cancer Genome Atlas 
 Research Network et al., 2013) were used. This allowed to to select among 
-testis-specific and testis-preferential genes those that are activated in cancers.
+testis-specific and testis-preferential genes those that are activated in 
+cancers.
 
 In the `CCLE_category` and `TCGA_category` columns, genes are tagged as 
-"activated" when they are highly expressed in at least one cancer cell line/sample 
-(TPM >= 10). However genes that were found to be expressed in all -or almost all-
-cancer cell lines/samples were removed, as this probably reflects a constitutive 
-expression rather than a true activation. We filtered out genes that were not 
-completely repressed in at least 20 % of cancer cell lines/samples (TPM <= 0.1).
+"activated" when they are highly expressed in at least one cancer cell line/
+sample (TPM >= 10). However genes that were found to be expressed in all -or 
+almost all-cancer cell lines/samples were removed, as this probably reflects a 
+constitutive  expression rather than a true activation. We filtered out genes 
+that were not completely repressed in at least 20 % of cancer cell lines/samples
+(TPM <= 0.1).
 
 
 ## IGV visualisation
 
-All selected CT genes were visualised on IGV (Thorvaldsdóttir et al., 2013) using
-a RNA-seq alignment from testis, to ensure that expression in testis really 
-corresponded to the canonical transcript. For some genes for which the canonical
-transcript did not correspond to the transcript that we could see in the testis 
-sample, we manually modified the `external_transcript_name` accordingly, to 
-ensure that the TSS and the promoter region are correctly defined. This is 
-particularly important for methylation analysis that must be focused on true 
-promoter regions.
+All selected CT genes were visualised on IGV (Thorvaldsdóttir et al., 2013) 
+using a RNA-seq alignment from testis, to ensure that expression in testis 
+really corresponded to the canonical transcript. For some genes for which the 
+canonical transcript did not correspond to the transcript that we could see in 
+the testis sample, we manually modified the `external_transcript_name` 
+accordingly, to ensure that the TSS and the promoter region are correctly 
+defined. This is particularly important for methylation analysis that must be 
+focused on true promoter regions.
 
 ## Regulation by methylation
 
@@ -171,17 +177,17 @@ of cell lines reated with DAC (5-Aza-2′-Deoxycytidine)).
 less methylated in germ cells (WGBS analysis of a set of normal tissues).
 
 For some genes showing a strong activation in cells treated with
-5-Aza-2′-Deoxycytidine, methylation analysis was not possible due to multimapping
-issues. In this case, genes were still considered as regulated by methylation
-unless their promoter appeared unmethylated in somatic tissues or methylated in
-germ cells.
+5-Aza-2′-Deoxycytidine, methylation analysis was not possible due to 
+multimapping issues. In this case, genes were still considered as regulated by 
+methylation unless their promoter appeared unmethylated in somatic tissues or 
+methylated in germ cells.
 
 
 # Available functions
 
-For details about functions, see their respective manual pages. For all functions,
-an option `return` can  be set to `TRUE` in order to get the values instead of the
-visualisation.
+For details about functions, see their respective manual pages. For all 
+functions, an option `return` can  be set to `TRUE` in order to get the values 
+instead of the visualisation.
 
 
 ## Expression in normal tissues
@@ -195,7 +201,10 @@ difference of expression between testis-specific and testis-preferential genes.
 testis as well as genes lowly expressed in GTEx.
 
 ```{r}
-testis_specific <- dplyr::filter(CT_genes, testis_specificity == "testis_specific")
+testis_specific <- dplyr::filter(
+    CT_genes,
+    testis_specificity == "testis_specific"
+)
 GTEX_expression(testis_specific$external_gene_name, units = "log_TPM")
 ```
 
@@ -203,8 +212,9 @@ GTEX_expression(testis_specific$external_gene_name, units = "log_TPM")
 less stringent to testis, as expected.
 
 ```{r}
-testis_preferential <- dplyr::filter(CT_genes,
-                                     testis_specificity == "testis_preferential")
+testis_preferential <- dplyr::filter(
+    CT_genes, testis_specificity == "testis_preferential"
+)
 GTEX_expression(testis_preferential$external_gene_name, units = "log_TPM")
 ```
 
@@ -213,21 +223,22 @@ GTEX_expression(testis_preferential$external_gene_name, units = "log_TPM")
 Allows to visualise the expression values obtained by counting or not
 multi-mapped reads in normal tissues. We can apply that to genes that are lowly
 expressed in GTEx (as seen above) in order to visualise them. First heatmap
-shows expression without multimapping while multimapping was allowed in the second
-one, where we now see expression.
+shows expression without multimapping while multimapping was allowed in the 
+second one, where we now see expression.
 
 ```{r}
 testis_specific_in_multimapping_analysis <-
-  dplyr::filter(CT_genes, lowly_expressed_in_GTEX)
+    dplyr::filter(CT_genes, lowly_expressed_in_GTEX)
 
 normal_tissue_expression_multimapping(
-  testis_specific_in_multimapping_analysis$external_gene_name,
-  multimapping = FALSE, units = "log_TPM")
+    testis_specific_in_multimapping_analysis$external_gene_name,
+    multimapping = FALSE, units = "log_TPM"
+)
 
 normal_tissue_expression_multimapping(
-  testis_specific_in_multimapping_analysis$external_gene_name,
-  multimapping = TRUE, units = "log_TPM")
-
+    testis_specific_in_multimapping_analysis$external_gene_name,
+    multimapping = TRUE, units = "log_TPM"
+)
 ```
 
 
@@ -236,23 +247,28 @@ normal_tissue_expression_multimapping(
 ### `CCLE_expression()`
 
 Allows to visualise gene expression in different histological types of CCLE
-cancer cell lines. We can thus compare genes that are or not activated in tumoral
-cell lines.
+cancer cell lines. We can thus compare genes that are or not activated in 
+tumoral cell lines.
 
 * Applied to CT genes frequently activated in CCLE cell lines
 
 ```{r}
-frequently_activated <- dplyr::filter(CT_genes,
-                                      percent_of_positive_CCLE_cell_lines >= 5)
+frequently_activated <- dplyr::filter(
+    CT_genes,
+    percent_of_positive_CCLE_cell_lines >= 5
+)
 
-CCLE_expression(genes = frequently_activated$external_gene_name,
-                type = c("lung", "skin", "bile_duct", "bladder", "colorectal",
-                         "lymphoma", "uterine", "myeloma", "kidney",
-                         "pancreatic", "brain", "gastric", "breast", "bone",
-                         "head_and_neck", "ovarian", "sarcoma", "leukemia",
-                         "esophageal", "neuroblastoma"),
-                units = "log_TPM")
-
+CCLE_expression(
+    genes = frequently_activated$external_gene_name,
+    type = c(
+        "lung", "skin", "bile_duct", "bladder", "colorectal",
+        "lymphoma", "uterine", "myeloma", "kidney",
+        "pancreatic", "brain", "gastric", "breast", "bone",
+        "head_and_neck", "ovarian", "sarcoma", "leukemia",
+        "esophageal", "neuroblastoma"
+    ),
+    units = "log_TPM"
+)
 ```
 
 
@@ -260,17 +276,22 @@ CCLE_expression(genes = frequently_activated$external_gene_name,
 * Applied to CT genes not frequently activated in CCLE cell lines
 
 ```{r}
-not_frequently_activated <- dplyr::filter(CT_genes,
-                                      percent_of_negative_CCLE_cell_lines >= 95)
+not_frequently_activated <- dplyr::filter(
+    CT_genes,
+    percent_of_negative_CCLE_cell_lines >= 95
+)
 
-CCLE_expression(genes = not_frequently_activated$external_gene_name,
-                type = c("lung", "skin", "bile_duct", "bladder", "colorectal",
-                         "lymphoma", "uterine", "myeloma", "kidney",
-                         "pancreatic", "brain", "gastric", "breast", "bone",
-                         "head_and_neck", "ovarian", "sarcoma", "leukemia",
-                         "esophageal", "neuroblastoma"),
-                units = "log_TPM")
-
+CCLE_expression(
+    genes = not_frequently_activated$external_gene_name,
+    type = c(
+        "lung", "skin", "bile_duct", "bladder", "colorectal",
+        "lymphoma", "uterine", "myeloma", "kidney",
+        "pancreatic", "brain", "gastric", "breast", "bone",
+        "head_and_neck", "ovarian", "sarcoma", "leukemia",
+        "esophageal", "neuroblastoma"
+    ),
+    units = "log_TPM"
+)
 ```
 
 ### `CT_correlated_genes()`
@@ -278,8 +299,8 @@ CCLE_expression(genes = not_frequently_activated$external_gene_name,
 A function that use expression data from all CCLE cell lines and returns genes
 correlated (or anti-correlated) with specified CT gene.
 
-Here with MAGEA3, we can see all genes (CT or not) whose expression is correlated
-with it, like MAGEA6.
+Here with MAGEA3, we can see all genes (CT or not) whose expression is 
+correlated with it, like MAGEA6.
 
 
 ```{r}
@@ -295,20 +316,22 @@ example compare with activation in CCLE cell lines.
 * Applied to CT genes frequently activated in CCLE cell lines
 
 ```{r}
-TCGA_expression(genes = frequently_activated$external_gene_name,
-                tumor = "all",
-                units = "log_TPM")
-
+TCGA_expression(
+    genes = frequently_activated$external_gene_name,
+    tumor = "all",
+    units = "log_TPM"
+)
 ```
 
 
 * Applied to CT genes not frequently activated in CCLE cell lines
 
 ```{r}
-TCGA_expression(genes = not_frequently_activated$external_gene_name,
-                tumor = "all",
-                units = "log_TPM")
-
+TCGA_expression(
+    genes = not_frequently_activated$external_gene_name,
+    tumor = "all",
+    units = "log_TPM"
+)
 ```
 
 
@@ -316,9 +339,11 @@ When visualising only one tumor, there is a separation between tumoral and
 peritumoral tissue.
 
 ```{r}
-TCGA_expression(genes = frequently_activated$external_gene_name,
-                tumor = "LUAD",
-                units = "log_TPM")
+TCGA_expression(
+    genes = frequently_activated$external_gene_name,
+    tumor = "LUAD",
+    units = "log_TPM"
+)
 ```
 
 
@@ -335,13 +360,15 @@ We can see the difference between CT genes regulated by methylation or not
 ```{r}
 controled_by_methylation <- dplyr::filter(CT_genes, regulated_by_methylation)
 DAC_induction(genes = controled_by_methylation$external_gene_name)
-
 ```
 
 * Applied to genes not controled by methylation
 
 ```{r}
-not_controled_by_methylation <- dplyr::filter(CT_genes, !regulated_by_methylation)
+not_controled_by_methylation <- dplyr::filter(
+    CT_genes,
+    !regulated_by_methylation
+)
 DAC_induction(genes = not_controled_by_methylation$external_gene_name)
 ```
 
@@ -350,7 +377,8 @@ DAC_induction(genes = not_controled_by_methylation$external_gene_name)
 Gives the methylation level of all CpGs located in each promoter region
 (by default defined as 1000 nt upstream TSS and 200 nt downstream TSS) in a set
 of normal tissues. Can be used to analyse more precisely the methylation of a
-particular promoter in normal tissues as methylation values are given CpG by CpG.
+particular promoter in normal tissues as methylation values are given CpG by 
+CpG.
 
 * Applied to a gene controled by methylation
 
@@ -377,16 +405,20 @@ see a specific methylation pattern in the first group.
 * Applied to genes controled by methylation
 
 ```{r}
-normal_tissues_mean_methylation(genes =
-                                  controled_by_methylation$external_gene_name)
+normal_tissues_mean_methylation(
+    genes =
+        controled_by_methylation$external_gene_name
+)
 ```
 
 
 * Applied to genes not controled by methylation
 
 ```{r}
-normal_tissues_mean_methylation(genes =
-                                  not_controled_by_methylation$external_gene_name)
+normal_tissues_mean_methylation(
+    genes =
+        not_controled_by_methylation$external_gene_name
+)
 ```
 
 ### `TCGA_methylation_expression_correlation()`
@@ -397,59 +429,63 @@ TCGA samples.
 * Applied to a gene controled by methylation
 
 ```{r}
-TCGA_methylation_expression_correlation(tumor = "all",
-                                        gene = "TDRD1")
+TCGA_methylation_expression_correlation(
+    tumor = "all",
+    gene = "TDRD1"
+)
 ```
 
 * Applied to a gene not controled by methylation
 
 ```{r}
-TCGA_methylation_expression_correlation(tumor = "all",
-                                        gene = "LIN28A")
+TCGA_methylation_expression_correlation(
+    tumor = "all",
+    gene = "LIN28A"
+)
 ```
 
 
 # Bibliography 
 
 Aguet, F., Anand, S., Ardlie, K. G., Gabriel, S., Getz, G. A., Graubert, A., 
-Hadley, K., Handsaker, R. E., Huang, K. H., Kashin, S., Li, X., MacArthur, D. G.,
-Meier, S. R., Nedzel, J. L., Nguyen, D. T., Segrè, A. V., Todres, E., Balliu, B.,
-Barbeira, A. N., … Volpi, S. (2020). The GTEx Consortium atlas of genetic 
-regulatory effects across human tissues. Science. https://science.sciencemag.org/content/369/6509/1318.abstract
+Hadley, K., Handsaker, R. E., Huang, K. H., Kashin, S., Li, X., 
+MacArthur, D. G., Meier, S. R., Nedzel, J. L., Nguyen, D. T., Segrè, A. V., 
+Todres, E., Balliu, B., Barbeira, A. N., … Volpi, S. (2020). 
+The GTEx Consortium atlas of genetic  regulatory effects across human tissues. 
+Science. https://science.sciencemag.org/content/369/6509/1318.abstract
 
 Almeida, L. G., Sakabe, N. J., deOliveira, A. R., Silva, M. C. C., Mundstein, A.
 S., Cohen, T., Chen, Y.-T., Chua, R., Gurung, S., Gnjatic, S., Jungbluth, A. A.,
-Caballero, O. L., Bairoch, A., Kiesler, E., White, S. L., Simpson, A. J. G., Old,
-L. J., Camargo, A. A., & Vasconcelos, A. T. R. (2009). CTdatabase: a knowledge-base
-of high-throughput and curated data on cancer-testis antigens. Nucleic Acids 
-Research, 37(Database issue), D816–D819.
+Caballero, O. L., Bairoch, A., Kiesler, E., White, S. L., Simpson, A. J. G., 
+Old, L. J., Camargo, A. A., & Vasconcelos, A. T. R. (2009). CTdatabase: a 
+knowledge-base of high-throughput and curated data on cancer-testis antigens. 
+Nucleic Acids Research, 37(Database issue), D816–D819.
 
-Barretina, J., Caponigro, G., Stransky, N., Venkatesan, K., Margolin, A. A., Kim,
-S., Wilson, C. J., Lehár, J., Kryukov, G. V., Sonkin, D., Reddy, A., Liu, M., 
-Murray, L., Berger, M. F., Monahan, J. E., Morais, P., Meltzer, J., Korejwa, A.,
-Jané-Valbuena, J., … Garraway, L. A. (2012). The Cancer Cell Line Encyclopedia 
-enables predictive modelling of anticancer drug sensitivity. Nature, 483(7391), 
-603–607.
+Barretina, J., Caponigro, G., Stransky, N., Venkatesan, K., Margolin, A. A., 
+Kim, S., Wilson, C. J., Lehár, J., Kryukov, G. V., Sonkin, D., Reddy, A., Liu, 
+M., Murray, L., Berger, M. F., Monahan, J. E., Morais, P., Meltzer, J., Korejwa,
+A., Jané-Valbuena, J., … Garraway, L. A. (2012). The Cancer Cell Line 
+Encyclopedia enables predictive modelling of anticancer drug sensitivity. 
+Nature, 483(7391), 603–607.
 
 Cancer Genome Atlas Research Network, Weinstein, J. N., Collisson, E. A., Mills,
-G. B., Shaw, K. R. M., Ozenberger, B. A., Ellrott, K., Shmulevich, I., Sander, C.,
-& Stuart, J. M. (2013). The Cancer Genome Atlas Pan-Cancer analysis project. 
-Nature Genetics, 45(10), 1113–1120.
+G. B., Shaw, K. R. M., Ozenberger, B. A., Ellrott, K., Shmulevich, I., Sander, 
+C., & Stuart, J. M. (2013). The Cancer Genome Atlas Pan-Cancer analysis 
+project. Nature Genetics, 45(10), 1113–1120.
 
 Guo, J. et al. The adult human testis transcriptional cell atlas. Cell Res. 28, 
 1141–1157 (2018).
 
-Uhlén, M. et al. Proteomics. Tissue-based map of the human proteome. Science 347,
-1260419 (2015).
-
+Uhlén, M. et al. Proteomics. Tissue-based map of the human proteome. Science 
+347, 1260419 (2015).
 
 Thorvaldsdóttir, H., Robinson, J. T., & Mesirov, J. P. (2013). Integrative 
 Genomics Viewer (IGV): high-performance genomics data visualization and 
 exploration. Briefings in Bioinformatics, 14(2), 178–192.
 
 Wang, C., Gu, Y., Zhang, K., Xie, K., Zhu, M., Dai, N., Jiang, Y., Guo, X., Liu,
-M., Dai, J., Wu, L., Jin, G., Ma, H., Jiang, T., Yin, R., Xia, Y., Liu, L., Wang,
-S., Shen, B., … Hu, Z. (2016). Systematic identification of genes with a 
+M., Dai, J., Wu, L., Jin, G., Ma, H., Jiang, T., Yin, R., Xia, Y., Liu, L., 
+Wang, S., Shen, B., … Hu, Z. (2016). Systematic identification of genes with a 
 cancer-testis expression pattern in 19 cancer types. Nature Communications, 7, 
 10499.
 

@@ -31,7 +31,9 @@
 #' @importFrom circlize colorRamp2
 #'
 #' @examples
-#' TCGA_expression(tumor = "LUAD", genes = c("MAGEA1", "MAGEA3"), units = "log_TPM")
+#' TCGA_expression(
+#'     tumor = "LUAD", genes = c("MAGEA1", "MAGEA3"),
+#'     units = "log_TPM")
 #' TCGA_expression(tumor = "all", units = "log_TPM")
 TCGA_expression <- function(tumor = "all", genes = NULL,
                             units = "TPM", return = FALSE) {
@@ -40,7 +42,7 @@ TCGA_expression <- function(tumor = "all", genes = NULL,
         CT_genes <- CTdata::CT_genes()
     })
 
-    database$tumor <- sub(pattern = 'TCGA-', x = database$project_id, '')
+    database$tumor <- sub(pattern = "TCGA-", x = database$project_id, "")
     valid_tumors <- unique(database$tumor)
     tumor <- check_names(tumor, c(valid_tumors, "all"))
     stopifnot("No valid tumor type entered" = length(tumor) > 0)
@@ -50,16 +52,7 @@ TCGA_expression <- function(tumor = "all", genes = NULL,
     database$type[database$shortLetterCode == "NT"] <- "Peritumoral"
     database <- database[, order(database$tumor, database$type)]
 
-    if (is.null(genes)) genes <- CT_genes$external_gene_name
-    valid_gene_names <- unique(rowData(database)$external_gene_name)
-    genes <- check_names(genes, valid_gene_names)
-    database <- database[rowData(database)$external_gene_name %in% genes, ]
-
-    legends_param <- list(
-        labels_gp = gpar(col = "black", fontsize = 6),
-        title_gp = gpar(col = "black", fontsize = 6),
-        row_names_gp = gpar(fontsize = 4),
-        annotation_name_side = "left")
+    database <- subset_database(genes, database)
 
     column_ha_type <- HeatmapAnnotation(
         Type = database$type,
@@ -76,7 +69,7 @@ TCGA_expression <- function(tumor = "all", genes = NULL,
         annotation_name_gp = gpar(fontsize = 8),
         annotation_legend_param = legends_param)
 
-    ## Peritumoral samples are displayed only when a single type of tumor is asked
+    ## Peritumoral samples are displayed only when a single type of tumor asked
     if ("all" %in% tumor | length(tumor) > 1) {
         split_by <- factor(database$tumor)
         annot <- column_ha_tumor
@@ -91,30 +84,27 @@ TCGA_expression <- function(tumor = "all", genes = NULL,
 
     if (units == "log_TPM") mat <- log1p(mat)
 
-    if (dim(mat)[1] > 100) fontsize <- 4
-    if (dim(mat)[1] > 50 & dim(mat)[1] <= 100) fontsize <- 5
-    if (dim(mat)[1] > 20 & dim(mat)[1] <= 50) fontsize <- 6
-    if (dim(mat)[1] <= 20) fontsize <- 8
+    fontsize <- setFontSize(mat)
 
     h <- Heatmap(mat[, , drop = FALSE],
-                 name = units,
-                 column_title = paste0("Expression in TCGA samples (", tumor, ")"),
-                 column_split = split_by,
-                 col = colorRamp2(seq(0, max(mat), length = 11),
-                                  legend_colors),
-                 clustering_method_rows = "ward.D",
-                 clustering_method_columns = "ward.D",
-                 cluster_rows = TRUE,
-                 show_column_names = FALSE,
-                 cluster_columns = TRUE,
-                 show_column_dend = FALSE,
-                 show_row_dend = FALSE,
-                 row_names_gp = gpar(fontsize = fontsize),
-                 heatmap_legend_param = legends_param,
-                 top_annotation = annot)
+        name = units,
+        column_title = paste0("Expression in TCGA samples (", tumor, ")"),
+        column_split = split_by,
+        col = colorRamp2(seq(0, max(mat), length = 11), legend_colors),
+        clustering_method_rows = "ward.D",
+        clustering_method_columns = "ward.D",
+        cluster_rows = TRUE,
+        show_column_names = FALSE,
+        cluster_columns = TRUE,
+        show_column_dend = FALSE,
+        show_row_dend = FALSE,
+        row_names_gp = gpar(fontsize = fontsize),
+        heatmap_legend_param = legends_param,
+        top_annotation = annot)
 
-    if (return)
+    if (return) {
         return(mat)
+    }
 
     return(h)
 }

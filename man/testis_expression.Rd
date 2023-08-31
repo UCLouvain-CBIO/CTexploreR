@@ -13,25 +13,25 @@ testis_expression(
 }
 \arguments{
 \item{cells}{\code{character} defining the testis cell types to be plotted.
-Can be "germ_cells", "somatic_cells", "all" (default), or any or a combination
-of "SSC", "Spermatogonia", "Early_spermatocyte", "Late_spermatocyte",
-"Round_spermatid", "Elongated_spermatid", "Sperm1", "Sperm2", "Macrophage",
-"Endothelial", "Myoid", "Sertoli", "Leydig".}
+Can be "germ_cells", "somatic_cells", "all" (default), or any or a
+combination of "SSC", "Spermatogonia", "Early_spermatocyte",
+"Late_spermatocyte", "Round_spermatid", "Elongated_spermatid", "Sperm1",
+"Sperm2", "Macrophage", "Endothelial", "Myoid", "Sertoli", "Leydig".}
 
 \item{genes}{\code{character} nameing the selected genes. The default
 value, \code{NULL}, takes all CT genes.}
 
-\item{scale_lims}{\verb{vector of length 2} setting the lower and upper limits of
-the heatmap colorbar. By default, the lower limit is 0, and the upper limit
-corresponds to the third quartile of the logcounts values.}
+\item{scale_lims}{\verb{vector of length 2} setting the lower and upper limits
+of the heatmap colorbar. By default, the lower limit is 0, and the upper
+limit corresponds to the third quartile of the logcounts values.}
 
 \item{return}{\code{logical(1)}. If \code{TRUE}, the function will return the
 SingleCellExperiment instead of the heatmap. Default is \code{FALSE}.}
 }
 \value{
 A heatmap of selected CT genes expression in single cells from adult
-testis. If \code{return = TRUE}, a SingleCellExperiment instead of the heatmap
-is returned instead.
+testis. If \code{return = TRUE}, a SingleCellExperiment instead of the
+heatmap is returned instead.
 }
 \description{
 Plots a heatmap of genes expression in the different types of testis cells,
@@ -40,6 +40,7 @@ using scRNAseq data from "The adult human testis transcriptional cell atlas"
 }
 \examples{
 
-testis_expression(cells = "germ_cells", genes = c("MAGEA1", "MAGEA3", "MAGEA4"))
+testis_expression(cells = "germ_cells",
+                  genes = c("MAGEA1", "MAGEA3", "MAGEA4"))
 testis_expression(cells = "all", scale_lims = c(0, 4))
 }

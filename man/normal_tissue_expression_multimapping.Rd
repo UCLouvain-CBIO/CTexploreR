@@ -2,7 +2,8 @@
 % Please edit documentation in R/normal_tissue_expression_multimapping.R
 \name{normal_tissue_expression_multimapping}
 \alias{normal_tissue_expression_multimapping}
-\title{Expression values (TPM) of genes in normal tissues with or without multimapping}
+\title{Expression values (TPM) of genes in normal tissues with or
+without multimapping}
 \usage{
 normal_tissue_expression_multimapping(
   genes = NULL,
@@ -63,9 +64,9 @@ counted).
 }
 \examples{
 normal_tissue_expression_multimapping(
-   genes = c("GAGE13", "CT45A6", "NXF2","SSX2", "CTAG1A", "MAGEA3", "MAGEA6"),
-   multimapping = FALSE)
+    genes = c("GAGE13", "CT45A6", "NXF2", "SSX2", "CTAG1A",
+    "MAGEA3", "MAGEA6"), multimapping = FALSE)
 normal_tissue_expression_multimapping(
-   genes = c("GAGE13", "CT45A6", "NXF2", "SSX2", "CTAG1A", "MAGEA3", "MAGEA6"),
-   multimapping = TRUE)
+    genes = c("GAGE13", "CT45A6", "NXF2", "SSX2", "CTAG1A",
+    "MAGEA3", "MAGEA6"), multimapping = TRUE)
 }

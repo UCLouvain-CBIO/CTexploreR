@@ -43,5 +43,5 @@ or not to allow or not counting multi-mapping reads.
 \examples{
 DAC_induction(genes = c("MAGEA1", "MAGEA3", "MAGEA4", "MAGEA6", "CTAG1A"))
 DAC_induction(genes = c("MAGEA1", "MAGEA3", "MAGEA4", "MAGEA6", "CTAG1A",
-              multimapping = FALSE))
+    multimapping = FALSE))
 }
