@@ -26,8 +26,8 @@ Authors@R:
            email = "laurent.gatto@uclouvain.be",
            comment = c(ORCID = "0000-0002-1520-2268")))
 Description: The CTexploreR package re-defines the list of Cancer
-  Testis/Germline (CT) genes based on publicly available RNAseq
-  databases (GTEx, CCLE and TCGA) and summarises their main
+  Testis/Germline (CT) genes. It is based on publicly available RNAseq
+  databases (GTEx, CCLE and TCGA) and summarises CT genes' main
   characteristics. Several visualisation functions allow to explore
   their expression in different types of tissues and cancer cells, or
   to inspect the methylation status of their promoters in normal
@@ -65,5 +65,7 @@ biocViews: Transcriptomics,
            Epigenetics,
            DifferentialExpression,
            GeneExpression,
-           DNAMethylation
+           DNAMethylation,
+           ExperimentHubSoftware,
+           DataImport
 VignetteBuilder: knitr
