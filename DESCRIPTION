@@ -60,10 +60,12 @@ Imports:
 Suggests:
     BiocStyle,
     knitr,
-    rmarkdown
+    rmarkdown,
+    testthat (>= 3.0.0)
 biocViews: Transcriptomics,
            Epigenetics,
            DifferentialExpression,
            GeneExpression,
            DNAMethylation
 VignetteBuilder: knitr
+Config/testthat/edition: 3
