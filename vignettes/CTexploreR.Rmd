@@ -23,7 +23,7 @@ BiocStyle::markdown()
 
 The `CTexploreR` package re-defines the list of Cancer Testis (CT) genes (also
 known a Cancer Germline genes) based on publicly available RNAseq databases
-(GTEx, CCLE and TCGA) and summarises their main characteristics. Several
+(GTEx, CCLE, TCGA and HPA) and summarises their main characteristics. Several
 visualisation functions allow to explore their expression in different types of
 tissues and cancer cells, or to inspect the methylation status of their
 promoters in normal tissues.
@@ -35,7 +35,7 @@ based on old methods (no RNAseq data), no data about DNA methylation, missing
 genes identified recently and not in an importable format.
 
 Another known database is the one from Wang's team (Wang et al., 2016), however 
-there are other caveats : just a list of genes in  supplemental data, selection 
+there are other caveats : just a list of genes in supplemental data, selection 
 criteria are not at all stringent, based on FPKM values, multi-mapping problem 
 is not addressed and no individual data about promoter DNA methylation.
 
@@ -54,7 +54,7 @@ CT_genes
 
 
 `CTdata` is the companion Package for `CTexploreR` and provides the omics
-data that was necessary to select and characterise cancer testis genes as well
+data that was necessary to select and characterize cancer testis genes as well
 as exploring them. Data come from public databases and include expression and
 methylation values of genes in normal and tumor samples as well as in tumor cell
 lines, and expression in cells treated with a demethylating agent is also
@@ -109,7 +109,7 @@ issues (these were flagged as "lowly expressed" in `GTEX_category` column).
 A careful inspection of these genes showed that many of them are well-known
 Cancer-Testis genes, belonging to gene families (MAGEA, SSX, CT45A, GAGE, …)
 from which members have identical or nearly identical sequences. This is likely
-the reason why these genes are not detected in the GTEx database, as GTEX 
+the reason why these genes are not detected in the GTEx database, as GTEx 
 processing pipeline specifies that overlapping intervals between genes are 
 excluded from all genes for counting.
 
@@ -121,15 +121,19 @@ higher in testis than in any somatic tissues when multimapping was allowed) were
 selected, and flagged as testis-specific in `multimapping_analysis` column.
 
 
+## Germline-specific expression
+
 In order to assess the testis cell type in which each gene is expressed, we used
 the single cell RNA-Seq from the adult human testis transcriptional cell atlas 
-(Guo et al., 2018). 251 genes out of our 298 CT genes were in the dataset so we 
-have not been able to determine the cell type for all genes. For each gene, the 
-testis cell type has been determined as the cell type showing the highest mean 
-expression for that gene, if they are detected (count > 0) in at least 1% of 
-that specific cell-type. This allowed us to remove the genes for which this cell
-type corresponds to a testis somatic cell type (macrophage, endothelial, myoid, 
-Sertoli or Leydig cells).
+(Guo et al., 2018). 
+`r table(CT_genes$external_gene_name%in%rownames(CTdata::testis_sce()))[[2]]`
+genes out of our `r nrow(CTexploreR::CT_genes)` CT genes were in the dataset 
+so we have not been able to determine the cell type for all genes. For each 
+gene, the testis cell type has been determined as the cell type showing the 
+highest mean expression for that gene, if they are detected (count > 0) in at 
+least 1% of that specific cell-type. This allowed us to remove the genes for 
+which this cell type corresponds to a testis somatic cell type (macrophage, 
+endothelial, myoid, Sertoli or Leydig cells).
 
 We also used scRNAseq data of normal tissues from the Human Protein Atlas (Uhlén
 et al., 2015) to compute the maximum expression in germ and somatic cells. Genes
@@ -189,16 +193,24 @@ For details about functions, see their respective manual pages. For all
 functions, an option `return` can  be set to `TRUE` in order to get the values 
 instead of the visualisation.
 
+All expression visualisation functions can be used on all GTEx genes, not only
+on Cancer-Testis genes, as the data they refer to contains all genes.
 
-## Expression in normal tissues
+## Expression in normal healthy tissues
 
 ### `GTEX_expression()`
 
 Allows to visualise gene expression in GTEx tissues. We can for example see the
 difference of expression between testis-specific and testis-preferential genes.
+Testis-specific genes have been determined with a stricter specificity to the
+testis : they are lowly expressed in all somatic tissues and at least 10 times
+more in the testis. Whereas testis-preferential accepts a little expression
+outside the testis : they are lowly expressed in at least 75% of somatic 
+tissues, but still 10 times more in the testis. 
 
-* Applied to testis-specific genes : we can clearly see the expression only in
-testis as well as genes lowly expressed in GTEx.
+* Applied to testis-specific genes : we can clearly see the expression strictly
+limited to the testis. We can also see genes that are lowly expressed in GTEx,
+and have thus been characterized using multimapping (see below).
 
 ```{r}
 testis_specific <- dplyr::filter(
@@ -208,8 +220,9 @@ testis_specific <- dplyr::filter(
 GTEX_expression(testis_specific$external_gene_name, units = "log_TPM")
 ```
 
-* Applied to testis-preferential genes : we can see here that the expression is
-less stringent to testis, as expected.
+* Applied to testis-preferential genes : we can see that the expression is
+less stringent to testis, as expected, with low expression in some other 
+tissues, always with a strong testis signal.
 
 ```{r}
 testis_preferential <- dplyr::filter(
@@ -222,9 +235,10 @@ GTEX_expression(testis_preferential$external_gene_name, units = "log_TPM")
 
 Allows to visualise the expression values obtained by counting or not
 multi-mapped reads in normal tissues. We can apply that to genes that are lowly
-expressed in GTEx (as seen above) in order to visualise them. First heatmap
-shows expression without multimapping while multimapping was allowed in the 
-second one, where we now see expression.
+expressed in GTEx (as seen above) in order to visualise their expression.
+First heatmap shows expression without multimapping while multimapping was 
+allowed in the second one, where expression can be observed. This allowed
+their determination as testis-specific genes.
 
 ```{r}
 testis_specific_in_multimapping_analysis <-
@@ -241,6 +255,48 @@ normal_tissue_expression_multimapping(
 )
 ```
 
+### `testis_expression()`
+
+Allows to visualise gene expression in all different testis cell type, somatic
+or germ, using data from the adult human testis transcriptional cell atlas.
+
+Using the testis cell type defined for each CT genes, we visualise clearly
+that genes mainly expressed in an early stage of spermatogenesis aren't 
+expressed later and vice-versa.
+
+```{r}
+early_CT <-
+    dplyr::filter(CT_genes, testis_cell_type %in%
+                    c("SSC", "Spermatogonia", "Early_spermatocyte"))
+
+testis_expression(early_CT$external_gene_name,
+                  cells = "germ_cells")
+
+
+late_CT <-
+    dplyr::filter(CT_genes, testis_cell_type %in%
+                    c("Late_spermatocyte", "Round_spermatocyte",
+                      "Sperm1", "Sperm2"))
+
+testis_expression(late_CT$external_gene_name,
+                  cells = "germ_cells")
+```
+
+
+
+### `HPA_cell_type_expression()`
+
+Allows to visualise gene expression in all different healthy cell type, 
+comparing different somatic cells to germ cells, using data from the 
+human proteome atlas.
+
+Visualising all CT_genes, the specificity to germ cells only is quite clear.
+
+```{r}
+HPA_cell_type_expression(units = "scaled")
+```
+
+
 
 ## Expression in cancer cells and samples
 
@@ -250,13 +306,13 @@ Allows to visualise gene expression in different histological types of CCLE
 cancer cell lines. We can thus compare genes that are or not activated in 
 tumoral cell lines.
 
-* Applied to CT genes frequently activated in CCLE cell lines
+* Applied to CT genes frequently activated in CCLE cell lines, more than 5% of 
+CCLE cell_lines are expressing each gene. A string signal is visible.
 
 ```{r}
 frequently_activated <- dplyr::filter(
     CT_genes,
-    percent_of_positive_CCLE_cell_lines >= 5
-)
+    percent_of_positive_CCLE_cell_lines >= 5)
 
 CCLE_expression(
     genes = frequently_activated$external_gene_name,
@@ -265,21 +321,20 @@ CCLE_expression(
         "lymphoma", "uterine", "myeloma", "kidney",
         "pancreatic", "brain", "gastric", "breast", "bone",
         "head_and_neck", "ovarian", "sarcoma", "leukemia",
-        "esophageal", "neuroblastoma"
-    ),
-    units = "log_TPM"
-)
+        "esophageal", "neuroblastoma"),
+    units = "log_TPM")
 ```
 
 
 
-* Applied to CT genes not frequently activated in CCLE cell lines
+* Applied to CT genes not frequently activated in CCLE cell lines, more than 
+95% of cell lines are not expressing each genes. The lack of expression is very
+clear.
 
 ```{r}
 not_frequently_activated <- dplyr::filter(
     CT_genes,
-    percent_of_negative_CCLE_cell_lines >= 95
-)
+    percent_of_negative_CCLE_cell_lines >= 95)
 
 CCLE_expression(
     genes = not_frequently_activated$external_gene_name,
@@ -288,10 +343,8 @@ CCLE_expression(
         "lymphoma", "uterine", "myeloma", "kidney",
         "pancreatic", "brain", "gastric", "breast", "bone",
         "head_and_neck", "ovarian", "sarcoma", "leukemia",
-        "esophageal", "neuroblastoma"
-    ),
-    units = "log_TPM"
-)
+        "esophageal", "neuroblastoma"),
+    units = "log_TPM")
 ```
 
 ### `CT_correlated_genes()`
@@ -319,8 +372,7 @@ example compare with activation in CCLE cell lines.
 TCGA_expression(
     genes = frequently_activated$external_gene_name,
     tumor = "all",
-    units = "log_TPM"
-)
+    units = "log_TPM")
 ```
 
 
@@ -330,8 +382,7 @@ TCGA_expression(
 TCGA_expression(
     genes = not_frequently_activated$external_gene_name,
     tumor = "all",
-    units = "log_TPM"
-)
+    units = "log_TPM")
 ```
 
 
@@ -342,8 +393,7 @@ peritumoral tissue.
 TCGA_expression(
     genes = frequently_activated$external_gene_name,
     tumor = "LUAD",
-    units = "log_TPM"
-)
+    units = "log_TPM")
 ```
 
 
@@ -355,21 +405,20 @@ TCGA_expression(
 Allows to visualise gene induction upon DAC treatment in a series of cell lines.
 We can see the difference between CT genes regulated by methylation or not
 
-* Applied to genes controled by methylation
+* Applied to genes controlled by methylation
 
 ```{r}
-controled_by_methylation <- dplyr::filter(CT_genes, regulated_by_methylation)
-DAC_induction(genes = controled_by_methylation$external_gene_name)
+controlled_by_methylation <- dplyr::filter(CT_genes, regulated_by_methylation)
+DAC_induction(genes = controlled_by_methylation$external_gene_name)
 ```
 
-* Applied to genes not controled by methylation
+* Applied to genes not controlled by methylation
 
 ```{r}
-not_controled_by_methylation <- dplyr::filter(
+not_controlled_by_methylation <- dplyr::filter(
     CT_genes,
-    !regulated_by_methylation
-)
-DAC_induction(genes = not_controled_by_methylation$external_gene_name)
+    !regulated_by_methylation)
+DAC_induction(genes = not_controlled_by_methylation$external_gene_name)
 ```
 
 ### `normal_tissues_methylation()`
@@ -399,26 +448,23 @@ normal_tissues_methylation("LIN28A")
 
 Gives the mean methylation level of CpGs located in each promoter region
 (by default defined as 1000 nt upstream TSS and 200 nt downstream TSS) in a set
-of normal tissues. When comparing genes controled or not by methylation, we can
+of normal tissues. When comparing genes controlled or not by methylation, we can
 see a specific methylation pattern in the first group.
 
-* Applied to genes controled by methylation
+* Applied to genes controlled by methylation
 
 ```{r}
 normal_tissues_mean_methylation(
-    genes =
-        controled_by_methylation$external_gene_name
-)
+    genes = controlled_by_methylation$external_gene_name)
 ```
 
 
-* Applied to genes not controled by methylation
+* Applied to genes not controlled by methylation
 
 ```{r}
 normal_tissues_mean_methylation(
     genes =
-        not_controled_by_methylation$external_gene_name
-)
+        not_controlled_by_methylation$external_gene_name)
 ```
 
 ### `TCGA_methylation_expression_correlation()`
@@ -431,8 +477,7 @@ TCGA samples.
 ```{r}
 TCGA_methylation_expression_correlation(
     tumor = "all",
-    gene = "TDRD1"
-)
+    gene = "TDRD1")
 ```
 
 * Applied to a gene not controled by methylation
@@ -440,8 +485,7 @@ TCGA_methylation_expression_correlation(
 ```{r}
 TCGA_methylation_expression_correlation(
     tumor = "all",
-    gene = "LIN28A"
-)
+    gene = "LIN28A")
 ```
 
 
