@@ -52,7 +52,7 @@ check_names <- function(variable, valid_vector) {
 #'
 #' @examples
 #' CTexploreR:::subset_database(variable = "MAGEA1", data = CTdata::GTEX_data())
-subset_database <- function(variable, data) {
+subset_database <- function(variable = NULL, data) {
   if (is.null(variable)) variable <- CTdata::CT_genes()$external_gene_name
   valid_gene_names <- unique(rowData(data)$external_gene_name)
   genes <- check_names(variable, valid_gene_names)
