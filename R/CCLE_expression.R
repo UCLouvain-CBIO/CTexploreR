@@ -52,9 +52,8 @@ CCLE_expression <- function(genes = NULL, type = NULL, units = "TPM",
 
     database$type <- tolower(database$type)
     valid_tumor_types <- unique(database$type)
-    type <- check_names(
-        variable = tolower(type),
-        valid_vector = valid_tumor_types)
+    type <- check_names(variable = tolower(type),
+                        valid_vector = valid_tumor_types)
     stopifnot("No valid tumor type entered" = length(type) > 0)
     database <- database[, database$type %in% type]
 

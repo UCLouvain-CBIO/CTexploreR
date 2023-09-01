@@ -88,9 +88,8 @@ HPA_cell_type_expression <- function(genes = NULL, units = "scaled",
         show_row_dend = FALSE,
         row_names_gp = gpar(fontsize = fontsize),
         column_names_gp = gpar(fontsize = 8),
-        col = colorRamp2(
-            seq(scale_lims[1], scale_lims[2], length = 11),
-            legend_colors),
+        col = colorRamp2(seq(scale_lims[1], scale_lims[2], length = 11),
+                         legend_colors),
         top_annotation = column_ha_group,
         heatmap_legend_param = legends_param)
 

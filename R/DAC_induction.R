@@ -72,27 +72,22 @@ DAC_induction <- function(genes = NULL, multimapping = TRUE, return = FALSE) {
     column_ha_treatment <- HeatmapAnnotation(
         treatment = df_col$treatment,
         col = list(treatment = c("CTL" = "dodgerblue3", "DAC" = "firebrick1")),
-        border = TRUE
-    )
+        border = TRUE)
 
     fontsize <- setFontSize(mat)
 
     h <- Heatmap(mat[, rownames(df_col), drop = FALSE],
         name = "logCounts",
-        column_title =
-            "Gene expression in cells treated or not with 5-Aza",
+        column_title = "Gene expression in cells treated or not with 5-Aza",
         column_split = factor(df_col$cell),
-        col = colorRamp2(
-            seq(0, max(mat), length = 11),
-            legend_colors),
+        col = colorRamp2(seq(0, max(mat), length = 11), legend_colors),
         cluster_rows = TRUE,
         show_row_dend = FALSE,
         clustering_method_rows = "ward.D",
         show_column_names = FALSE,
         cluster_columns = FALSE,
         row_names_gp = gpar(fontsize = fontsize),
-        top_annotation = c(column_ha_cell,
-                           column_ha_treatment))
+        top_annotation = c(column_ha_cell, column_ha_treatment))
 
     if (return) {
         return(mat)

@@ -99,9 +99,7 @@ normal_tissue_expression_multimapping <- function(genes = NULL,
 
     h <- Heatmap(mat,
         name = name,
-        col = colorRamp2(
-            seq(0, max(mat), length = 11),
-            legend_colors),
+        col = colorRamp2(seq(0, max(mat), length = 11), legend_colors),
         column_title = title,
         cluster_rows = TRUE,
         show_row_dend = FALSE,
