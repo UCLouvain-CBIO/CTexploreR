@@ -20,4 +20,6 @@ test_that("check_names() works", {
     ## empty result
     expect_identical(CTexploreR:::check_names("var", valid3),
                      character())
+    expect_warning(CTexploreR:::check_names("var", valid3),
+                     "names invalid")
 })
