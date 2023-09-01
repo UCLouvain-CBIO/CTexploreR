@@ -93,7 +93,7 @@ testis_expression <- function(cells = "all", genes = NULL,
         annotation_name_gp = gpar(fontsize = 8),
         annotation_legend_param = legends_param)
 
-    fontsize <- setFontSize(mat)
+    fontsize <- set_fontsize(mat)
 
     if (is.null(scale_lims)) scale_lims <- c(0, quantile(rowMax(mat), 0.75))
 

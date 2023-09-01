@@ -43,7 +43,7 @@ GTEX_expression <- function(genes = NULL, units = "TPM", return = FALSE) {
         name <- "log_TPM"
     }
 
-    fontsize <- setFontSize(mat)
+    fontsize <- set_fontsize(mat)
 
     h <- Heatmap(mat,
         name = name,

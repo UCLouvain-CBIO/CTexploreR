@@ -95,7 +95,7 @@ normal_tissue_expression_multimapping <- function(genes = NULL,
         name <- "log_TPM"
     }
 
-    fontsize <- setFontSize(mat)
+    fontsize <- set_fontsize(mat)
 
     h <- Heatmap(mat,
         name = name,

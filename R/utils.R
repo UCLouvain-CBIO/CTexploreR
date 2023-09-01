@@ -73,7 +73,7 @@ subset_database <- function(variable, data) {
 #'
 #' @examples
 #' CTexploreR:::setFontSize(matrix(1:3, 9,8))
-setFontSize <- function(matrix) {
+set_fontsize <- function(matrix) {
   if (dim(matrix)[1] > 140) return(3)
   if (dim(matrix)[1] > 100 & dim(matrix)[1] <= 140) return(4)
   if (dim(matrix)[1] > 50 & dim(matrix)[1] <= 100) return(5)

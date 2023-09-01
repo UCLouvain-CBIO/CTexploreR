@@ -84,7 +84,7 @@ TCGA_expression <- function(tumor = "all", genes = NULL,
 
     if (units == "log_TPM") mat <- log1p(mat)
 
-    fontsize <- setFontSize(mat)
+    fontsize <- set_fontsize(mat)
 
     h <- Heatmap(mat[, , drop = FALSE],
         name = units,

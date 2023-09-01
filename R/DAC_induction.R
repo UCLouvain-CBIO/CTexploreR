@@ -74,7 +74,7 @@ DAC_induction <- function(genes = NULL, multimapping = TRUE, return = FALSE) {
         col = list(treatment = c("CTL" = "dodgerblue3", "DAC" = "firebrick1")),
         border = TRUE)
 
-    fontsize <- setFontSize(mat)
+    fontsize <- set_fontsize(mat)
 
     h <- Heatmap(mat[, rownames(df_col), drop = FALSE],
         name = "logCounts",

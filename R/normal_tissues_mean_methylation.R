@@ -53,7 +53,7 @@ normal_tissues_mean_methylation <- function(genes = NULL, return = FALSE,
         clustering_option <- FALSE
     }
     
-    fontsize <- setFontSize(mat)
+    fontsize <- set_fontsize(mat)
 
     h <- Heatmap(mat,
         column_title = "Promoter mean methylation level by tissue",

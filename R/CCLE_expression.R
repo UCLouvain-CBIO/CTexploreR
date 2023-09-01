@@ -81,7 +81,7 @@ CCLE_expression <- function(genes = NULL, type = NULL, units = "TPM",
         annotation_legend_param = legends_param,
         col = list(type = CCLE_colors))
 
-    fontsize <- setFontSize(mat)
+    fontsize <- set_fontsize(mat)
     
     if (length(type) <= 5) label_fontsize <- 6
     if (length(type) > 5 & length(type) < 10) label_fontsize <- 4
