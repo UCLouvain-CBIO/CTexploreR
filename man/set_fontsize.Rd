@@ -16,5 +16,5 @@ A logical number that is the fontsize to use
 Gives the fontsize to use for the heatmap based on the matrix's dimension.
 }
 \examples{
-CTexploreR:::setFontSize(matrix(1:3, 9,8))
+CTexploreR:::set_fontsize(matrix(1:3, 9,8))
 }
