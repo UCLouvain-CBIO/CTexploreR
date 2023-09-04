@@ -54,28 +54,26 @@ TCGA_expression <- function(tumor = "all", genes = NULL,
 
     database <- subset_database(genes, database)
 
-    column_ha_type <- HeatmapAnnotation(
-        Type = database$type,
-        border = TRUE,
-        col = list(Type = c("Tumor" = "salmon",
-                            "Peritumoral" = "mediumseagreen")),
-        annotation_name_gp = gpar(fontsize = 8),
-        annotation_legend_param = legends_param)
-
-    column_ha_tumor <- HeatmapAnnotation(
-        Tumor = database$tumor,
-        border = TRUE,
-        col = list(Tumor = TCGA_colors),
-        annotation_name_gp = gpar(fontsize = 8),
-        annotation_legend_param = legends_param)
-
     ## Peritumoral samples are displayed only when a single type of tumor asked
     if ("all" %in% tumor | length(tumor) > 1) {
         database <- database[, database$type == "Tumor"]
         split_by <- factor(database$tumor)
+        column_ha_tumor <- HeatmapAnnotation(
+          Tumor = database$tumor,
+          border = TRUE,
+          col = list(Tumor = TCGA_colors),
+          annotation_name_gp = gpar(fontsize = 8),
+          annotation_legend_param = legends_param)
         annot <- column_ha_tumor
     } else {
         split_by <- factor(database$type, levels = c("Peritumoral", "Tumor"))
+        column_ha_type <- HeatmapAnnotation(
+          Type = database$type,
+          border = TRUE,
+          col = list(Type = c("Tumor" = "salmon",
+                              "Peritumoral" = "mediumseagreen")),
+          annotation_name_gp = gpar(fontsize = 8),
+          annotation_legend_param = legends_param)
         annot <- column_ha_type
     }
 
