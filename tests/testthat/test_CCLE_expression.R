@@ -18,7 +18,7 @@ test_that("CCLE_expression() works", {
     ## selects the expected cell lines
     my_types <- c("Skin", "Colorectal")
     res <- CCLE_expression(genes = "MAGEA1", type = my_types, return = TRUE)
-    x <- colData(CTdata::CCLE_data())
+    x <- colData(CCLE_data())
     exp_cells <- rownames(x[x$type %in% my_types, ])
     expect_equal(sort(colnames(res)), sort(exp_cells))
     
