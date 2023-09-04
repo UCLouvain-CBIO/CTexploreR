@@ -14,7 +14,7 @@ test_that("GTEX_expression() works", {
     
     res <- GTEX_expression("", return = TRUE)
     expect_equal(nrow(res), 0) 
-    expect_warning(GTEX_expression(my_genes), "names invalid")
+    expect_warning(GTEX_expression(""), "names invalid")
     
     ## Test the "log_TPM" units argument
     res_in_TPM <- GTEX_expression("MAGEA1", return = TRUE)
