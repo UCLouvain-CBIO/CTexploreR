@@ -23,9 +23,9 @@ test_that("CCLE_expression() works", {
     res <- CTexploreR:::CCLE_expression(genes = "MAGEA1", 
                                         type = my_types, 
                                         return = TRUE)
-    x <- CTdata:::CCLE_data()
-    cells <- rownames(colData(x[, x$type %in% my_types]))
-    expect_equal(sort(colnames(res)), sort(cells))
+    x <- SummarizedExperiment:::colData(CTdata:::CCLE_data())
+    exp_cells <- rownames(x[x$type %in% my_types, ])
+    expect_equal(sort(colnames(res)), sort(exp_cells))
     
     ## tumor type is case insensitive
     my_types <- c("sKIN")
