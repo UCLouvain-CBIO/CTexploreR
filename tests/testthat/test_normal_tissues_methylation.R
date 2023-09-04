@@ -1,62 +1,55 @@
-test_that("normal_tissue_expression_multimapping() works", {
+test_that("normal_tissues_methylation() works", {
     
     ## returns a matrix of double
-    res <- normal_tissue_expression_multimapping(
-      genes = c("MAGEA3"), 
-      multimapping = TRUE, return = TRUE)
+    res <- normal_tissues_methylation(gene = "TDRD1", 1000, 0, return = TRUE)
     expect_true(inherits(res, "matrix"))
     expect_type(res, "double")
     
-    ## n valid genes in input returns a matrix of n expected rownames
-    expect_equal(nrow(res), 1) 
+    ## the return matrix has the expected number of rows
+    expect_equal(nrow(res), ncol(CT_methylation_in_tissues())) 
     
-    res <- normal_tissue_expression_multimapping(
-      genes = c("MAGEA3", "MAGEA6"), 
-      multimapping = TRUE, return = TRUE)
-    expect_equal(nrow(res), 2) 
-    expect_identical(sort(rownames(res)), sort(c("MAGEA3", "MAGEA6")))
+    ## No valid gene name returns an error
+    expect_error(normal_tissues_methylation(gene = "xxx", 1000, 0), 
+                 "is not in the CT database")
     
-    res <- normal_tissue_expression_multimapping(
-      genes = "", multimapping = TRUE, return = TRUE)
-    expect_equal(nrow(res), 0)
-    expect_warning(normal_tissue_expression_multimapping(
-      genes = "", multimapping = TRUE, return = TRUE), "names invalid")
+    ## a warning message specifies that the max nt_up / nt_down must be < 5000
+    expect_warning(normal_tissues_methylation(gene = "TDRD1", 
+                                              nt_up = 20000, nt_down = 20000),
+                   "maximum number")
     
-    ## collects correctly data not multimapped
-    tested_genes <- c("MAGEA3", "MAGEA6")
-    res <- normal_tissue_expression_multimapping(
-      genes = tested_genes, multimapping = FALSE, return = TRUE)
-    CT_ensembl_gene <- as.data.frame(
-      CT_genes[CT_genes$external_gene_name %in% tested_genes, ])
-    rownames(CT_ensembl_gene) <- CT_ensembl_gene$external_gene_name
-    asked_ensembl_ids <- CT_ensembl_gene[tested_genes, ]$ensembl_gene_id
-    expected_assay <- assay(normal_tissues_multimapping_data(), 
-                            "TPM_no_multimapping")[asked_ensembl_ids, ]
-    rownames(expected_assay) <- tested_genes
-    expect_equal(res[tested_genes,], expected_assay[tested_genes,])
+    ## Collects the right methylation values (for a gene transcribed in sense)
+    res <- normal_tissues_methylation(gene = "TDRD1", 1000, 200, return = TRUE)
+    TSS <- 114179353
+    promoter_gr <- GRanges(seqnames = "chr10",
+                           strand = "+",
+                           ranges = IRanges(
+                             start = TSS - 1000,
+                             end = TSS + 200))
+    exp_data <- subsetByOverlaps(CT_methylation_in_tissues(), promoter_gr)
+    exp_res <- as.matrix(assay(exp_data))
+    rownames(exp_res) <- exp_data@rowRanges@ranges@start -TSS
+    exp_res <- t(exp_res)
+    expect_identical(res, exp_res)
     
-    ## Tests if collects correctly multimapping data
-    res <- normal_tissue_expression_multimapping(
-      genes = tested_genes, multimapping = TRUE, return = TRUE)
-    expected_assay <- assay(normal_tissues_multimapping_data(), 
-                            "TPM_with_multimapping")[asked_ensembl_ids, ]
-    rownames(expected_assay) <- tested_genes
-    expect_equal(res[tested_genes,], expected_assay[tested_genes,])
-    
-    ## No valid multimapping paramater returns an error
-    expect_error(normal_tissue_expression_multimapping(
-      genes = tested_genes, return = TRUE), "multimapping parameter")
+    ## Collects the right methylation values (for a gene transcribed in antisense)
+    res <- normal_tissues_methylation(gene = "SSX3", 1000, 200, return = TRUE)
+    TSS <- 48356703
+    promoter_gr <- GRanges(seqnames = "chrX",
+                           strand = "-",
+                           ranges = IRanges(
+                             start = TSS - 200,
+                             end = TSS + 1000))
+    exp_data <- subsetByOverlaps(CT_methylation_in_tissues(), promoter_gr)
+    exp_res <- as.matrix(assay(exp_data))
+    rownames(exp_res) <- TSS - exp_data@rowRanges@ranges@start
+    exp_res <- t(exp_res)
+    expect_identical(res, exp_res)
 
-    ## Test the "log_TPM" units argument
-    res_in_TPM <- normal_tissue_expression_multimapping(
-      genes = tested_genes, multimapping = TRUE, return = TRUE)
-    res_in_log <- normal_tissue_expression_multimapping(
-      genes = tested_genes, multimapping = TRUE, units = "log_TPM", 
-      return = TRUE)  
-    expect_equal(res_in_log, log1p(res_in_TPM)) 
+    ## The function works even when no CpG whithin the selected range
+    res <- normal_tissues_methylation(gene = "MAGEA1", 5, 5, return = TRUE)
+    expect_equal(nrow(res), 0) 
     
     ## Test that the function returns a heatmap
-    res <- normal_tissue_expression_multimapping(
-      genes = tested_genes, multimapping = TRUE)
+    res <- normal_tissues_methylation(gene = "MAGEA1")
     expect_s4_class(res, "Heatmap")
 })
