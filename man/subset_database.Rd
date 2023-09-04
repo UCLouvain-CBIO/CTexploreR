@@ -4,7 +4,7 @@
 \alias{subset_database}
 \title{Subset databases}
 \usage{
-subset_database(variable, data)
+subset_database(variable = NULL, data)
 }
 \arguments{
 \item{variable}{\code{character()} containing the names genes to keep in the
