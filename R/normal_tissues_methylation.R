@@ -7,10 +7,10 @@
 #' @param gene Name of selected CT gene
 #'
 #' @param nt_up Number of nucleotides upstream the TSS to analyse
-#' (1000 by default)
+#' (by default 1000, maximum value 5000)
 #'
 #' @param nt_down Number of nucleotides downstream the TSS to analyse
-#' (200 by default)
+#' (by default 200, maximum value 5000)
 #'
 #' @param return Boolean (FALSE by default). If set to TRUE, the function will
 #' return the methylation values of all cytosines in the promoter instead of
@@ -57,14 +57,22 @@ normal_tissues_methylation <- function(gene, nt_up = NULL, nt_down = NULL,
     TSS <- CT_genes |>
         filter(.data$external_gene_name == gene) |>
         pull(.data$transcription_start_site)
-
+    
     if (is.null(nt_up)) {
-        nt_up <- 1000
-    }
-
+      nt_up <- 1000
+    } else { if (nt_up > 5000) {
+      nt_up <- 5000
+      warning("Replacing `nt_up` value by 5000, the maximum number of 
+      nucleotides upstream the TSS analysable")
+    }}
+    
     if (is.null(nt_down)) {
-        nt_down <- 200
-    }
+      nt_down <- 200
+    } else { if (nt_down > 5000) {
+      nt_down <- 5000
+      warning("Replacing `nt_down` value by 5000, the maximum number of 
+      nucleotides downstream the TSS analysable")
+    }}
 
     if (strand == 1) {
         promoter_gr <- GRanges(seqnames = paste0("chr", chr),
