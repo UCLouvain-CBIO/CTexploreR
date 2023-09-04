@@ -12,9 +12,8 @@ test_that("CCLE_expression() works", {
     expect_equal(nrow(res), 2) 
     expect_identical(sort(rownames(res)), sort(c("MAGEA1", "MAGEA3")))
         
-    res <- CCLE_expression("", type = "Skin", return = TRUE)
-    expect_equal(nrow(res), 0)
-    expect_warning(CCLE_expression(my_genes, type = "Skin"), "names invalid")
+    expect_equal(nrow(CCLE_expression("", type = "Skin", return = TRUE)), 0)
+    expect_warning(CCLE_expression("", type = "Skin"), "names invalid")
     
     ## selects the expected cell lines
     my_types <- c("Skin", "Colorectal")
