@@ -71,6 +71,7 @@ TCGA_expression <- function(tumor = "all", genes = NULL,
 
     ## Peritumoral samples are displayed only when a single type of tumor asked
     if ("all" %in% tumor | length(tumor) > 1) {
+        database <- database[, database$type == "Tumor"]
         split_by <- factor(database$tumor)
         annot <- column_ha_tumor
     } else {
