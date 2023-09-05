@@ -429,13 +429,13 @@ of normal tissues. Can be used to analyse more precisely the methylation of a
 particular promoter in normal tissues as methylation values are given CpG by 
 CpG.
 
-* Applied to a gene controled by methylation
+* Applied to a gene controlled by methylation
 
 ```{r}
 normal_tissues_methylation("MAGEB2")
 ```
 
-* Applied to a gene not controled by methylation
+* Applied to a gene not controlled by methylation
 
 ```{r}
 normal_tissues_methylation("LIN28A")
@@ -472,7 +472,7 @@ normal_tissues_mean_methylation(
 Shows the correlation between gene expression and promoter methylation in
 TCGA samples.
 
-* Applied to a gene controled by methylation
+* Applied to a gene controlled by methylation
 
 ```{r}
 TCGA_methylation_expression_correlation(
@@ -480,7 +480,7 @@ TCGA_methylation_expression_correlation(
     gene = "TDRD1")
 ```
 
-* Applied to a gene not controled by methylation
+* Applied to a gene not controlled by methylation
 
 ```{r}
 TCGA_methylation_expression_correlation(
