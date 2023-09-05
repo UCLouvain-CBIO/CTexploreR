@@ -30,7 +30,7 @@ test_that("TCGA_expression() works", {
     expect_equal(sort(colnames(res)), sort(exp_samples))
     
     ## No valid tumor type returns an error
-    expect_error(CTexploreR::TCGA_expression("", "MAGEA1"), "No valid")
+    expect_error(TCGA_expression("", "MAGEA1"), "No valid")
     
     ## Test the "log_TPM" units argument
     res_in_TPM <- TCGA_expression("LUAD", "MAGEA1", return = TRUE)
