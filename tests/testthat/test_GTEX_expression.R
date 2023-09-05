@@ -9,9 +9,11 @@ test_that("GTEX_expression() works", {
     expect_equal(nrow(res), 2) 
     expect_identical(sort(rownames(res)), sort(c("MAGEA1", "MAGEA3")))
         
+    ## works with only one gene in input
     res <- GTEX_expression("MAGEA1", return = TRUE)
     expect_equal(nrow(res), 1) 
     
+    ## works but returns a warning when no valid gene is entered
     res <- GTEX_expression("", return = TRUE)
     expect_equal(nrow(res), 0) 
     expect_warning(GTEX_expression(""), "names invalid")

@@ -1,21 +1,31 @@
 test_that("normal_tissue_expression_multimapping() works", {
     
-    ## returns a matrix of double
+    ## returns a matrix of double when Return is set to TRUE
     res <- normal_tissue_expression_multimapping(
       genes = c("MAGEA3"), 
       multimapping = TRUE, return = TRUE)
     expect_true(inherits(res, "matrix"))
     expect_type(res, "double")
     
-    ## n valid genes in input returns a matrix of n expected rownames
-    expect_equal(nrow(res), 1) 
+    ## Test that the function returns a heatmap by default
+    res <- normal_tissue_expression_multimapping(
+      genes = tested_genes, multimapping = TRUE)
+    expect_s4_class(res, "Heatmap")
     
+    ## n valid genes in input returns a matrix of n expected rownames
     res <- normal_tissue_expression_multimapping(
       genes = c("MAGEA3", "MAGEA6"), 
       multimapping = TRUE, return = TRUE)
     expect_equal(nrow(res), 2) 
     expect_identical(sort(rownames(res)), sort(c("MAGEA3", "MAGEA6")))
     
+    ## works with only one gene in input
+    res <- normal_tissue_expression_multimapping(
+      genes = c("MAGEA3"), 
+      multimapping = TRUE, return = TRUE)
+    expect_equal(nrow(res), 1) 
+    
+    ## works but returns a warning when no valid gene is entered
     res <- normal_tissue_expression_multimapping(
       genes = "", multimapping = TRUE, return = TRUE)
     expect_equal(nrow(res), 0)
@@ -55,8 +65,4 @@ test_that("normal_tissue_expression_multimapping() works", {
       return = TRUE)  
     expect_equal(res_in_log, log1p(res_in_TPM)) 
     
-    ## Test that the function returns a heatmap
-    res <- normal_tissue_expression_multimapping(
-      genes = tested_genes, multimapping = TRUE)
-    expect_s4_class(res, "Heatmap")
 })

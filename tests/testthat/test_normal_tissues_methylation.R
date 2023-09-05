@@ -1,11 +1,16 @@
 test_that("normal_tissues_methylation() works", {
-    
-    ## returns a matrix of double
+  
+    ## Test that the function returns a heatmap by default
+    res <- normal_tissues_methylation(gene = "MAGEA1")
+    expect_s4_class(res, "Heatmap")
+ 
+    ## returns a matrix of double when Return is set to TRUE
     res <- normal_tissues_methylation(gene = "TDRD1", 1000, 0, return = TRUE)
     expect_true(inherits(res, "matrix"))
     expect_type(res, "double")
     
     ## the return matrix has the expected number of rows
+    res <- normal_tissues_methylation(gene = "TDRD1", 1000, 0, return = TRUE)
     expect_equal(nrow(res), ncol(CT_methylation_in_tissues())) 
     
     ## No valid gene name returns an error
@@ -49,7 +54,4 @@ test_that("normal_tissues_methylation() works", {
     res <- normal_tissues_methylation(gene = "MAGEA1", 5, 5, return = TRUE)
     expect_equal(nrow(res), 0) 
     
-    ## Test that the function returns a heatmap
-    res <- normal_tissues_methylation(gene = "MAGEA1")
-    expect_s4_class(res, "Heatmap")
 })
