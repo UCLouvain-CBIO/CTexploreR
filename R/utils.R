@@ -68,7 +68,7 @@ subset_database <- function(variable = NULL, data) {
 #' a gene (mean methylation of probes located in its promoter) and the
 #' expression level of the gene (TPM value).
 #'
-#' @param gene `character` selected gene. 
+#' @param gene `character` selected CT gene. 
 #'
 #' @param tumor `character` defining the TCGA tumor type. Can be one
 #'     of "SKCM", "LUAD", "LUSC", "COAD", "ESCA", "BRCA", "HNSC", or
@@ -88,7 +88,8 @@ subset_database <- function(variable = NULL, data) {
 #'     
 #' @return a Dataframe giving for each TCGA sample, the methylation level of
 #' a gene (mean methylation of probes located in its promoter) and the
-#' expression level of the gene (TPM value)
+#' expression level of the gene (TPM value). The number of probes used to
+#' estimate the methylation level is also reported.
 #'
 #' @importFrom BiocGenerics intersect
 #' @importFrom SummarizedExperiment assay colData rowData
@@ -100,12 +101,11 @@ subset_database <- function(variable = NULL, data) {
 #'
 #' @examples
 #' prepare_TCGA_methylation_expression("LUAD", gene = "TDRD1")
-#' prepare_TCGA_methylation_expression("all", gene = "MAGEA1")
 prepare_TCGA_methylation_expression <- function(tumor = "all",
                                                 gene = NULL,
                                                 nt_up = NULL,
                                                 nt_down = NULL,
-                                                include_normal_tissues = FALSE) {
+                                                include_normal_tissues = FALSE){
   suppressMessages({
     CT_genes <- CTdata::CT_genes()
     TPM <- CTdata::TCGA_TPM()
@@ -122,14 +122,11 @@ prepare_TCGA_methylation_expression <- function(tumor = "all",
     met <- met[, met$type %in% type]
   }
   
-  stopifnot("No valid gene name entered" = !is.null(gene))
   valid_gene_names <- CT_genes$external_gene_name
   valid_gene_names <- valid_gene_names[valid_gene_names %in%
                                          rowData(TPM)$external_gene_name]
   gene <- check_names(gene, valid_gene_names)
-  stopifnot("Gene not in TCGA database" = gene %in%
-              rowData(TPM)$external_gene_name)
-  stopifnot(length(gene) == 1)
+  stopifnot("No valid gene name" = length(gene) == 1)
   TPM <- TPM[rowData(TPM)$external_gene_name %in% gene, ]
   
   ## Rm duplicated samples
@@ -143,7 +140,6 @@ prepare_TCGA_methylation_expression <- function(tumor = "all",
   
   if (is.null(nt_up)) nt_up <- 1000
   if (is.null(nt_down)) nt_down <- 200
-  
   
   ## Create a Grange corresponding to promoter region 
   ## Calculates mean methylation value of promoter probe(s) in each sample
@@ -170,11 +166,11 @@ prepare_TCGA_methylation_expression <- function(tumor = "all",
     seqnames.field = "chr",
     start.field = "start",
     end.field = "stop")
-
+  
   met_roi <- subsetByOverlaps(met, gene_promoter_gr)
   met_mean <- colMeans(assay(met_roi), na.rm = TRUE)
   probe_number <- colSums(!is.na(assay(met_roi))) 
-
+  
   ## Keep prefix of TCGA sample names (TCGA-XX-XXXX-XXX) to join
   ## expression and methylation data
   names(met_mean) <- substr(names(met_mean), 1, 16)
@@ -182,23 +178,26 @@ prepare_TCGA_methylation_expression <- function(tumor = "all",
   
   methylation_expression <-
     suppressMessages(left_join(
-      tibble(sample = names(met_mean), met = met_mean, probe_number = probe_number),
+      tibble(sample = names(met_mean), 
+             met = met_mean, 
+             probe_number = probe_number),
       tibble(sample = colnames(TPM), 
-             shortLetterCode = TPM$shortLetterCode,
+             tissue = ifelse(TPM$shortLetterCode == "NT", "Peritumoral", "Tumor"),
+             #shortLetterCode = TPM$shortLetterCode,
              type = TPM$type,
              TPM = as.vector(assay(TPM)))))
   
-  methylation_expression$Tissue <- "Tumor"
-  methylation_expression$Tissue[methylation_expression$shortLetterCode ==
-                                  "NT"] <- "Peritumoral"
+  # methylation_expression$Tissue <- "Tumor"
+  # methylation_expression$Tissue[methylation_expression$shortLetterCode ==
+  #                                 "NT"] <- "Peritumoral"
   
   if (!include_normal_tissues) methylation_expression <- 
-    methylation_expression[methylation_expression$Tissue != "Peritumoral", ]
+    methylation_expression[methylation_expression$tissue != "Peritumoral", ]
   
   
   methylation_expression <- dplyr::select(methylation_expression, sample, 
-                                          Tissue, type, probe_number, met, TPM)
-
+                                          tissue, type, probe_number, met, TPM)
+  
 }
 
 
