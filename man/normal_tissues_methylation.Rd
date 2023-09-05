@@ -10,10 +10,10 @@ normal_tissues_methylation(gene, nt_up = NULL, nt_down = NULL, return = FALSE)
 \item{gene}{Name of selected CT gene}
 
 \item{nt_up}{Number of nucleotides upstream the TSS to analyse
-(1000 by default)}
+(by default 1000, maximum value 5000)}
 
 \item{nt_down}{Number of nucleotides downstream the TSS to analyse
-(200 by default)}
+(by default 200, maximum value 5000)}
 
 \item{return}{Boolean (FALSE by default). If set to TRUE, the function will
 return the methylation values of all cytosines in the promoter instead of

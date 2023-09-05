@@ -6,12 +6,13 @@
 samples}
 \usage{
 TCGA_methylation_expression_correlation(
-  tumor,
+  tumor = "all",
   gene = NULL,
   nt_up = 1000,
   nt_down = 200,
-  return = FALSE,
-  corr_coeff = FALSE
+  min_probe_number = 3,
+  include_normal_tissues = FALSE,
+  return = FALSE
 )
 }
 \arguments{
@@ -19,8 +20,7 @@ TCGA_methylation_expression_correlation(
 of "SKCM", "LUAD", "LUSC", "COAD", "ESCA", "BRCA", "HNSC", or
 "all" (default).}
 
-\item{gene}{\code{character} nameing the selected genes. The default
-value, \code{NULL}, takes all CT genes.}
+\item{gene}{\code{character} selected gene.}
 
 \item{nt_up}{\code{numeric(1)} indicating the number of nucleotides
 upstream the TSS to define the promoter region (1000 by
@@ -30,23 +30,24 @@ default)}
 downstream the TSS to define the promoter region (200 by
 default)}
 
-\item{return}{\code{logical(1)}. If \code{TRUE}, the function will return the
-methylation and expression values in all samples instead of the
-heatmap. Default is \code{FALSE}.}
+\item{min_probe_number}{\code{numeric(1)} indicating the minimum
+number of probes (with methylation values) within the selected region
+to calculate its mean methylation level. Default is 3.}
 
-\item{corr_coeff}{\code{logical(1)}. If \code{TRUE}, the function will
-invisibly return the correlation coefficient (Pearson), between
-methylation and expression values for the gene in selected
-samples. Default is \code{FALSE}.}
+\item{include_normal_tissues}{\code{logical(1)}. If \code{TRUE}, the function will
+include normal peritumoral tissues in addition to tumoral samples.
+Default is \code{FALSE}.}
+
+\item{return}{\code{logical(1)}. If \code{TRUE}, the function will return the
+methylation and expression values in TCGA samples instead of the
+heatmap. Default is \code{FALSE}.}
 }
 \value{
-A correlation plot between gene expression and methylation
-values of probe(s) located in its promoter region (defined as
-1000 nucleotides upstream TSS and 200 nucleotides downstream
-TSS).  If return = TRUE, methylation and expression values for
-the gene in selected tumors are returned in a tibble
-instead. If \code{corr_coeff} is set to TRUE, the correlation
-coefficient is being returned instead.
+A scatter plot representing for each TCGA sample, gene expression
+and mean methylation values of probe(s) located in its promoter region
+(defined as 1000 nucleotides upstream TSS and 200 nucleotides downstream
+TSS by default). If return = TRUE, methylation and expression values
+are returned in a tibble instead.
 }
 \description{
 Plots the correlation between methylation and expression values of
@@ -58,11 +59,7 @@ are found in promoter regions or if less than 1\% of tumors are
 positive (TPM >= 1) for the gene.
 }
 \examples{
-TCGA_methylation_expression_correlation("LUAD",
-    gene = "TDRD1",
-    return = FALSE)
-TCGA_methylation_expression_correlation(c("LUAD", "LUSC"),
-    gene = "MAGEA1", return = FALSE)
-TCGA_methylation_expression_correlation("LUAD",
-    gene = "TDRD1", return = TRUE)
+TCGA_methylation_expression_correlation("LUAD", gene = "TDRD1")
+TCGA_methylation_expression_correlation("all", gene = "MAGEA1", 
+ min_probe_number = 1, return = FALSE)
 }
