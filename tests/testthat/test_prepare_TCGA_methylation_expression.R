@@ -37,7 +37,7 @@ test_that("prepare_TCGA_methylation_expression_() works", {
                                              gene = "TDRD1")
   # expected_res <- dput(res)
   # save(expected_res, file = "tests/testthat/methylation_expression_TDRD1_in_LUAD.rda")
-  load("tests/testthat/methylation_expression_TDRD1_in_LUAD.rda")
+  load("methylation_expression_TDRD1_in_LUAD.rda")
   expect_identical(res, expected_res)
   
   ## Only tumor samples are returned when include_normal_tissues is FALSE

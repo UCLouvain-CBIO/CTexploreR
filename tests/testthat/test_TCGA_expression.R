@@ -17,13 +17,14 @@ test_that("TCGA_expression() works", {
     expect_warning(TCGA_expression("LUAD", "", return = TRUE), "names invalid")
     
     ## selects the expected tumors
-    tumor_types <- c("SKCM", "LUAD")
+    tumor_types <- c("SKCM")
     res <- TCGA_expression(tumor = tumor_types, genes = "MAGEA1", return = TRUE)
     x <- colData(TCGA_TPM())
     exp_samples <- rownames(x[x$project_id %in% paste0("TCGA-", tumor_types), ])
     expect_equal(sort(colnames(res)), sort(exp_samples))
     
     ## Peritumoral samples are displayed only when a single type of tumor asked
+    tumor_types <- c("SKCM", "LUSC")
     res <- TCGA_expression(tumor = tumor_types, genes = "MAGEA1", return = TRUE)
     exp_samples <- rownames(x[x$project_id %in% paste0("TCGA-", tumor_types) &
                                 x$shortLetterCode != "NT", ])

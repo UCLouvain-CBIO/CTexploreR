@@ -9,7 +9,7 @@ test_that("normal_tissue_expression_multimapping() works", {
     
     ## Test that the function returns a heatmap by default
     res <- normal_tissue_expression_multimapping(
-      genes = tested_genes, multimapping = TRUE)
+      genes = c("MAGEA3", "MAGEA6"), multimapping = TRUE)
     expect_s4_class(res, "Heatmap")
     
     ## n valid genes in input returns a matrix of n expected rownames
