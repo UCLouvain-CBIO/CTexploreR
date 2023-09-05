@@ -100,7 +100,7 @@ subset_database <- function(variable = NULL, data) {
 #' @importFrom rlang .data
 #'
 #' @examples
-#' prepare_TCGA_methylation_expression("LUAD", gene = "TDRD1")
+#' CTexploreR:::prepare_TCGA_methylation_expression("LUAD", gene = "TDRD1")
 prepare_TCGA_methylation_expression <- function(tumor = "all",
                                                 gene = NULL,
                                                 nt_up = NULL,
