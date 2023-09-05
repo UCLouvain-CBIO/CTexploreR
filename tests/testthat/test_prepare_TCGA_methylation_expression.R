@@ -33,27 +33,25 @@ test_that("prepare_TCGA_methylation_expression_() works", {
     "No valid")
   
   ## Collects the right methylation values 
-  res <- prepare_TCGA_methylation_expression(tumor = "ESCA", 
-                                             gene = "MAGEA1")
+  res <- prepare_TCGA_methylation_expression(tumor = "LUAD", 
+                                             gene = "TDRD1")
   # expected_res <- dput(res)
-  # save(expected_res, file = "tests/testthat/methylation_expression_MAGEA1_in_ESCA.rda")
-  load("tests/testthat/methylation_expression_MAGEA1_in_ESCA.rda")
+  # save(expected_res, file = "tests/testthat/methylation_expression_TDRD1_in_LUAD.rda")
+  load("tests/testthat/methylation_expression_TDRD1_in_LUAD.rda")
   expect_identical(res, expected_res)
   
   ## Only tumor samples are returned when include_normal_tissues is FALSE
-  res <- prepare_TCGA_methylation_expression(tumor = "ESCA", 
-                                             gene = "MAGEA1",
+  res <- prepare_TCGA_methylation_expression(tumor = "LUAD", 
+                                             gene = "TDRD1",
                                              include_normal_tissues = FALSE)
   
   expect_true(!"Peritumoral" %in% res$tissue)
   
   ## Peritumoral samples are included when include_normal_tissues is TRUE
-  res <- prepare_TCGA_methylation_expression(tumor = "ESCA", 
-                                             gene = "MAGEA1",
+  res <- prepare_TCGA_methylation_expression(tumor = "LUAD", 
+                                             gene = "TDRD1",
                                              include_normal_tissues = TRUE)
   
   expect_true("Peritumoral" %in% res$tissue)
-  
-  
   
 })
