@@ -70,4 +70,6 @@ biocViews: Transcriptomics,
            ExperimentHubSoftware,
            DataImport
 VignetteBuilder: knitr
+URL: https://github.com/UCLouvain-CBIO/CTexploreR
+BugReports: https://github.com/UCLouvain-CBIO/CTexploreR/issues
 Config/testthat/edition: 3

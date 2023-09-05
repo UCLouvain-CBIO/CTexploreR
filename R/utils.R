@@ -82,9 +82,9 @@ subset_database <- function(variable = NULL, data) {
 #'     downstream the TSS to define the promoter region (200 by
 #'     default)
 #'
-#' @param include_normal_tissues `logical(1)`. If `TRUE`, the function will 
-#'     include normal peritumoral tissues in addition to tumoral samples. 
-#'     Default is `FALSE`.
+#' @param include_normal_tissues `logical(1)`. If `TRUE`, 
+#'     the function will include normal peritumoral tissues in addition 
+#'     to tumoral samples. Default is `FALSE`.
 #'     
 #' @return a Dataframe giving for each TCGA sample, the methylation level of
 #' a gene (mean methylation of probes located in its promoter) and the
@@ -182,7 +182,8 @@ prepare_TCGA_methylation_expression <- function(tumor = "all",
              met = met_mean, 
              probe_number = probe_number),
       tibble(sample = colnames(TPM), 
-             tissue = ifelse(TPM$shortLetterCode == "NT", "Peritumoral", "Tumor"),
+             tissue = ifelse(TPM$shortLetterCode == "NT",
+                             "Peritumoral", "Tumor"),
              #shortLetterCode = TPM$shortLetterCode,
              type = TPM$type,
              TPM = as.vector(assay(TPM)))))

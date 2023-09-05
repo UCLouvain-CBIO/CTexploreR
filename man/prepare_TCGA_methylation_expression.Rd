@@ -27,9 +27,9 @@ default)}
 downstream the TSS to define the promoter region (200 by
 default)}
 
-\item{include_normal_tissues}{\code{logical(1)}. If \code{TRUE}, the function will
-include normal peritumoral tissues in addition to tumoral samples.
-Default is \code{FALSE}.}
+\item{include_normal_tissues}{\code{logical(1)}. If \code{TRUE},
+the function will include normal peritumoral tissues in addition
+to tumoral samples. Default is \code{FALSE}.}
 }
 \value{
 a Dataframe giving for each TCGA sample, the methylation level of

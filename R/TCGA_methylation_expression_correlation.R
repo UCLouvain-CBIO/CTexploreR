@@ -24,9 +24,9 @@
 #'     number of probes (with methylation values) within the selected region 
 #'     to calculate its mean methylation level. Default is 3.
 #'     
-#' @param include_normal_tissues `logical(1)`. If `TRUE`, the function will 
-#'     include normal peritumoral tissues in addition to tumoral samples. 
-#'     Default is `FALSE`.
+#' @param include_normal_tissues `logical(1)`. If `TRUE`, 
+#'     the function will include normal peritumoral tissues in addition to 
+#'     tumoral samples. Default is `FALSE`.
 #'
 #' @param return `logical(1)`. If `TRUE`, the function will return the
 #'     methylation and expression values in TCGA samples instead of the
