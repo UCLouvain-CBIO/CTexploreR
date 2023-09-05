@@ -42,17 +42,12 @@ CT_correlated_genes <- function(gene, corr_thr = 0.5,
         CCLE_data <- CTdata::CCLE_data()
     })
 
-    if (missing(gene)) {
-        stop("Gene name be specified!")
-    }
+    stopifnot("Gene name be specified!" = !missing(gene)) 
+    stopifnot("Not a CT gene" = gene %in% CT_genes$external_gene_name) 
 
-    if (!gene %in% CT_genes$external_gene_name) {
-        stop("Gene must be a CT gene!")
-    }
-
+    ## Need the ensembl_id 
     tested_ref <- rownames(CCLE_data[rowData(CCLE_data)$external_gene_name ==
         gene, ])
-
     tmp <- data.frame(
         corr = corr_matrix[tested_ref, ],
         external_gene_name =
