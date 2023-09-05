@@ -215,8 +215,7 @@ and have thus been characterized using multimapping (see below).
 ```{r}
 testis_specific <- dplyr::filter(
     CT_genes,
-    testis_specificity == "testis_specific"
-)
+    testis_specificity == "testis_specific")
 GTEX_expression(testis_specific$external_gene_name, units = "log_TPM")
 ```
 
@@ -226,8 +225,7 @@ tissues, always with a strong testis signal.
 
 ```{r}
 testis_preferential <- dplyr::filter(
-    CT_genes, testis_specificity == "testis_preferential"
-)
+    CT_genes, testis_specificity == "testis_preferential")
 GTEX_expression(testis_preferential$external_gene_name, units = "log_TPM")
 ```
 
@@ -246,13 +244,11 @@ testis_specific_in_multimapping_analysis <-
 
 normal_tissue_expression_multimapping(
     testis_specific_in_multimapping_analysis$external_gene_name,
-    multimapping = FALSE, units = "log_TPM"
-)
+    multimapping = FALSE, units = "log_TPM")
 
 normal_tissue_expression_multimapping(
     testis_specific_in_multimapping_analysis$external_gene_name,
-    multimapping = TRUE, units = "log_TPM"
-)
+    multimapping = TRUE, units = "log_TPM")
 ```
 
 ### `testis_expression()`
