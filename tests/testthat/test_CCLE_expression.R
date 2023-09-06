@@ -42,4 +42,15 @@ test_that("CCLE_expression() works", {
                                   return = TRUE)
     expect_equal(res_in_log[, 1], log1p(res_in_TPM[, 1])) 
     
+    ## Test that the function returns the expected heatmap
+    res <- CCLE_expression(c("MAGEA1", "MAGEA3", "MAGEA4"), "Skin")
+    vdiffr::expect_doppelganger("CCLE_expression_on_MAGE", fig = res)
+    
+    ## Test that the function returns the expected matrix
+    res <- CCLE_expression(c("MAGEA1", "MAGEA3", "MAGEA4"), 
+                           "Skin", return = TRUE)
+    #saveRDS(res, test_path("fixtures", "CCLE_expression_on_MAGE.rds"))
+    exp_res <- readRDS(test_path("fixtures", "CCLE_expression_on_MAGE.rds"))
+    expect_equal(exp_res, res)
+    
 })

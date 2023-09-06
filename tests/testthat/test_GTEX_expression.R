@@ -29,5 +29,11 @@ test_that("GTEX_expression() works", {
     
     ## Test that the function returns the expected heatmap
     res <- GTEX_expression(c("MAGEA1", "MAGEA3", "MAGEA4"))
-    vdiffr::expect_doppelganger("GTEX_expression on MAGE", fig = res)
+    vdiffr::expect_doppelganger("GTEX_expression_on_MAGE", fig = res)
+    
+    ## Test that the function returns the expected matrix
+    res <- GTEX_expression(c("MAGEA1", "MAGEA3", "MAGEA4"), return = TRUE)
+    #saveRDS(res, test_path("fixtures", "GTEX_expression_on_MAGE.rds"))
+    exp_res <- readRDS(test_path("fixtures", "GTEX_expression_on_MAGE.rds"))
+    expect_equal(exp_res, res)
 })
