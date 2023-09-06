@@ -26,4 +26,8 @@ test_that("GTEX_expression() works", {
     ## Test that the function returns a heatmap
     res <- GTEX_expression(c("MAGEA1", "MAGEA3"))
     expect_s4_class(res, "Heatmap")
+    
+    ## Test that the function returns the expected heatmap
+    res <- GTEX_expression(c("MAGEA1", "MAGEA3", "MAGEA4"))
+    vdiffr::expect_doppelganger("GTEX_expression on MAGE", fig = res)
 })
