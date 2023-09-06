@@ -184,20 +184,16 @@ prepare_TCGA_methylation_expression <- function(tumor = "all",
       tibble(sample = colnames(TPM), 
              tissue = ifelse(TPM$shortLetterCode == "NT",
                              "Peritumoral", "Tumor"),
-             #shortLetterCode = TPM$shortLetterCode,
              type = TPM$type,
              TPM = as.vector(assay(TPM)))))
-  
-  # methylation_expression$Tissue <- "Tumor"
-  # methylation_expression$Tissue[methylation_expression$shortLetterCode ==
-  #                                 "NT"] <- "Peritumoral"
   
   if (!include_normal_tissues) methylation_expression <- 
     methylation_expression[methylation_expression$tissue != "Peritumoral", ]
   
   
-  methylation_expression <- dplyr::select(methylation_expression, sample, 
-                                          tissue, type, probe_number, met, TPM)
+  methylation_expression <- dplyr::select(methylation_expression, "sample", 
+                                          "tissue", "type", "probe_number", 
+                                          "met", "TPM")
   
 }
 

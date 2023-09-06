@@ -29,6 +29,8 @@
 #' @importFrom circlize colorRamp2
 #' @importFrom grDevices colorRampPalette
 #' @importFrom stats na.omit
+#' @importFrom SummarizedExperiment rowData<-
+#' 
 #'
 #' @examples
 #' normal_tissues_mean_methylation()
