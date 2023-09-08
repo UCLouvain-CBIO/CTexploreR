@@ -21,50 +21,46 @@ BiocStyle::markdown()
 
 # Introduction
 
-The `CTexploreR` package re-defines the list of Cancer Testis (CT) genes (also
-known a Cancer Germline genes) based on publicly available RNAseq databases
-(GTEx, CCLE, TCGA and HPA) and summarises their main characteristics. Several
-visualisation functions allow to explore their expression in different types of
-tissues and cancer cells, or to inspect the methylation status of their
-promoters in normal tissues.
 
-It has appeared while working on CT genes that there was no reliable database.
-One existing database, CTdatabase (Almeida et al., 2009) showed different issues
-: problematic gene names, no precise chromosomal location, expression profiles 
-based on old methods (no RNAseq data), no data about DNA methylation, missing 
-genes identified recently and not in an importable format.
+Cancer-Testis (CT) genes, also called Cancer-Germline (CG), are a group of genes 
+whose expression is normally restricted to the germline but that are found 
+aberrantly activated in many types of cancers. These genes produce cancer 
+specific antigens represent ideal targets for anti-cancer vaccines. 
+Besides their interest in immunotherapy, they can also be used as cancer 
+biomarkers and as target of anti-tumor therapies with limited side effect.
 
-Another known database is the one from Wang's team (Wang et al., 2016), however 
-there are other caveats : just a list of genes in supplemental data, selection 
-criteria are not at all stringent, based on FPKM values, multi-mapping problem 
-is not addressed and no individual data about promoter DNA methylation.
+Many CT genes use DNA methylation as a primary mechanism of transcriptionnal
+regulation. This is another interesting point about CT genes as they represent 
+suitable models to study DNA demethylation in cancer.
 
-We thus decided to create a new CT gene resource satisfying all of our needs
-for the analysis of CT genes. We provide a list of 
-`r nrow(CTexploreR::CT_genes)` CT genes, see table below, selected based on 
-their expression in normal and tumoral tissues (selection details in the next 
-section). Information about gene  location, expression in normal tissues, 
-expression in tumor sample and cell  lines, methylation of promoter can also be 
-found in the table.
+Currently the reference database gathering CT genes is the 
+[CTdatabase](http://www.cta.lncc.br/) that was published in 2009, based on a 
+literature screening(Almeida et al., 2009). This database is however not up to 
+date. Recently identified CT genes are not referenced (in particular CT genes 
+identified by omics methods that didn’t exist at the time) while some genes 
+referred as CT genes appeared to be in reality expressed in many somatic 
+tissues. Furthermore, the database is not in an easily importable format, some 
+genes are not encoded properly (by synonyms names rather than by their official 
+HGNC symbol names, or by a concatenation of both) resulting in poor 
+interoperability for downstream analyses. More recent 
+studies proposed other lists of CT genes like Wang’s CTatlas (Wang et al., 2016,
+Jamin et al., 2021, Carter et al., 2023). These lists were established using 
+different criteria to define CT genes and hence differ substantially from each 
+other. Moreover, these lists are usually provided as supplemental data files and 
+are not strictly speaking databases. Finally, none of these studies describe the 
+involvement of DNA methylation in the regulation of individual CT genes.  
 
-```{r CT_genes}
-library(CTexploreR)
-CT_genes
-```
+We therefore created `CTexploreR`, a Bioconductor R package, aimed to redefine 
+rigorously the list of CT genes based on publicly available RNAseq databases 
+and to summarize their main characteristics. We included methylation analyses 
+to classify these genes according to whether they are regulated or not by DNA 
+methylation. The package also offers tools to visualize CT genes expression and 
+promoter DNA methylation in normal and tumoral tissues. CTexploreR hence 
+represents an up-to-date reference database for CT genes and can be used as a 
+starting point for further investigations related to these genes. 
 
 
-`CTdata` is the companion Package for `CTexploreR` and provides the omics
-data that was necessary to select and characterize cancer testis genes as well
-as exploring them. Data come from public databases and include expression and
-methylation values of genes in normal and tumor samples as well as in tumor cell
-lines, and expression in cells treated with a demethylating agent is also
-available. The data are served through the `ExperimentHub` infrastructure.
-Currently available data are summarised in the table below and details can be
-found in `CTdata` vignette or manuals.
 
-```{r data}
-CTdata()
-```
 
 
 # Installation
@@ -89,6 +85,29 @@ if (!require("BiocManager")) {
 BiocManager::install("UCLouvain-CBIO/CTexploreR")
 ```
 
+# CT genes 
+
+The central element of `CTexploreR` is the list of 
+`r nrow(CTexploreR::CT_genes)` CT genes (see table below) selected based on 
+their expression in normal and tumoral tissues (selection details in the next 
+section). The table also summarises their main characteristics.
+
+
+```{r CT_genes}
+library(CTexploreR)
+CT_genes
+```
+
+`CTdata` is the companion Package for `CTexploreR` and provides the omics
+data that was necessary to select and characterize cancer testis genes as well
+as exploring them. The data are served through the `ExperimentHub` infrastructure.
+Currently available data are summarised in the table below and details can be
+found in `CTdata` vignette or manuals.
+
+```{r data}
+CTdata()
+```
+
 # CT gene selection
 
 In order to generate the list of CT genes, we followed a specific
@@ -111,42 +130,39 @@ Cancer-Testis genes, belonging to gene families (MAGEA, SSX, CT45A, GAGE, …)
 from which members have identical or nearly identical sequences. This is likely
 the reason why these genes are not detected in the GTEx database, as GTEx 
 processing pipeline specifies that overlapping intervals between genes are 
-excluded from all genes for counting.
+excluded from all genes for counting.For these genes, as testis-specificity 
+could not be assessed using GTEx database, RNAseq data from a set of normal 
+tissues were reprocessed in order to allow multimapping. 
+Expression of several genes became detectable in some tissues. Genes showing a 
+testis-specific expression (expression at least 10x higher in testis than in 
+any somatic tissues when multimapping was allowed) were selected, and flagged 
+as testis-specific in `multimapping_analysis` column.
 
-For these genes, as testis-specificity could not be assessed using GTEx 
-database, RNAseq data from a set of normal tissues were reprocessed in order 
-to allow multimapping. Expression of several genes became detectable in some 
-tissues. Genes showing a testis-specific expression (expression at least 10x 
-higher in testis than in any somatic tissues when multimapping was allowed) were
-selected, and flagged as testis-specific in `multimapping_analysis` column.
+The expression of the selected testis-specific or testis-preferential genes was 
+further analysed in somatic cell types using scRNAseq data of normal tissues 
+from the Human Protein Atlas (Uhlén et al., 2015). The aim was to ensure that 
+the selected genes are not expressed in any specific somatic cell type, as the 
+GTEx selection was based on bulk RNAseq data. 
 
 
 ## Germline-specific expression
 
-In order to assess the testis cell type in which each gene is expressed, we used
-the single cell RNA-Seq from the adult human testis transcriptional cell atlas 
-(Guo et al., 2018). 
-`r table(CT_genes$external_gene_name%in%rownames(CTdata::testis_sce()))[[2]]`
-genes out of our `r nrow(CTexploreR::CT_genes)` CT genes were in the dataset 
-so we have not been able to determine the cell type for all genes. For each 
-gene, the testis cell type has been determined as the cell type showing the 
-highest mean expression for that gene, if they are detected (count > 0) in at 
-least 1% of that specific cell-type. This allowed us to remove the genes for 
-which this cell type corresponds to a testis somatic cell type (macrophage, 
-endothelial, myoid, Sertoli or Leydig cells).
+We also used the single cell RNA-Seq data from the adult human testis 
+transcriptional cell atlas (Guo et al., 2018) to ensure to select 
+germline-specific genes but not genes that would be specific of any somatic cell 
+type of the testis.
 
-We also used scRNAseq data of normal tissues from the Human Protein Atlas (Uhlén
-et al., 2015) to compute the maximum expression in germ and somatic cells. Genes
-have been removed if the somatic value was higher than the germ cell value. Note
-that Hofbauer cells have been removed from the analysis as they derive from the 
-placenta where CT genes are sometimes expressed.
+For each gene, the testis cell type has been determined as the cell type showing 
+the highest mean expression for that gene. This allowed us to remove the genes 
+for which this cell type corresponds to a testis somatic cell type (macrophage, 
+endothelial, myoid, Sertoli or Leydig cells).
 
 
 ## Activation in cancer cell lines and TCGA tumors
 
 To assess activation in cancers, RNAseq data from cancer cell lines from CCLE 
 (Barretina et al., 2012) and from TCGA cancer samples (Cancer Genome Atlas 
-Research Network et al., 2013) were used. This allowed to to select among 
+Research Network et al., 2013) were used. This allowed to select among 
 testis-specific and testis-preferential genes those that are activated in 
 cancers.
 
@@ -512,6 +528,12 @@ Cancer Genome Atlas Research Network, Weinstein, J. N., Collisson, E. A., Mills,
 G. B., Shaw, K. R. M., Ozenberger, B. A., Ellrott, K., Shmulevich, I., Sander, 
 C., & Stuart, J. M. (2013). The Cancer Genome Atlas Pan-Cancer analysis 
 project. Nature Genetics, 45(10), 1113–1120.
+
+Carter, J. A., Matta, B., Battaglia, J., Somerville, C., Harris, B. D., LaPan, 
+M., Atwal, G. S., & Barnes, B. J. (2023). Identification of pan-cancer/testis 
+genes and validation of therapeutic targeting in triple-negative breast cancer: 
+Lin28a- and Siglece-based vaccination induces anti-tumor immunity and inhibits 
+metastasis. In bioRxiv (p. 2023.05.09.539617). 
 
 Guo, J. et al. The adult human testis transcriptional cell atlas. Cell Res. 28, 
 1141–1157 (2018).
