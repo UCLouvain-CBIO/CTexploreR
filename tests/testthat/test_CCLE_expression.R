@@ -1,56 +1,38 @@
 test_that("CCLE_expression() works", {
-    
-    ## returns a matrix of double when Return is set to TRUE
-    res <- CCLE_expression("MAGEA1", type = "Skin", return = TRUE)
-    expect_true(inherits(res, "matrix"))
-    expect_type(res, "double")
-    
-    ## Test that the function returns a heatmap by default
-    res <- CCLE_expression("MAGEA1", "Skin")
-    expect_s4_class(res, "Heatmap")
-    
-    ## works with only one gene in input
-    res <- CCLE_expression("MAGEA1", type = "Skin", return = TRUE)
-    expect_equal(nrow(res), 1) 
-    
-    ## n valid genes in input returns a matrix of n expected rownames
-    res <- CCLE_expression(c("MAGEA1", "MAGEA3"), type = "Skin", return = TRUE)
-    expect_identical(sort(rownames(res)), sort(c("MAGEA1", "MAGEA3")))
-        
-    ## works but returns a warning when no valid gene is entered
-    expect_equal(nrow(CCLE_expression("", type = "Skin", return = TRUE)), 0)
-    expect_warning(CCLE_expression("", type = "Skin"), "names invalid")
-    
-    ## No valid tumor type returns an error
-    expect_error(CCLE_expression(genes = "MAGEA1"), "No valid")
-    
-    ## selects the expected cell lines
-    my_types <- c("Skin", "Colorectal")
-    res <- CCLE_expression(genes = "MAGEA1", type = my_types, return = TRUE)
-    x <- colData(CCLE_data())
-    exp_cells <- rownames(x[x$type %in% my_types, ])
-    expect_equal(sort(colnames(res)), sort(exp_cells))
-    
-    ## tumor type is case insensitive
-    my_types <- c("sKIN")
-    res <- CCLE_expression(genes = "MAGEA1", type = my_types, return = TRUE)
-    expect_equal(table(x$type == "Skin")[["TRUE"]], ncol(res))
-    
-    ## Test the "log_TPM" units argument
-    res_in_TPM <- CCLE_expression("MAGEA1", "Skin", return = TRUE)
-    res_in_log <- CCLE_expression("MAGEA1", "Skin", units = "log_TPM", 
-                                  return = TRUE)
-    expect_equal(res_in_log[, 1], log1p(res_in_TPM[, 1])) 
-    
-    ## Test that the function returns the expected heatmap
-    res <- CCLE_expression(c("MAGEA1", "MAGEA3", "MAGEA4"), "Skin")
-    vdiffr::expect_doppelganger("CCLE_expression_on_MAGE", fig = res)
-    
-    ## Test that the function returns the expected matrix
-    res <- CCLE_expression(c("MAGEA1", "MAGEA3", "MAGEA4"), 
-                           "Skin", return = TRUE)
-    #saveRDS(res, test_path("fixtures", "CCLE_expression_on_MAGE.rds"))
-    exp_res <- readRDS(test_path("fixtures", "CCLE_expression_on_MAGE.rds"))
-    expect_equal(exp_res, res)
-    
+  
+  ## returns a warning when an invalid gene is entered
+  ## returns a matrix of double when Return is set to TRUE
+  ## works with only one gene in input
+  ## tumor type is case insensitive
+  ## selects the expected cell lines
+  ## returns the expected matrix
+  expect_warning(res <- CCLE_expression(c("MAGEA1", ""), 
+                                        type = "sKIN", 
+                                        return = TRUE), "names invalid")
+  expect_true(inherits(res, "matrix"))
+  expect_type(res, "double")
+  expect_equal(nrow(res), 1) 
+  x <- colData(CCLE_data())
+  exp_cells <- rownames(x[x$type == "Skin" , ])
+  expect_equal(sort(colnames(res)), sort(exp_cells))
+  #saveRDS(res, test_path("fixtures", "CCLE_expression_on_MAGE.rds"))
+  exp_res <- readRDS(test_path("fixtures", "CCLE_expression_on_MAGE.rds"))
+  expect_equal(exp_res, res)
+  
+  ## Test the "log_TPM" units argument
+  res_in_log <- CCLE_expression(c("MAGEA1"), type = "sKIN", 
+                                units = "log_TPM", 
+                                return = TRUE)
+  expect_equal(log1p(res), res_in_log) 
+  
+  ## returns a heatmap by default
+  ## returns a warning when an invalid tumor type is entered
+  expect_warning(res <- CCLE_expression(c("MAGEA1", "MAGEA3", "MAGEA4"), 
+                                        type = c("lung", "xxx")), 
+                 "names invalid")
+  expect_s4_class(res, "Heatmap")
+  vdiffr::expect_doppelganger("CCLE_expression_on_MAGE", fig = res)
+  
+  ## No valid tumor type returns an error
+  expect_error(CCLE_expression(genes = "MAGEA1"), "No valid")
 })

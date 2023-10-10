@@ -20,7 +20,6 @@ test_that("subset_database() works", {
   
   ## Check when fake gene name gives nothing + warning
   var_fake <- c("not_existing")
-  expect_warning(CTexploreR:::subset_database(var_fake, dataset))
-  res_fake <- CTexploreR:::subset_database(var_fake, dataset)
+  expect_warning(res_fake <- CTexploreR:::subset_database(var_fake, dataset))
   expect_equal(nrow(res_fake), 0)
 })

@@ -6,9 +6,8 @@ test_that("check_names() works", {
                      res1)
     input2 <- c("var0", "var1")
     res2 <- "var1"
-    expect_identical(CTexploreR:::check_names(input2, valid1),
-                     res2)
-    expect_warning(CTexploreR:::check_names(input2, valid1),
+    expect_warning(expect_identical(CTexploreR:::check_names(input2, valid1),
+                                    res2),
                    "names invalid")
     input3 <- c("var2", "var1")
     valid3 <- paste0("var", 1:10)
@@ -18,8 +17,6 @@ test_that("check_names() works", {
     expect_false(identical(CTexploreR:::check_names(input3, valid3),
                            c("var1", "var2")))
     ## empty result
-    expect_identical(CTexploreR:::check_names("var", valid3),
-                     character())
-    expect_warning(CTexploreR:::check_names("var", valid3),
-                     "names invalid")
+    expect_warning(expect_identical(CTexploreR:::check_names("var", valid3),
+                                    character()), "names invalid")
 })
