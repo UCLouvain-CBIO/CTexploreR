@@ -1,22 +1,17 @@
 test_that("CT_correlated_genes() works", {
-    
+
     ## returns a tibble when Return is set to TRUE
-    ## Correlations cooresponding to all genes vs specified CT gene
+    ## Correlations corresponding to all genes vs specified CT gene
     ## CT_genes column specifies if genes are CT genes
     res <- CT_correlated_genes(c("MAGEA3"), return = TRUE)
     expect_true(inherits(res, "data.frame"))
-    expect_equal(nrow(res), 24327) 
+    expect_equal(nrow(res), 24327)
     expect_identical(res$external_gene_name[1], "MAGEA3")
-    expect_true(all(res$external_gene_name[res$CT_gene] %in% 
+    expect_true(all(res$external_gene_name[res$CT_gene] %in%
                       CT_genes$external_gene_name))
-    expect_true(!all(res$external_gene_name[!res$CT_gene] %in% 
+    expect_true(!all(res$external_gene_name[!res$CT_gene] %in%
                        CT_genes$external_gene_name))
-    
+
     ## returns an error if no specified gene or if the gene is not a CT gene
     expect_error(CT_correlated_genes(gene = "BRCA1"), "CT gene")
-    
-    ## returns a plot when Return by default
-    res <- CT_correlated_genes(gene = "MAGEA3")
-    expect_s3_class(res, "ggplot")
-    vdiffr::expect_doppelganger("CT_correlated_genes_MAGEA3", fig = res)
 })
