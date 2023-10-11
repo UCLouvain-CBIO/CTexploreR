@@ -61,8 +61,7 @@ Suggests:
     BiocStyle,
     knitr,
     rmarkdown,
-    testthat (>= 3.0.0),
-    vdiffr
+    testthat (>= 3.0.0)
 biocViews: Transcriptomics,
            Epigenetics,
            DifferentialExpression,
