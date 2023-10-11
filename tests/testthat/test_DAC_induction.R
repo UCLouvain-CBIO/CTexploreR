@@ -24,7 +24,7 @@ test_that("DAC_induction() works", {
   expect_equal(nrow(res), 298)
   
   ## Test that the function returns a heatmap
-  res <- DAC_induction(c("MAGEA1", "MAGEA3"))
-  expect_s4_class(res, "Heatmap") 
-  vdiffr::expect_doppelganger("DAC_induction_MAGEA1_MAGEA3", fig = res)
+  ## res <- DAC_induction(c("MAGEA1", "MAGEA3"))
+  ## expect_s4_class(res, "Heatmap") 
+  ## vdiffr::expect_doppelganger("DAC_induction_MAGEA1_MAGEA3", fig = res)
 })

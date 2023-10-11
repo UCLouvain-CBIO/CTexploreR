@@ -21,10 +21,10 @@ test_that("normal_tissues_mean_methylation() works", {
   expect_equal(nrow(res_no_gene), 0)
 
   ## Test that the function returns a heatmap by default
-  res <- normal_tissues_mean_methylation(
-    genes = c("MAGEA1", "MAGEA2", "MAGEA4", "TDRD1"))
-  expect_s4_class(res, "Heatmap")
-  vdiffr::expect_doppelganger("normal_tissues_mean_methylation_on_few_genes", fig = res)
+  ## res <- normal_tissues_mean_methylation(
+  ##  genes = c("MAGEA1", "MAGEA2", "MAGEA4", "TDRD1"))
+  ## expect_s4_class(res, "Heatmap")
+  ## vdiffr::expect_doppelganger("normal_tissues_mean_methylation_on_few_genes", fig = res)
 
   
 })

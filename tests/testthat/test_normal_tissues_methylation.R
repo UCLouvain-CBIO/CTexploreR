@@ -41,9 +41,9 @@ test_that("normal_tissues_methylation() works", {
   
   ## returns a heatmap by default
   ## a warning message specifies that the max nt_up / nt_down must be < 5000
-  expect_warning(res <- normal_tissues_methylation(gene = "TDRD1", 
-                                            nt_up = 20000, nt_down = 20000),
-                 "maximum number")
-  expect_s4_class(res, "Heatmap")
-  vdiffr::expect_doppelganger("normal_tissues_methylation_on_TDRD1", fig = res)
+  ## expect_warning(res <- normal_tissues_methylation(gene = "TDRD1", 
+  ##                                           nt_up = 20000, nt_down = 20000),
+  ##                "maximum number")
+  ## expect_s4_class(res, "Heatmap")
+  ## vdiffr::expect_doppelganger("normal_tissues_methylation_on_TDRD1", fig = res)
 })

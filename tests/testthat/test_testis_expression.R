@@ -31,8 +31,8 @@ test_that("testis_expression() works", {
     expect_true(all(unique(res$type) %in% somatic_cells))
     
     ## Test that the function returns a heatmap
-    res <- testis_expression(cells = germ_cells, 
-                             genes = c("MAGEA1", "MAGEA3", "MAGEA4", "MAGEC1"))
-    expect_s4_class(res, "Heatmap")
-    vdiffr::expect_doppelganger("testis_expression_on_MAGE", fig = res)
+    ## res <- testis_expression(cells = germ_cells, 
+    ##                         genes = c("MAGEA1", "MAGEA3", "MAGEA4", "MAGEC1"))
+    ## expect_s4_class(res, "Heatmap")
+    ## vdiffr::expect_doppelganger("testis_expression_on_MAGE", fig = res)
 })

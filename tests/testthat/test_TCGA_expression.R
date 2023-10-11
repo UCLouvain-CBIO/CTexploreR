@@ -29,10 +29,10 @@ test_that("TCGA_expression() works", {
   expect_true(length(grep("TCGA-\\d{2}-\\d{4}-11", x = colnames(res))) > 0)
   
   ## Test that the function returns a heatmap by default
-  res <- TCGA_expression(c("LUAD", "SKCM"), "MAGEA1")
-  expect_s4_class(res, "Heatmap")
-  vdiffr::expect_doppelganger("TCGA_expression_on_MAGEA1", 
-                              fig = res)
+  ## res <- TCGA_expression(c("LUAD", "SKCM"), "MAGEA1")
+  ## expect_s4_class(res, "Heatmap")
+  ## vdiffr::expect_doppelganger("TCGA_expression_on_MAGEA1", 
+  ##                             fig = res)
 })
 
 

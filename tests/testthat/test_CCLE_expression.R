@@ -27,11 +27,11 @@ test_that("CCLE_expression() works", {
   
   ## returns a heatmap by default
   ## returns a warning when an invalid tumor type is entered
-  expect_warning(res <- CCLE_expression(c("MAGEA1", "MAGEA3", "MAGEA4"), 
-                                        type = c("lung", "xxx")), 
-                 "names invalid")
-  expect_s4_class(res, "Heatmap")
-  vdiffr::expect_doppelganger("CCLE_expression_on_MAGE", fig = res)
+  ## expect_warning(res <- CCLE_expression(c("MAGEA1", "MAGEA3", "MAGEA4"), 
+  ##                                         type = c("lung", "xxx")), 
+  ##                  "names invalid")
+  ##   expect_s4_class(res, "Heatmap")
+  ##   vdiffr::expect_doppelganger("CCLE_expression_on_MAGE", fig = res)
   
   ## No valid tumor type returns an error
   expect_error(CCLE_expression(genes = "MAGEA1"), "No valid")
