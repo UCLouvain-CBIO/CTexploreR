@@ -33,7 +33,6 @@
 #'
 #' @examples
 #' CT_correlated_genes(gene = "MAGEA3")
-#' CT_correlated_genes("TDRD1", 0.3)
 CT_correlated_genes <- function(gene, corr_thr = 0.5,
                                 return = FALSE) {
     suppressMessages({
@@ -42,10 +41,10 @@ CT_correlated_genes <- function(gene, corr_thr = 0.5,
         CCLE_data <- CTdata::CCLE_data()
     })
 
-    stopifnot("Gene name be specified!" = !missing(gene)) 
-    stopifnot("Not a CT gene" = gene %in% CT_genes$external_gene_name) 
+    stopifnot("Gene name be specified!" = !missing(gene))
+    stopifnot("Not a CT gene" = gene %in% CT_genes$external_gene_name)
 
-    ## Need the ensembl_id 
+    ## Need the ensembl_id
     tested_ref <- rownames(CCLE_data[rowData(CCLE_data)$external_gene_name ==
         gene, ])
     tmp <- data.frame(

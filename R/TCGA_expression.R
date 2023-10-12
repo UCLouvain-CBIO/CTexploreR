@@ -34,7 +34,6 @@
 #' TCGA_expression(
 #'     tumor = "LUAD", genes = c("MAGEA1", "MAGEA3"),
 #'     units = "log_TPM")
-#' TCGA_expression(tumor = "all", units = "log_TPM")
 TCGA_expression <- function(tumor = "all", genes = NULL,
                             units = "TPM", return = FALSE) {
     suppressMessages({

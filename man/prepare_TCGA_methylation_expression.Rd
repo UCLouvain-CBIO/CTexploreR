@@ -43,5 +43,7 @@ a gene (mean methylation of probes located in its promoter) and the
 expression level of the gene (TPM value).
 }
 \examples{
-CTexploreR:::prepare_TCGA_methylation_expression("LUAD", gene = "TDRD1")
+\dontrun{
+  CTexploreR:::prepare_TCGA_methylation_expression("LUAD", gene = "TDRD1")
+}
 }

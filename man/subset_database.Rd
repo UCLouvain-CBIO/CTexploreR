@@ -22,5 +22,6 @@ Check the presence of the genes in the database then subsets the database
 to only keep these genes' data.
 }
 \examples{
-CTexploreR:::subset_database(variable = "MAGEA1", data = CTdata::GTEX_data())
+
+  CTexploreR:::subset_database(variable = "MAGEA1", data = CTdata::GTEX_data())
 }

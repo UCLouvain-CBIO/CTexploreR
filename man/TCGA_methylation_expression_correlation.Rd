@@ -60,6 +60,4 @@ positive (TPM >= 1) for the gene.
 }
 \examples{
 TCGA_methylation_expression_correlation("LUAD", gene = "TDRD1")
-TCGA_methylation_expression_correlation("all", gene = "MAGEA1", 
- min_probe_number = 1, return = FALSE)
 }

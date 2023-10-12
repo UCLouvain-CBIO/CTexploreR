@@ -34,5 +34,4 @@ samples only when tumor option is set to "all")
 TCGA_expression(
     tumor = "LUAD", genes = c("MAGEA1", "MAGEA3"),
     units = "log_TPM")
-TCGA_expression(tumor = "all", units = "log_TPM")
 }

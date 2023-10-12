@@ -38,7 +38,6 @@
 #'
 #' testis_expression(cells = "germ_cells",
 #'                   genes = c("MAGEA1", "MAGEA3", "MAGEA4"))
-#' testis_expression(cells = "all", scale_lims = c(0, 4))
 testis_expression <- function(cells = "all", genes = NULL,
                               scale_lims = NULL, return = FALSE) {
     suppressMessages({

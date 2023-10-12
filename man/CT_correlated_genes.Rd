@@ -34,5 +34,4 @@ if not.
 }
 \examples{
 CT_correlated_genes(gene = "MAGEA3")
-CT_correlated_genes("TDRD1", 0.3)
 }

@@ -42,5 +42,4 @@ using scRNAseq data from "The adult human testis transcriptional cell atlas"
 
 testis_expression(cells = "germ_cells",
                   genes = c("MAGEA1", "MAGEA3", "MAGEA4"))
-testis_expression(cells = "all", scale_lims = c(0, 4))
 }

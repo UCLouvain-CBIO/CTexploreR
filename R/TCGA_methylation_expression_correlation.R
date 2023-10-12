@@ -6,7 +6,7 @@
 #' Plots the correlation between methylation and expression values of
 #' a Cancer-Testis (CT) gene in TCGA samples.
 #'
-#' @param gene `character` selected gene. 
+#' @param gene `character` selected gene.
 #'
 #' @param tumor `character` defining the TCGA tumor type. Can be one
 #'     of "SKCM", "LUAD", "LUSC", "COAD", "ESCA", "BRCA", "HNSC", or
@@ -19,13 +19,13 @@
 #' @param nt_down `numeric(1)` indicating the number of nucleotides
 #'     downstream the TSS to define the promoter region (200 by
 #'     default)
-#'     
-#' @param min_probe_number `numeric(1)` indicating the minimum 
-#'     number of probes (with methylation values) within the selected region 
+#'
+#' @param min_probe_number `numeric(1)` indicating the minimum
+#'     number of probes (with methylation values) within the selected region
 #'     to calculate its mean methylation level. Default is 3.
-#'     
-#' @param include_normal_tissues `logical(1)`. If `TRUE`, 
-#'     the function will include normal peritumoral tissues in addition to 
+#'
+#' @param include_normal_tissues `logical(1)`. If `TRUE`,
+#'     the function will include normal peritumoral tissues in addition to
 #'     tumoral samples. Default is `FALSE`.
 #'
 #' @param return `logical(1)`. If `TRUE`, the function will return the
@@ -36,11 +36,11 @@
 #'     are found in promoter regions or if less than 1% of tumors are
 #'     positive (TPM >= 1) for the gene.
 #'
-#' @return A scatter plot representing for each TCGA sample, gene expression 
-#'     and mean methylation values of probe(s) located in its promoter region 
+#' @return A scatter plot representing for each TCGA sample, gene expression
+#'     and mean methylation values of probe(s) located in its promoter region
 #'     (defined as 1000 nucleotides upstream TSS and 200 nucleotides downstream
-#'     TSS by default). If return = TRUE, methylation and expression values 
-#'     are returned in a tibble instead. 
+#'     TSS by default). If return = TRUE, methylation and expression values
+#'     are returned in a tibble instead.
 #'
 #' @export
 #'
@@ -51,8 +51,6 @@
 #'
 #' @examples
 #' TCGA_methylation_expression_correlation("LUAD", gene = "TDRD1")
-#' TCGA_methylation_expression_correlation("all", gene = "MAGEA1", 
-#'  min_probe_number = 1, return = FALSE)
 TCGA_methylation_expression_correlation <- function(
     tumor = "all",
     gene = NULL,
@@ -63,31 +61,31 @@ TCGA_methylation_expression_correlation <- function(
     return = FALSE) {
 
     methylation_expression <- prepare_TCGA_methylation_expression(
-      tumor = tumor, 
+      tumor = tumor,
       gene = gene,
       nt_up = nt_up,
       nt_down = nt_down,
       include_normal_tissues = include_normal_tissues)
-    
+
     methylation_expression <- methylation_expression[
       methylation_expression$probe_number >= min_probe_number, ]
     methylation_expression <- methylation_expression[
       !is.na(methylation_expression$met), ]
-    
-    if (nrow(methylation_expression) == 0) stop("less than ",  
-                                                min_probe_number, 
+
+    if (nrow(methylation_expression) == 0) stop("less than ",
+                                                min_probe_number,
                                                 " probes in selected region")
-    
-    ## Evaluate correlation only if the gene is expressed (TPM >= 1) 
+
+    ## Evaluate correlation only if the gene is expressed (TPM >= 1)
     ## in at least 1% of the samples
     if (quantile(methylation_expression$TPM, 0.99) < 1) {
       message("Too few positive samples to estimate a correlation for ", gene)
       cor <- NA
     }
-    
+
     if (!is.na(cor)) cor <- cor.test(methylation_expression$met,
                                      log1p(methylation_expression$TPM))$estimate
-  
+
     p <- ggplot(
             as_tibble(methylation_expression[order(methylation_expression$type,
                 decreasing = TRUE), ]),
@@ -104,4 +102,3 @@ TCGA_methylation_expression_correlation <- function(
 
     return(p)
 }
-
