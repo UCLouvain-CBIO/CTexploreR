@@ -10,7 +10,7 @@ output:
 vignette: >
   %\VignetteIndexEntry{Cancer Testis Explorer}
   %\VignetteEngine{knitr::rmarkdown}
-  %%\VignetteKeywords{Cancer, Testis, Gene expression, methylation, 
+  %%\VignetteKeywords{Cancer, Testis, Gene expression, methylation,
   Homo sapiens}
   %\VignetteEncoding{UTF-8}
 ---
@@ -22,42 +22,42 @@ BiocStyle::markdown()
 # Introduction
 
 
-Cancer-Testis (CT) genes, also called Cancer-Germline (CG), are a group of genes 
-whose expression is normally restricted to the germline but that are found 
-aberrantly activated in many types of cancers. These genes produce cancer 
-specific antigens represent ideal targets for anti-cancer vaccines. 
-Besides their interest in immunotherapy, they can also be used as cancer 
+Cancer-Testis (CT) genes, also called Cancer-Germline (CG), are a group of genes
+whose expression is normally restricted to the germline but that are found
+aberrantly activated in many types of cancers. These genes produce cancer
+specific antigens represent ideal targets for anti-cancer vaccines.
+Besides their interest in immunotherapy, they can also be used as cancer
 biomarkers and as target of anti-tumor therapies with limited side effect.
 
 Many CT genes use DNA methylation as a primary mechanism of transcriptionnal
-regulation. This is another interesting point about CT genes as they represent 
+regulation. This is another interesting point about CT genes as they represent
 suitable models to study DNA demethylation in cancer.
 
-Currently the reference database gathering CT genes is the 
-[CTdatabase](http://www.cta.lncc.br/) that was published in 2009, based on a 
-literature screening(Almeida et al., 2009). This database is however not up to 
-date. Recently identified CT genes are not referenced (in particular CT genes 
-identified by omics methods that didn’t exist at the time) while some genes 
-referred as CT genes appeared to be in reality expressed in many somatic 
-tissues. Furthermore, the database is not in an easily importable format, some 
-genes are not encoded properly (by synonyms names rather than by their official 
-HGNC symbol names, or by a concatenation of both) resulting in poor 
-interoperability for downstream analyses. More recent 
+Currently the reference database gathering CT genes is the
+[CTdatabase](http://www.cta.lncc.br/) that was published in 2009, based on a
+literature screening(Almeida et al., 2009). This database is however not up to
+date. Recently identified CT genes are not referenced (in particular CT genes
+identified by omics methods that didn’t exist at the time) while some genes
+referred as CT genes appeared to be in reality expressed in many somatic
+tissues. Furthermore, the database is not in an easily importable format, some
+genes are not encoded properly (by synonyms names rather than by their official
+HGNC symbol names, or by a concatenation of both) resulting in poor
+interoperability for downstream analyses. More recent
 studies proposed other lists of CT genes like Wang’s CTatlas (Wang et al., 2016,
-Jamin et al., 2021, Carter et al., 2023). These lists were established using 
-different criteria to define CT genes and hence differ substantially from each 
-other. Moreover, these lists are usually provided as supplemental data files and 
-are not strictly speaking databases. Finally, none of these studies describe the 
-involvement of DNA methylation in the regulation of individual CT genes.  
+Jamin et al., 2021, Carter et al., 2023). These lists were established using
+different criteria to define CT genes and hence differ substantially from each
+other. Moreover, these lists are usually provided as supplemental data files and
+are not strictly speaking databases. Finally, none of these studies describe the
+involvement of DNA methylation in the regulation of individual CT genes.
 
-We therefore created `CTexploreR`, a Bioconductor R package, aimed to redefine 
-rigorously the list of CT genes based on publicly available RNAseq databases 
-and to summarize their main characteristics. We included methylation analyses 
-to classify these genes according to whether they are regulated or not by DNA 
-methylation. The package also offers tools to visualize CT genes expression and 
-promoter DNA methylation in normal and tumoral tissues. CTexploreR hence 
-represents an up-to-date reference database for CT genes and can be used as a 
-starting point for further investigations related to these genes. 
+We therefore created `CTexploreR`, a Bioconductor R package, aimed to redefine
+rigorously the list of CT genes based on publicly available RNAseq databases
+and to summarize their main characteristics. We included methylation analyses
+to classify these genes according to whether they are regulated or not by DNA
+methylation. The package also offers tools to visualize CT genes expression and
+promoter DNA methylation in normal and tumoral tissues. CTexploreR hence
+represents an up-to-date reference database for CT genes and can be used as a
+starting point for further investigations related to these genes.
 
 
 
@@ -69,7 +69,7 @@ To install the package:
 
 ```{r install1, eval = FALSE}
 if (!require("BiocManager")) {
-    install.packages("CTexploreR")
+    install.packages("BiocManager")
 }
 
 BiocManager::install("CTexploreR")
@@ -85,11 +85,11 @@ if (!require("BiocManager")) {
 BiocManager::install("UCLouvain-CBIO/CTexploreR")
 ```
 
-# CT genes 
+# CT genes
 
-The central element of `CTexploreR` is the list of 
-`r nrow(CTexploreR::CT_genes)` CT genes (see table below) selected based on 
-their expression in normal and tumoral tissues (selection details in the next 
+The central element of `CTexploreR` is the list of
+`r nrow(CTexploreR::CT_genes)` CT genes (see table below) selected based on
+their expression in normal and tumoral tissues (selection details in the next
 section). The table also summarises their main characteristics.
 
 
@@ -113,8 +113,8 @@ CTdata()
 In order to generate the list of CT genes, we followed a specific
 selection procedure (see figure below).
 
-```{r, echo=FALSE, fig.align='center', out.width = '100%'}
-knitr::include_graphics("CT_selection.svg")
+```{r ctselection, results='markup', echo=FALSE, fig.align='center', out.width = '100%'}
+knitr::include_graphics("./figs/CT_selection.svg")
 ```
 
 ## Testis-specific expression
@@ -128,62 +128,62 @@ issues (these were flagged as "lowly expressed" in `GTEX_category` column).
 A careful inspection of these genes showed that many of them are well-known
 Cancer-Testis genes, belonging to gene families (MAGEA, SSX, CT45A, GAGE, …)
 from which members have identical or nearly identical sequences. This is likely
-the reason why these genes are not detected in the GTEx database, as GTEx 
-processing pipeline specifies that overlapping intervals between genes are 
-excluded from all genes for counting.For these genes, as testis-specificity 
-could not be assessed using GTEx database, RNAseq data from a set of normal 
-tissues were reprocessed in order to allow multimapping. 
-Expression of several genes became detectable in some tissues. Genes showing a 
-testis-specific expression (expression at least 10x higher in testis than in 
-any somatic tissues when multimapping was allowed) were selected, and flagged 
+the reason why these genes are not detected in the GTEx database, as GTEx
+processing pipeline specifies that overlapping intervals between genes are
+excluded from all genes for counting.For these genes, as testis-specificity
+could not be assessed using GTEx database, RNAseq data from a set of normal
+tissues were reprocessed in order to allow multimapping.
+Expression of several genes became detectable in some tissues. Genes showing a
+testis-specific expression (expression at least 10x higher in testis than in
+any somatic tissues when multimapping was allowed) were selected, and flagged
 as testis-specific in `multimapping_analysis` column.
 
-The expression of the selected testis-specific or testis-preferential genes was 
-further analysed in somatic cell types using scRNAseq data of normal tissues 
-from the Human Protein Atlas (Uhlén et al., 2015). The aim was to ensure that 
-the selected genes are not expressed in any specific somatic cell type, as the 
-GTEx selection was based on bulk RNAseq data. 
+The expression of the selected testis-specific or testis-preferential genes was
+further analysed in somatic cell types using scRNAseq data of normal tissues
+from the Human Protein Atlas (Uhlén et al., 2015). The aim was to ensure that
+the selected genes are not expressed in any specific somatic cell type, as the
+GTEx selection was based on bulk RNAseq data.
 
 
 ## Germline-specific expression
 
-We also used the single cell RNA-Seq data from the adult human testis 
-transcriptional cell atlas (Guo et al., 2018) to ensure to select 
-germline-specific genes but not genes that would be specific of any somatic cell 
+We also used the single cell RNA-Seq data from the adult human testis
+transcriptional cell atlas (Guo et al., 2018) to ensure to select
+germline-specific genes but not genes that would be specific of any somatic cell
 type of the testis.
 
-For each gene, the testis cell type has been determined as the cell type showing 
-the highest mean expression for that gene. This allowed us to remove the genes 
-for which this cell type corresponds to a testis somatic cell type (macrophage, 
+For each gene, the testis cell type has been determined as the cell type showing
+the highest mean expression for that gene. This allowed us to remove the genes
+for which this cell type corresponds to a testis somatic cell type (macrophage,
 endothelial, myoid, Sertoli or Leydig cells).
 
 
 ## Activation in cancer cell lines and TCGA tumors
 
-To assess activation in cancers, RNAseq data from cancer cell lines from CCLE 
-(Barretina et al., 2012) and from TCGA cancer samples (Cancer Genome Atlas 
-Research Network et al., 2013) were used. This allowed to select among 
-testis-specific and testis-preferential genes those that are activated in 
+To assess activation in cancers, RNAseq data from cancer cell lines from CCLE
+(Barretina et al., 2012) and from TCGA cancer samples (Cancer Genome Atlas
+Research Network et al., 2013) were used. This allowed to select among
+testis-specific and testis-preferential genes those that are activated in
 cancers.
 
-In the `CCLE_category` and `TCGA_category` columns, genes are tagged as 
+In the `CCLE_category` and `TCGA_category` columns, genes are tagged as
 "activated" when they are highly expressed in at least one cancer cell line/
-sample (TPM >= 10). However genes that were found to be expressed in all -or 
-almost all-cancer cell lines/samples were removed, as this probably reflects a 
-constitutive  expression rather than a true activation. We filtered out genes 
+sample (TPM >= 10). However genes that were found to be expressed in all -or
+almost all-cancer cell lines/samples were removed, as this probably reflects a
+constitutive  expression rather than a true activation. We filtered out genes
 that were not completely repressed in at least 20 % of cancer cell lines/samples
 (TPM <= 0.1).
 
 
 ## IGV visualisation
 
-All selected CT genes were visualised on IGV (Thorvaldsdóttir et al., 2013) 
-using a RNA-seq alignment from testis, to ensure that expression in testis 
-really corresponded to the canonical transcript. For some genes for which the 
-canonical transcript did not correspond to the transcript that we could see in 
-the testis sample, we manually modified the `external_transcript_name` 
-accordingly, to ensure that the TSS and the promoter region are correctly 
-defined. This is particularly important for methylation analysis that must be 
+All selected CT genes were visualised on IGV (Thorvaldsdóttir et al., 2013)
+using a RNA-seq alignment from testis, to ensure that expression in testis
+really corresponded to the canonical transcript. For some genes for which the
+canonical transcript did not correspond to the transcript that we could see in
+the testis sample, we manually modified the `external_transcript_name`
+accordingly, to ensure that the TSS and the promoter region are correctly
+defined. This is particularly important for methylation analysis that must be
 focused on true promoter regions.
 
 ## Regulation by methylation
@@ -197,16 +197,16 @@ of cell lines reated with DAC (5-Aza-2′-Deoxycytidine)).
 less methylated in germ cells (WGBS analysis of a set of normal tissues).
 
 For some genes showing a strong activation in cells treated with
-5-Aza-2′-Deoxycytidine, methylation analysis was not possible due to 
-multimapping issues. In this case, genes were still considered as regulated by 
-methylation unless their promoter appeared unmethylated in somatic tissues or 
+5-Aza-2′-Deoxycytidine, methylation analysis was not possible due to
+multimapping issues. In this case, genes were still considered as regulated by
+methylation unless their promoter appeared unmethylated in somatic tissues or
 methylated in germ cells.
 
 
 # Available functions
 
-For details about functions, see their respective manual pages. For all 
-functions, an option `return` can  be set to `TRUE` in order to get the values 
+For details about functions, see their respective manual pages. For all
+functions, an option `return` can  be set to `TRUE` in order to get the values
 instead of the visualisation.
 
 All expression visualisation functions can be used on all GTEx genes, not only
@@ -221,8 +221,8 @@ difference of expression between testis-specific and testis-preferential genes.
 Testis-specific genes have been determined with a stricter specificity to the
 testis : they are lowly expressed in all somatic tissues and at least 10 times
 more in the testis. Whereas testis-preferential accepts a little expression
-outside the testis : they are lowly expressed in at least 75% of somatic 
-tissues, but still 10 times more in the testis. 
+outside the testis : they are lowly expressed in at least 75% of somatic
+tissues, but still 10 times more in the testis.
 
 * Applied to testis-specific genes : we can clearly see the expression strictly
 limited to the testis. We can also see genes that are lowly expressed in GTEx,
@@ -236,7 +236,7 @@ GTEX_expression(testis_specific$external_gene_name, units = "log_TPM")
 ```
 
 * Applied to testis-preferential genes : we can see that the expression is
-less stringent to testis, as expected, with low expression in some other 
+less stringent to testis, as expected, with low expression in some other
 tissues, always with a strong testis signal.
 
 ```{r}
@@ -250,7 +250,7 @@ GTEX_expression(testis_preferential$external_gene_name, units = "log_TPM")
 Allows to visualise the expression values obtained by counting or not
 multi-mapped reads in normal tissues. We can apply that to genes that are lowly
 expressed in GTEx (as seen above) in order to visualise their expression.
-First heatmap shows expression without multimapping while multimapping was 
+First heatmap shows expression without multimapping while multimapping was
 allowed in the second one, where expression can be observed. This allowed
 their determination as testis-specific genes.
 
@@ -273,7 +273,7 @@ Allows to visualise gene expression in all different testis cell type, somatic
 or germ, using data from the adult human testis transcriptional cell atlas.
 
 Using the testis cell type defined for each CT genes, we visualise clearly
-that genes mainly expressed in an early stage of spermatogenesis aren't 
+that genes mainly expressed in an early stage of spermatogenesis aren't
 expressed later and vice-versa.
 
 ```{r}
@@ -298,8 +298,8 @@ testis_expression(late_CT$external_gene_name,
 
 ### `HPA_cell_type_expression()`
 
-Allows to visualise gene expression in all different healthy cell type, 
-comparing different somatic cells to germ cells, using data from the 
+Allows to visualise gene expression in all different healthy cell type,
+comparing different somatic cells to germ cells, using data from the
 human proteome atlas.
 
 Visualising all CT_genes, the specificity to germ cells only is quite clear.
@@ -315,10 +315,10 @@ HPA_cell_type_expression(units = "scaled")
 ### `CCLE_expression()`
 
 Allows to visualise gene expression in different histological types of CCLE
-cancer cell lines. We can thus compare genes that are or not activated in 
+cancer cell lines. We can thus compare genes that are or not activated in
 tumoral cell lines.
 
-* Applied to CT genes frequently activated in CCLE cell lines, more than 5% of 
+* Applied to CT genes frequently activated in CCLE cell lines, more than 5% of
 CCLE cell_lines are expressing each gene. A string signal is visible.
 
 ```{r}
@@ -339,7 +339,7 @@ CCLE_expression(
 
 
 
-* Applied to CT genes not frequently activated in CCLE cell lines, more than 
+* Applied to CT genes not frequently activated in CCLE cell lines, more than
 95% of cell lines are not expressing each genes. The lack of expression is very
 clear.
 
@@ -364,7 +364,7 @@ CCLE_expression(
 A function that use expression data from all CCLE cell lines and returns genes
 correlated (or anti-correlated) with specified CT gene.
 
-Here with MAGEA3, we can see all genes (CT or not) whose expression is 
+Here with MAGEA3, we can see all genes (CT or not) whose expression is
 correlated with it, like MAGEA6.
 
 
@@ -438,7 +438,7 @@ DAC_induction(genes = not_controlled_by_methylation$external_gene_name)
 Gives the methylation level of all CpGs located in each promoter region
 (by default defined as 1000 nt upstream TSS and 200 nt downstream TSS) in a set
 of normal tissues. Can be used to analyse more precisely the methylation of a
-particular promoter in normal tissues as methylation values are given CpG by 
+particular promoter in normal tissues as methylation values are given CpG by
 CpG.
 
 * Applied to a gene controlled by methylation
@@ -501,54 +501,54 @@ TCGA_methylation_expression_correlation(
 ```
 
 
-# Bibliography 
+# Bibliography
 
-Aguet, F., Anand, S., Ardlie, K. G., Gabriel, S., Getz, G. A., Graubert, A., 
-Hadley, K., Handsaker, R. E., Huang, K. H., Kashin, S., Li, X., 
-MacArthur, D. G., Meier, S. R., Nedzel, J. L., Nguyen, D. T., Segrè, A. V., 
-Todres, E., Balliu, B., Barbeira, A. N., … Volpi, S. (2020). 
-The GTEx Consortium atlas of genetic  regulatory effects across human tissues. 
+Aguet, F., Anand, S., Ardlie, K. G., Gabriel, S., Getz, G. A., Graubert, A.,
+Hadley, K., Handsaker, R. E., Huang, K. H., Kashin, S., Li, X.,
+MacArthur, D. G., Meier, S. R., Nedzel, J. L., Nguyen, D. T., Segrè, A. V.,
+Todres, E., Balliu, B., Barbeira, A. N., … Volpi, S. (2020).
+The GTEx Consortium atlas of genetic  regulatory effects across human tissues.
 Science. https://science.sciencemag.org/content/369/6509/1318.abstract
 
 Almeida, L. G., Sakabe, N. J., deOliveira, A. R., Silva, M. C. C., Mundstein, A.
 S., Cohen, T., Chen, Y.-T., Chua, R., Gurung, S., Gnjatic, S., Jungbluth, A. A.,
-Caballero, O. L., Bairoch, A., Kiesler, E., White, S. L., Simpson, A. J. G., 
-Old, L. J., Camargo, A. A., & Vasconcelos, A. T. R. (2009). CTdatabase: a 
-knowledge-base of high-throughput and curated data on cancer-testis antigens. 
+Caballero, O. L., Bairoch, A., Kiesler, E., White, S. L., Simpson, A. J. G.,
+Old, L. J., Camargo, A. A., & Vasconcelos, A. T. R. (2009). CTdatabase: a
+knowledge-base of high-throughput and curated data on cancer-testis antigens.
 Nucleic Acids Research, 37(Database issue), D816–D819.
 
-Barretina, J., Caponigro, G., Stransky, N., Venkatesan, K., Margolin, A. A., 
-Kim, S., Wilson, C. J., Lehár, J., Kryukov, G. V., Sonkin, D., Reddy, A., Liu, 
+Barretina, J., Caponigro, G., Stransky, N., Venkatesan, K., Margolin, A. A.,
+Kim, S., Wilson, C. J., Lehár, J., Kryukov, G. V., Sonkin, D., Reddy, A., Liu,
 M., Murray, L., Berger, M. F., Monahan, J. E., Morais, P., Meltzer, J., Korejwa,
-A., Jané-Valbuena, J., … Garraway, L. A. (2012). The Cancer Cell Line 
-Encyclopedia enables predictive modelling of anticancer drug sensitivity. 
+A., Jané-Valbuena, J., … Garraway, L. A. (2012). The Cancer Cell Line
+Encyclopedia enables predictive modelling of anticancer drug sensitivity.
 Nature, 483(7391), 603–607.
 
 Cancer Genome Atlas Research Network, Weinstein, J. N., Collisson, E. A., Mills,
-G. B., Shaw, K. R. M., Ozenberger, B. A., Ellrott, K., Shmulevich, I., Sander, 
-C., & Stuart, J. M. (2013). The Cancer Genome Atlas Pan-Cancer analysis 
+G. B., Shaw, K. R. M., Ozenberger, B. A., Ellrott, K., Shmulevich, I., Sander,
+C., & Stuart, J. M. (2013). The Cancer Genome Atlas Pan-Cancer analysis
 project. Nature Genetics, 45(10), 1113–1120.
 
-Carter, J. A., Matta, B., Battaglia, J., Somerville, C., Harris, B. D., LaPan, 
-M., Atwal, G. S., & Barnes, B. J. (2023). Identification of pan-cancer/testis 
-genes and validation of therapeutic targeting in triple-negative breast cancer: 
-Lin28a- and Siglece-based vaccination induces anti-tumor immunity and inhibits 
-metastasis. In bioRxiv (p. 2023.05.09.539617). 
+Carter, J. A., Matta, B., Battaglia, J., Somerville, C., Harris, B. D., LaPan,
+M., Atwal, G. S., & Barnes, B. J. (2023). Identification of pan-cancer/testis
+genes and validation of therapeutic targeting in triple-negative breast cancer:
+Lin28a- and Siglece-based vaccination induces anti-tumor immunity and inhibits
+metastasis. In bioRxiv (p. 2023.05.09.539617).
 
-Guo, J. et al. The adult human testis transcriptional cell atlas. Cell Res. 28, 
+Guo, J. et al. The adult human testis transcriptional cell atlas. Cell Res. 28,
 1141–1157 (2018).
 
-Uhlén, M. et al. Proteomics. Tissue-based map of the human proteome. Science 
+Uhlén, M. et al. Proteomics. Tissue-based map of the human proteome. Science
 347, 1260419 (2015).
 
-Thorvaldsdóttir, H., Robinson, J. T., & Mesirov, J. P. (2013). Integrative 
-Genomics Viewer (IGV): high-performance genomics data visualization and 
+Thorvaldsdóttir, H., Robinson, J. T., & Mesirov, J. P. (2013). Integrative
+Genomics Viewer (IGV): high-performance genomics data visualization and
 exploration. Briefings in Bioinformatics, 14(2), 178–192.
 
 Wang, C., Gu, Y., Zhang, K., Xie, K., Zhu, M., Dai, N., Jiang, Y., Guo, X., Liu,
-M., Dai, J., Wu, L., Jin, G., Ma, H., Jiang, T., Yin, R., Xia, Y., Liu, L., 
-Wang, S., Shen, B., … Hu, Z. (2016). Systematic identification of genes with a 
-cancer-testis expression pattern in 19 cancer types. Nature Communications, 7, 
+M., Dai, J., Wu, L., Jin, G., Ma, H., Jiang, T., Yin, R., Xia, Y., Liu, L.,
+Wang, S., Shen, B., … Hu, Z. (2016). Systematic identification of genes with a
+cancer-testis expression pattern in 19 cancer types. Nature Communications, 7,
 10499.
 
 # Session information {-}
