@@ -1,5 +1,9 @@
 # CTexploreR 0.99
 
+## CTexploreR 0.99.3
+
+- Reduce check time
+
 ## CTexploreR 0.99.2
 
 - Updated unit tests
