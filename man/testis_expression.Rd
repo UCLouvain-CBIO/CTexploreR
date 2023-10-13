@@ -39,7 +39,8 @@ using scRNAseq data from "The adult human testis transcriptional cell atlas"
 (Guo et al. 2018)
 }
 \examples{
-
+\dontrun{
 testis_expression(cells = "germ_cells",
                   genes = c("MAGEA1", "MAGEA3", "MAGEA4"))
+}
 }

@@ -32,7 +32,9 @@ returned instead.
 Plots an expression heatmap of genes in CCLE tumor cell lines.
 }
 \examples{
+\dontrun{
 CCLE_expression(
     genes = c("MAGEA1", "MAGEA3", "MAGEA4", "MAGEA6", "MAGEA10"),
     type = c("Skin", "Lung"), units = "log_TPM")
+}
 }

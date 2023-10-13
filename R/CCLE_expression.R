@@ -40,9 +40,11 @@
 #' @import CTdata
 #'
 #' @examples
+#' \dontrun{
 #' CCLE_expression(
 #'     genes = c("MAGEA1", "MAGEA3", "MAGEA4", "MAGEA6", "MAGEA10"),
 #'     type = c("Skin", "Lung"), units = "log_TPM")
+#' }
 CCLE_expression <- function(genes = NULL, type = NULL, units = "TPM",
                             return = FALSE) {
     suppressMessages({
@@ -82,7 +84,7 @@ CCLE_expression <- function(genes = NULL, type = NULL, units = "TPM",
         col = list(type = CCLE_colors))
 
     fontsize <- set_fontsize(mat)
-    
+
     if (length(type) <= 5) label_fontsize <- 6
     if (length(type) > 5 & length(type) < 10) label_fontsize <- 4
     if (length(type) >= 10 | is.null(type)) label_fontsize <- 0

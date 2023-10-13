@@ -59,5 +59,7 @@ are found in promoter regions or if less than 1\% of tumors are
 positive (TPM >= 1) for the gene.
 }
 \examples{
+\dontrun{
 TCGA_methylation_expression_correlation("LUAD", gene = "TDRD1")
+}
 }

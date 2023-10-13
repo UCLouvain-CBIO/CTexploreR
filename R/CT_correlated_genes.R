@@ -32,7 +32,9 @@
 #' @importFrom rlang .data
 #'
 #' @examples
+#' \dontrun{
 #' CT_correlated_genes(gene = "MAGEA3")
+#' }
 CT_correlated_genes <- function(gene, corr_thr = 0.5,
                                 return = FALSE) {
     suppressMessages({

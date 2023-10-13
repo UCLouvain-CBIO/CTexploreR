@@ -50,7 +50,9 @@
 #' @importFrom rlang .data
 #'
 #' @examples
+#' \dontrun{
 #' TCGA_methylation_expression_correlation("LUAD", gene = "TDRD1")
+#' }
 TCGA_methylation_expression_correlation <- function(
     tumor = "all",
     gene = NULL,

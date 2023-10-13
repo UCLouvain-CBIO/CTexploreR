@@ -1,5 +1,10 @@
 # CTexploreR 0.99
 
+## CTexploreR 0.99.4
+
+- Don't run some examples to save time. These functions are
+  illustrated in the vignette.
+
 ## CTexploreR 0.99.3
 
 - Reduce check time

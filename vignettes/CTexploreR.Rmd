@@ -95,7 +95,7 @@ section). The table also summarises their main characteristics.
 
 ```{r CT_genes}
 library(CTexploreR)
-CT_genes
+head(CT_genes, 10)
 ```
 
 `CTdata` is the companion Package for `CTexploreR` and provides the omics
@@ -190,11 +190,13 @@ focused on true promoter regions.
 
 Genes flagged as `TRUE` in `regulated_by_methylation` column correspond to
 
-* Genes that are significantly induced by a demethylating agent (RNAseq analysis
-of cell lines reated with DAC (5-Aza-2′-Deoxycytidine)).
+* Genes that are significantly induced by a demethylating agent
+  (RNAseq analysis of cell lines reated with DAC
+  (5-Aza-2′-Deoxycytidine)).
 
-* Genes that have a highly methylated promoter in normal somatic tissues but
-less methylated in germ cells (WGBS analysis of a set of normal tissues).
+* Genes that have a highly methylated promoter in normal somatic
+  tissues but less methylated in germ cells (WGBS analysis of a set of
+  normal tissues).
 
 For some genes showing a strong activation in cells treated with
 5-Aza-2′-Deoxycytidine, methylation analysis was not possible due to
@@ -318,8 +320,9 @@ Allows to visualise gene expression in different histological types of CCLE
 cancer cell lines. We can thus compare genes that are or not activated in
 tumoral cell lines.
 
-* Applied to CT genes frequently activated in CCLE cell lines, more than 5% of
-CCLE cell_lines are expressing each gene. A string signal is visible.
+* Applied to CT genes frequently activated in CCLE cell lines, more
+  than 5% of CCLE cell_lines are expressing each gene. A string signal
+  is visible.
 
 ```{r}
 frequently_activated <- dplyr::filter(
@@ -339,9 +342,9 @@ CCLE_expression(
 
 
 
-* Applied to CT genes not frequently activated in CCLE cell lines, more than
-95% of cell lines are not expressing each genes. The lack of expression is very
-clear.
+* Applied to CT genes not frequently activated in CCLE cell lines,
+  more than 95% of cell lines are not expressing each genes. The lack
+  of expression is very clear.
 
 ```{r}
 not_frequently_activated <- dplyr::filter(

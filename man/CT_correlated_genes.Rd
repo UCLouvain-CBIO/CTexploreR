@@ -33,5 +33,7 @@ threshold are colored in red if they are CT genes or in blue,
 if not.
 }
 \examples{
+\dontrun{
 CT_correlated_genes(gene = "MAGEA3")
+}
 }
