@@ -33,7 +33,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">CTexploreR</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.99.3</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.99.4</span>
       </span>
     </div>
 
@@ -140,7 +140,7 @@ genes.</p>
 <p>To install the package:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">require</a></span><span class="op">(</span><span class="st"><a href="https://bioconductor.github.io/BiocManager/" class="external-link">"BiocManager"</a></span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
-<span>    <span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"CTexploreR"</span><span class="op">)</span></span>
+<span>    <span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"BiocManager"</span><span class="op">)</span></span>
 <span><span class="op">}</span></span>
 <span></span>
 <span><span class="fu">BiocManager</span><span class="fu">::</span><span class="fu"><a href="https://bioconductor.github.io/BiocManager/reference/install.html" class="external-link">install</a></span><span class="op">(</span><span class="st">"CTexploreR"</span><span class="op">)</span></span></code></pre></div>
@@ -163,8 +163,8 @@ summarises their main characteristics.</p>
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/UCLouvain-CBIO/CTexploreR" class="external-link">CTexploreR</a></span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## Loading required package: CTdata</span></span></code></pre>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">CT_genes</span></span></code></pre></div>
-<pre><code><span><span class="co">## <span style="color: #949494;"># A tibble: 298 × 36</span></span></span>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">CT_genes</span>, <span class="fl">10</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## <span style="color: #949494;"># A tibble: 10 × 36</span></span></span>
 <span><span class="co">##    ensembl_gene_id external_gene_name family chr   strand transcription_start_…¹</span></span>
 <span><span class="co">##    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>           <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>              <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>                  <span style="color: #949494; font-style: italic;">&lt;int&gt;</span></span></span>
 <span><span class="co">## <span style="color: #BCBCBC;"> 1</span> ENSG00000162571 TTLL10             <span style="color: #BB0000;">NA</span>     1          1                1<span style="text-decoration: underline;">173</span>880</span></span>
@@ -177,13 +177,13 @@ summarises their main characteristics.</p>
 <span><span class="co">## <span style="color: #BCBCBC;"> 8</span> ENSG00000143006 DMRTB1             <span style="color: #BB0000;">NA</span>     1          1               53<span style="text-decoration: underline;">459</span>399</span></span>
 <span><span class="co">## <span style="color: #BCBCBC;"> 9</span> ENSG00000237853 NFIA-AS1           <span style="color: #BB0000;">NA</span>     1         -<span style="color: #BB0000;">1</span>               61<span style="text-decoration: underline;">253</span>510</span></span>
 <span><span class="co">## <span style="color: #BCBCBC;">10</span> ENSG00000226088 HHLA3-AS1          <span style="color: #BB0000;">NA</span>     1         -<span style="color: #BB0000;">1</span>               70<span style="text-decoration: underline;">360</span>437</span></span>
-<span><span class="co">## <span style="color: #949494;"># ℹ 288 more rows</span></span></span>
 <span><span class="co">## <span style="color: #949494;"># ℹ abbreviated name: ¹​transcription_start_site</span></span></span>
 <span><span class="co">## <span style="color: #949494;"># ℹ 30 more variables: X_linked &lt;lgl&gt;, TPM_testis &lt;dbl&gt;, max_TPM_somatic &lt;dbl&gt;,</span></span></span>
 <span><span class="co">## <span style="color: #949494;">#   GTEX_category &lt;chr&gt;, lowly_expressed_in_GTEX &lt;lgl&gt;,</span></span></span>
 <span><span class="co">## <span style="color: #949494;">#   multimapping_analysis &lt;chr&gt;, testis_specificity &lt;chr&gt;,</span></span></span>
 <span><span class="co">## <span style="color: #949494;">#   testis_cell_type &lt;chr&gt;, Higher_in_somatic_cell_type &lt;lgl&gt;,</span></span></span>
-<span><span class="co">## <span style="color: #949494;">#   percent_of_positive_CCLE_cell_lines &lt;dbl&gt;, …</span></span></span></code></pre>
+<span><span class="co">## <span style="color: #949494;">#   percent_of_positive_CCLE_cell_lines &lt;dbl&gt;,</span></span></span>
+<span><span class="co">## <span style="color: #949494;">#   percent_of_negative_CCLE_cell_lines &lt;dbl&gt;, max_TPM_in_CCLE &lt;dbl&gt;, …</span></span></span></code></pre>
 <p><code>CTdata</code> is the companion Package for
 <code>CTexploreR</code> and provides the omics data that was necessary
 to select and characterize cancer testis genes as well as exploring
@@ -325,7 +325,7 @@ manuals.</p>
 </h2>
 <p>In order to generate the list of CT genes, we followed a specific
 selection procedure (see figure below).</p>
-<p><img src="CT_selection.svg" width="100%" style="display: block; margin: auto;"></p>
+<p><img src="figs/CT_selection.svg" width="100%" style="display: block; margin: auto;"></p>
 <div class="section level3">
 <h3 id="testis-specific-expression">Testis-specific expression<a class="anchor" aria-label="anchor" href="#testis-specific-expression"></a>
 </h3>
@@ -455,7 +455,7 @@ expressed in GTEx, and have thus been characterized using multimapping
 <span>    <span class="va">CT_genes</span>,</span>
 <span>    <span class="va">testis_specificity</span> <span class="op">==</span> <span class="st">"testis_specific"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="../reference/GTEX_expression.html">GTEX_expression</a></span><span class="op">(</span><span class="va">testis_specific</span><span class="op">$</span><span class="va">external_gene_name</span>, units <span class="op">=</span> <span class="st">"log_TPM"</span><span class="op">)</span></span></code></pre></div>
-<p><img src="CTexploreR_files/figure-html/unnamed-chunk-2-1.png" width="700"></p>
+<p><img src="CTexploreR_files/figure-html/unnamed-chunk-1-1.png" width="700"></p>
 <ul>
 <li>Applied to testis-preferential genes : we can see that the
 expression is less stringent to testis, as expected, with low expression
@@ -465,7 +465,7 @@ in some other tissues, always with a strong testis signal.</li>
 <code class="sourceCode R"><span><span class="va">testis_preferential</span> <span class="op">&lt;-</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span></span>
 <span>    <span class="va">CT_genes</span>, <span class="va">testis_specificity</span> <span class="op">==</span> <span class="st">"testis_preferential"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="../reference/GTEX_expression.html">GTEX_expression</a></span><span class="op">(</span><span class="va">testis_preferential</span><span class="op">$</span><span class="va">external_gene_name</span>, units <span class="op">=</span> <span class="st">"log_TPM"</span><span class="op">)</span></span></code></pre></div>
-<p><img src="CTexploreR_files/figure-html/unnamed-chunk-3-1.png" width="700"></p>
+<p><img src="CTexploreR_files/figure-html/unnamed-chunk-2-1.png" width="700"></p>
 </div>
 <div class="section level4">
 <h4 id="normal_tissue_expression_multimapping">
@@ -484,12 +484,12 @@ observed. This allowed their determination as testis-specific genes.</p>
 <span><span class="fu"><a href="../reference/normal_tissue_expression_multimapping.html">normal_tissue_expression_multimapping</a></span><span class="op">(</span></span>
 <span>    <span class="va">testis_specific_in_multimapping_analysis</span><span class="op">$</span><span class="va">external_gene_name</span>,</span>
 <span>    multimapping <span class="op">=</span> <span class="cn">FALSE</span>, units <span class="op">=</span> <span class="st">"log_TPM"</span><span class="op">)</span></span></code></pre></div>
-<p><img src="CTexploreR_files/figure-html/unnamed-chunk-4-1.png" width="700"></p>
+<p><img src="CTexploreR_files/figure-html/unnamed-chunk-3-1.png" width="700"></p>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/normal_tissue_expression_multimapping.html">normal_tissue_expression_multimapping</a></span><span class="op">(</span></span>
 <span>    <span class="va">testis_specific_in_multimapping_analysis</span><span class="op">$</span><span class="va">external_gene_name</span>,</span>
 <span>    multimapping <span class="op">=</span> <span class="cn">TRUE</span>, units <span class="op">=</span> <span class="st">"log_TPM"</span><span class="op">)</span></span></code></pre></div>
-<p><img src="CTexploreR_files/figure-html/unnamed-chunk-4-2.png" width="700"></p>
+<p><img src="CTexploreR_files/figure-html/unnamed-chunk-3-2.png" width="700"></p>
 </div>
 <div class="section level4">
 <h4 id="testis_expression">
@@ -513,7 +513,7 @@ aren’t expressed later and vice-versa.</p>
 <span><span class="co">## setting TRUE/FALSE to it.</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## Set `ht_opt$message = FALSE` to turn off this message.</span></span></code></pre>
-<p><img src="CTexploreR_files/figure-html/unnamed-chunk-5-1.png" width="700"></p>
+<p><img src="CTexploreR_files/figure-html/unnamed-chunk-4-1.png" width="700"></p>
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">late_CT</span> <span class="op">&lt;-</span></span>
 <span>    <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">CT_genes</span>, <span class="va">testis_cell_type</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span></span>
@@ -527,7 +527,7 @@ aren’t expressed later and vice-versa.</p>
 <span><span class="co">## setting TRUE/FALSE to it.</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## Set `ht_opt$message = FALSE` to turn off this message.</span></span></code></pre>
-<p><img src="CTexploreR_files/figure-html/unnamed-chunk-5-2.png" width="700"></p>
+<p><img src="CTexploreR_files/figure-html/unnamed-chunk-4-2.png" width="700"></p>
 </div>
 <div class="section level4">
 <h4 id="hpa_cell_type_expression">
@@ -551,7 +551,7 @@ clear.</p>
 <span><span class="co">## LINC01467, LINC01193, LINC01413, CT62, LINC02169, FLJ36000, LINC02074,</span></span>
 <span><span class="co">## LINC01970, LINC00470, LINC00668, LINC02864, LINC01548, DSCR8, FAM230I.</span></span>
 <span><span class="co">## See the manual page for valid types.</span></span></code></pre>
-<p><img src="CTexploreR_files/figure-html/unnamed-chunk-6-1.png" width="700"></p>
+<p><img src="CTexploreR_files/figure-html/unnamed-chunk-5-1.png" width="700"></p>
 </div>
 </div>
 <div class="section level3">
@@ -583,7 +583,7 @@ visible.</li>
 <span>        <span class="st">"head_and_neck"</span>, <span class="st">"ovarian"</span>, <span class="st">"sarcoma"</span>, <span class="st">"leukemia"</span>,</span>
 <span>        <span class="st">"esophageal"</span>, <span class="st">"neuroblastoma"</span><span class="op">)</span>,</span>
 <span>    units <span class="op">=</span> <span class="st">"log_TPM"</span><span class="op">)</span></span></code></pre></div>
-<p><img src="CTexploreR_files/figure-html/unnamed-chunk-7-1.png" width="700"></p>
+<p><img src="CTexploreR_files/figure-html/unnamed-chunk-6-1.png" width="700"></p>
 <ul>
 <li>Applied to CT genes not frequently activated in CCLE cell lines,
 more than 95% of cell lines are not expressing each genes. The lack of
@@ -603,7 +603,7 @@ expression is very clear.</li>
 <span>        <span class="st">"head_and_neck"</span>, <span class="st">"ovarian"</span>, <span class="st">"sarcoma"</span>, <span class="st">"leukemia"</span>,</span>
 <span>        <span class="st">"esophageal"</span>, <span class="st">"neuroblastoma"</span><span class="op">)</span>,</span>
 <span>    units <span class="op">=</span> <span class="st">"log_TPM"</span><span class="op">)</span></span></code></pre></div>
-<p><img src="CTexploreR_files/figure-html/unnamed-chunk-8-1.png" width="700"></p>
+<p><img src="CTexploreR_files/figure-html/unnamed-chunk-7-1.png" width="700"></p>
 </div>
 <div class="section level4">
 <h4 id="ct_correlated_genes">
@@ -619,7 +619,7 @@ is correlated with it, like MAGEA6.</p>
 <pre><code><span><span class="co">## Warning: Removed 4 rows containing missing values (`geom_point()`).</span></span></code></pre>
 <pre><code><span><span class="co">## Warning: ggrepel: 162 unlabeled data points (too many overlaps). Consider</span></span>
 <span><span class="co">## increasing max.overlaps</span></span></code></pre>
-<p><img src="CTexploreR_files/figure-html/unnamed-chunk-9-1.png" width="700"></p>
+<p><img src="CTexploreR_files/figure-html/unnamed-chunk-8-1.png" width="700"></p>
 </div>
 <div class="section level4">
 <h4 id="tcga_expression">
@@ -640,7 +640,7 @@ can thus for example compare with activation in CCLE cell lines.</p>
 <span><span class="co">## setting TRUE/FALSE to it.</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## Set `ht_opt$message = FALSE` to turn off this message.</span></span></code></pre>
-<p><img src="CTexploreR_files/figure-html/unnamed-chunk-10-1.png" width="700"></p>
+<p><img src="CTexploreR_files/figure-html/unnamed-chunk-9-1.png" width="700"></p>
 <ul>
 <li>Applied to CT genes not frequently activated in CCLE cell lines</li>
 </ul>
@@ -654,7 +654,7 @@ can thus for example compare with activation in CCLE cell lines.</p>
 <span><span class="co">## setting TRUE/FALSE to it.</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## Set `ht_opt$message = FALSE` to turn off this message.</span></span></code></pre>
-<p><img src="CTexploreR_files/figure-html/unnamed-chunk-11-1.png" width="700"></p>
+<p><img src="CTexploreR_files/figure-html/unnamed-chunk-10-1.png" width="700"></p>
 <p>When visualising only one tumor, there is a separation between
 tumoral and peritumoral tissue.</p>
 <div class="sourceCode" id="cb30"><pre class="downlit sourceCode r">
@@ -662,7 +662,7 @@ tumoral and peritumoral tissue.</p>
 <span>    genes <span class="op">=</span> <span class="va">frequently_activated</span><span class="op">$</span><span class="va">external_gene_name</span>,</span>
 <span>    tumor <span class="op">=</span> <span class="st">"LUAD"</span>,</span>
 <span>    units <span class="op">=</span> <span class="st">"log_TPM"</span><span class="op">)</span></span></code></pre></div>
-<p><img src="CTexploreR_files/figure-html/unnamed-chunk-12-1.png" width="700"></p>
+<p><img src="CTexploreR_files/figure-html/unnamed-chunk-11-1.png" width="700"></p>
 </div>
 </div>
 <div class="section level3">
@@ -681,7 +681,7 @@ methylation or not</p>
 <div class="sourceCode" id="cb31"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">controlled_by_methylation</span> <span class="op">&lt;-</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">CT_genes</span>, <span class="va">regulated_by_methylation</span><span class="op">)</span></span>
 <span><span class="fu"><a href="../reference/DAC_induction.html">DAC_induction</a></span><span class="op">(</span>genes <span class="op">=</span> <span class="va">controlled_by_methylation</span><span class="op">$</span><span class="va">external_gene_name</span><span class="op">)</span></span></code></pre></div>
-<p><img src="CTexploreR_files/figure-html/unnamed-chunk-13-1.png" width="700"></p>
+<p><img src="CTexploreR_files/figure-html/unnamed-chunk-12-1.png" width="700"></p>
 <ul>
 <li>Applied to genes not controlled by methylation</li>
 </ul>
@@ -690,7 +690,7 @@ methylation or not</p>
 <span>    <span class="va">CT_genes</span>,</span>
 <span>    <span class="op">!</span><span class="va">regulated_by_methylation</span><span class="op">)</span></span>
 <span><span class="fu"><a href="../reference/DAC_induction.html">DAC_induction</a></span><span class="op">(</span>genes <span class="op">=</span> <span class="va">not_controlled_by_methylation</span><span class="op">$</span><span class="va">external_gene_name</span><span class="op">)</span></span></code></pre></div>
-<p><img src="CTexploreR_files/figure-html/unnamed-chunk-14-1.png" width="700"></p>
+<p><img src="CTexploreR_files/figure-html/unnamed-chunk-13-1.png" width="700"></p>
 </div>
 <div class="section level4">
 <h4 id="normal_tissues_methylation">
@@ -706,13 +706,13 @@ methylation values are given CpG by CpG.</p>
 </ul>
 <div class="sourceCode" id="cb33"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/normal_tissues_methylation.html">normal_tissues_methylation</a></span><span class="op">(</span><span class="st">"MAGEB2"</span><span class="op">)</span></span></code></pre></div>
-<p><img src="CTexploreR_files/figure-html/unnamed-chunk-15-1.png" width="700"></p>
+<p><img src="CTexploreR_files/figure-html/unnamed-chunk-14-1.png" width="700"></p>
 <ul>
 <li>Applied to a gene not controlled by methylation</li>
 </ul>
 <div class="sourceCode" id="cb34"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/normal_tissues_methylation.html">normal_tissues_methylation</a></span><span class="op">(</span><span class="st">"LIN28A"</span><span class="op">)</span></span></code></pre></div>
-<p><img src="CTexploreR_files/figure-html/unnamed-chunk-16-1.png" width="700"></p>
+<p><img src="CTexploreR_files/figure-html/unnamed-chunk-15-1.png" width="700"></p>
 </div>
 <div class="section level4">
 <h4 id="normal_tissues_mean_methylation">
@@ -729,7 +729,7 @@ group.</p>
 <div class="sourceCode" id="cb35"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/normal_tissues_mean_methylation.html">normal_tissues_mean_methylation</a></span><span class="op">(</span></span>
 <span>    genes <span class="op">=</span> <span class="va">controlled_by_methylation</span><span class="op">$</span><span class="va">external_gene_name</span><span class="op">)</span></span></code></pre></div>
-<p><img src="CTexploreR_files/figure-html/unnamed-chunk-17-1.png" width="700"></p>
+<p><img src="CTexploreR_files/figure-html/unnamed-chunk-16-1.png" width="700"></p>
 <ul>
 <li>Applied to genes not controlled by methylation</li>
 </ul>
@@ -737,7 +737,7 @@ group.</p>
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/normal_tissues_mean_methylation.html">normal_tissues_mean_methylation</a></span><span class="op">(</span></span>
 <span>    genes <span class="op">=</span></span>
 <span>        <span class="va">not_controlled_by_methylation</span><span class="op">$</span><span class="va">external_gene_name</span><span class="op">)</span></span></code></pre></div>
-<p><img src="CTexploreR_files/figure-html/unnamed-chunk-18-1.png" width="700"></p>
+<p><img src="CTexploreR_files/figure-html/unnamed-chunk-17-1.png" width="700"></p>
 </div>
 <div class="section level4">
 <h4 id="tcga_methylation_expression_correlation">
@@ -754,7 +754,7 @@ methylation in TCGA samples.</p>
 <span>    gene <span class="op">=</span> <span class="st">"TDRD1"</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## Warning in is.na(cor): is.na() applied to non-(list or vector) of type</span></span>
 <span><span class="co">## 'closure'</span></span></code></pre>
-<p><img src="CTexploreR_files/figure-html/unnamed-chunk-19-1.png" width="700"></p>
+<p><img src="CTexploreR_files/figure-html/unnamed-chunk-18-1.png" width="700"></p>
 <ul>
 <li>Applied to a gene not controlled by methylation</li>
 </ul>
@@ -764,7 +764,7 @@ methylation in TCGA samples.</p>
 <span>    gene <span class="op">=</span> <span class="st">"LIN28A"</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## Warning in is.na(cor): is.na() applied to non-(list or vector) of type</span></span>
 <span><span class="co">## 'closure'</span></span></code></pre>
-<p><img src="CTexploreR_files/figure-html/unnamed-chunk-20-1.png" width="700"></p>
+<p><img src="CTexploreR_files/figure-html/unnamed-chunk-19-1.png" width="700"></p>
 </div>
 </div>
 </div>
@@ -844,10 +844,10 @@ cancer types. Nature Communications, 7, 10499.</p>
 <span><span class="co">## other attached packages:</span></span>
 <span><span class="co">##  [1] SingleCellExperiment_1.23.0 SummarizedExperiment_1.31.1</span></span>
 <span><span class="co">##  [3] Biobase_2.61.0              GenomicRanges_1.53.2       </span></span>
-<span><span class="co">##  [5] GenomeInfoDb_1.37.6         IRanges_2.35.2             </span></span>
-<span><span class="co">##  [7] S4Vectors_0.39.2            BiocGenerics_0.47.0        </span></span>
+<span><span class="co">##  [5] GenomeInfoDb_1.37.6         IRanges_2.35.3             </span></span>
+<span><span class="co">##  [7] S4Vectors_0.39.3            BiocGenerics_0.47.0        </span></span>
 <span><span class="co">##  [9] MatrixGenerics_1.13.1       matrixStats_1.0.0          </span></span>
-<span><span class="co">## [11] CTexploreR_0.99.3           CTdata_1.1.4               </span></span>
+<span><span class="co">## [11] CTexploreR_0.99.4           CTdata_1.1.5               </span></span>
 <span><span class="co">## [13] BiocStyle_2.29.2           </span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## loaded via a namespace (and not attached):</span></span>
@@ -856,7 +856,7 @@ cancer types. Nature Communications, 7, 10499.</p>
 <span><span class="co">##   [5] clue_0.3-65                   GetoptLong_1.0.5             </span></span>
 <span><span class="co">##   [7] compiler_4.3.1                RSQLite_2.3.1                </span></span>
 <span><span class="co">##   [9] png_0.1-8                     systemfonts_1.0.5            </span></span>
-<span><span class="co">##  [11] vctrs_0.6.3                   stringr_1.5.0                </span></span>
+<span><span class="co">##  [11] vctrs_0.6.4                   stringr_1.5.0                </span></span>
 <span><span class="co">##  [13] pkgconfig_2.0.3               shape_1.4.6                  </span></span>
 <span><span class="co">##  [15] crayon_1.5.2                  fastmap_1.1.1                </span></span>
 <span><span class="co">##  [17] magick_2.8.0                  dbplyr_2.3.4                 </span></span>
@@ -899,7 +899,7 @@ cancer types. Nature Communications, 7, 10499.</p>
 <span><span class="co">##  [91] S4Arrays_1.1.6                ComplexHeatmap_2.17.0        </span></span>
 <span><span class="co">##  [93] dplyr_1.1.3                   gtable_0.3.4                 </span></span>
 <span><span class="co">##  [95] sass_0.4.7                    digest_0.6.33                </span></span>
-<span><span class="co">##  [97] ggrepel_0.9.3                 SparseArray_1.1.12           </span></span>
+<span><span class="co">##  [97] ggrepel_0.9.4                 SparseArray_1.1.12           </span></span>
 <span><span class="co">##  [99] farver_2.1.1                  rjson_0.2.21                 </span></span>
 <span><span class="co">## [101] memoise_2.0.1                 htmltools_0.5.6.1            </span></span>
 <span><span class="co">## [103] pkgdown_2.0.7.9000            lifecycle_1.0.3              </span></span>
