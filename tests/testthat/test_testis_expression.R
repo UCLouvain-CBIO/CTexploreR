@@ -3,7 +3,7 @@ test_that("testis_expression() works", {
     ## returns a SingleCellExperiment
     res <- testis_expression(cells = "germ_cells", 
                              genes = c("MAGEA1", "MAGEA3"), 
-                             return = TRUE)
+                             values_only = TRUE)
     expect_s4_class(res, "SingleCellExperiment")
     expect_equal(nrow(res), 2) 
     expect_identical(sort(rownames(res)), sort(c("MAGEA1", "MAGEA3")))
@@ -11,13 +11,15 @@ test_that("testis_expression() works", {
     ## selects the expected cell types
     ## works with only one gene in input
     my_cells <- c("Spermatogonia", "Sertoli")
-    res <- testis_expression(cells = my_cells, genes = "MAGEA1", return = TRUE)
+    res <- testis_expression(cells = my_cells, genes = "MAGEA1", 
+                             values_only = TRUE)
     expect_equal(nrow(res), 1) 
     expect_true(all(unique(res$type) %in% my_cells))
     
     ## selects correctly germ_cells
     my_cells <- "germ_cells"
-    res <- testis_expression(cells = my_cells, genes = "MAGEA1", return = TRUE)
+    res <- testis_expression(cells = my_cells, genes = "MAGEA1", 
+                             values_only = TRUE)
     germ_cells <- c("SSC", "Spermatogonia", "Early_spermatocyte",
                     "Late_spermatocyte", "Round_spermatid", 
                     "Elongated_spermatid", "Sperm1", "Sperm2")
@@ -25,7 +27,8 @@ test_that("testis_expression() works", {
     
     ## selects correctly somatic_cells
     my_cells <- "somatic_cells"
-    res <- testis_expression(cells = my_cells, genes = "MAGEA1", return = TRUE)
+    res <- testis_expression(cells = my_cells, genes = "MAGEA1", 
+                             values_only = TRUE)
     somatic_cells <- c("Macrophage", "Endothelial",
                        "Myoid", "Sertoli", "Leydig")
     expect_true(all(unique(res$type) %in% somatic_cells))

@@ -1,8 +1,8 @@
 test_that("normal_tissues_methylation() works", {
   
   
-  ## returns a matrix of double when Return is set to TRUE
-  res <- normal_tissues_methylation(gene = "TDRD1", 500, 0, return = TRUE)
+  ## returns a matrix of double when values_only is set to TRUE
+  res <- normal_tissues_methylation(gene = "TDRD1", 500, 0, values_only = TRUE)
   expect_true(inherits(res, "matrix"))
   expect_type(res, "double")
   expect_equal(nrow(res), 14) 
@@ -22,7 +22,7 @@ test_that("normal_tissues_methylation() works", {
   expect_identical(res, exp_res)
   
   ## Collects the right methylation values (for a gene transcribed in antisense)
-  res <- normal_tissues_methylation(gene = "SSX3", return = TRUE)
+  res <- normal_tissues_methylation(gene = "SSX3", values_only = TRUE)
   TSS <- 48356703
   promoter_gr <- GRanges(seqnames = "chrX",
                          strand = "-",
@@ -36,7 +36,7 @@ test_that("normal_tissues_methylation() works", {
   expect_identical(res, exp_res)
   
   ## Works even when no CpG whithin the selected range
-  res <- normal_tissues_methylation(gene = "MAGEA1", 5, 5, return = TRUE)
+  res <- normal_tissues_methylation(gene = "MAGEA1", 5, 5, values_only = TRUE)
   expect_equal(nrow(res), 0) 
   
   ## returns a heatmap by default

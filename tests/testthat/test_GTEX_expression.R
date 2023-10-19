@@ -6,7 +6,7 @@ test_that("GTEX_expression() works", {
   ## Test that the function returns the expected matrix
   ## works with only one gene in input
   expect_warning(res <- GTEX_expression(c("MAGEA1", "xxx"), 
-                                        return = TRUE), "names invalid")
+                                        values_only = TRUE), "names invalid")
   expect_true(inherits(res, "matrix"))
   expect_type(res, "double")
   expect_equal(nrow(res), 1) 
@@ -18,7 +18,7 @@ test_that("GTEX_expression() works", {
   ## Test the "log_TPM" units argument
   res_in_log <- GTEX_expression(c("MAGEA1"), 
                                 units = "log_TPM", 
-                                return = TRUE)
+                                values_only = TRUE)
   expect_equal(res_in_log[, "Testis"], log1p(res[, "Testis"])) 
   
   ## Test that the function returns a heatmap by default

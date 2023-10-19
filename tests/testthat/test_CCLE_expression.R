@@ -1,14 +1,14 @@
 test_that("CCLE_expression() works", {
   
   ## returns a warning when an invalid gene is entered
-  ## returns a matrix of double when Return is set to TRUE
+  ## returns a matrix of double when values_only is set to TRUE
   ## works with only one gene in input
   ## tumor type is case insensitive
   ## selects the expected cell lines
   ## returns the expected matrix
   expect_warning(res <- CCLE_expression(c("MAGEA1", ""), 
                                         type = "sKIN", 
-                                        return = TRUE), "names invalid")
+                                        values_only = TRUE), "names invalid")
   expect_true(inherits(res, "matrix"))
   expect_type(res, "double")
   expect_equal(nrow(res), 1) 
@@ -22,7 +22,7 @@ test_that("CCLE_expression() works", {
   ## Test the "log_TPM" units argument
   res_in_log <- CCLE_expression(c("MAGEA1"), type = "sKIN", 
                                 units = "log_TPM", 
-                                return = TRUE)
+                                values_only = TRUE)
   expect_equal(log1p(res), res_in_log) 
   
   ## returns a heatmap by default

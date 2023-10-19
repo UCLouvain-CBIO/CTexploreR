@@ -208,7 +208,7 @@ methylated in germ cells.
 # Available functions
 
 For details about functions, see their respective manual pages. For all
-functions, an option `return` can  be set to `TRUE` in order to get the values
+functions, an option `values_only` can  be set to `TRUE` in order to get the values
 instead of the visualisation.
 
 All expression visualisation functions can be used on all GTEx genes, not only

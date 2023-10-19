@@ -4,7 +4,7 @@ test_that("TCGA_expression() works", {
   ## returns a warning when an invalid gene is entered
   ## n valid genes in input returns a matrix of n expected rownames
   expect_warning(res <- TCGA_expression("LUAD", c("MAGEA1", "MAGEA3", "xxx"), 
-                                        return = TRUE), "names invalid")
+                                        values_only = TRUE), "names invalid")
   expect_true(inherits(res, "matrix"))
   expect_type(res, "double")
   expect_equal(nrow(res), 2) 
@@ -14,7 +14,7 @@ test_that("TCGA_expression() works", {
   ## returns a warning when an invalid tumor type is entered
   expect_warning(res_in_log <- TCGA_expression(c("LUAD", "lung"), 
                                                c("MAGEA1", "MAGEA3"), 
-                                units = "log_TPM", return = TRUE), 
+                                units = "log_TPM", values_only = TRUE), 
                  "names invalid")
   expect_equal(res_in_log[, 1:3], log1p(res[, 1:3])) 
 
