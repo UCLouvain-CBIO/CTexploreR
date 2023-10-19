@@ -28,7 +28,7 @@
 #'     the function will include normal peritumoral tissues in addition to
 #'     tumoral samples. Default is `FALSE`.
 #'
-#' @param return `logical(1)`. If `TRUE`, the function will return the
+#' @param values_only `logical(1)`. If `TRUE`, the function will return the
 #'     methylation and expression values in TCGA samples instead of the
 #'     heatmap. Default is `FALSE`.
 #'
@@ -39,7 +39,7 @@
 #' @return A scatter plot representing for each TCGA sample, gene expression
 #'     and mean methylation values of probe(s) located in its promoter region
 #'     (defined as 1000 nucleotides upstream TSS and 200 nucleotides downstream
-#'     TSS by default). If return = TRUE, methylation and expression values
+#'     TSS by default). If `values_only = TRUE`, methylation and expression values
 #'     are returned in a tibble instead.
 #'
 #' @export
@@ -60,7 +60,7 @@ TCGA_methylation_expression_correlation <- function(
     nt_down = 200,
     min_probe_number = 3,
     include_normal_tissues = FALSE,
-    return = FALSE) {
+    values_only = FALSE) {
 
     methylation_expression <- prepare_TCGA_methylation_expression(
       tumor = tumor,
@@ -98,7 +98,7 @@ TCGA_methylation_expression_correlation <- function(
             scale_colour_manual(values = TCGA_colors) +
             xlim(0, 1)
 
-    if (return) {
+    if (values_only) {
         return(methylation_expression)
     }
 

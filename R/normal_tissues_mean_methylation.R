@@ -9,7 +9,7 @@
 #' @param genes `character` nameing the selected genes. The default
 #'     value, `NULL`, takes all CT genes.
 #'
-#' @param return `logical(1)`, `FALSE` by default. If `TRUE`, the
+#' @param values_only `logical(1)`, `FALSE` by default. If `TRUE`, the
 #'     function will return the methylation values in all samples
 #'     instead of the heatmap.
 #'
@@ -19,7 +19,7 @@
 #'     methylation values are missing.
 #'
 #' @return Heatmap of mean promoter methylation of Cancer-Testis (CT)
-#'     genes in normal tissues. If `return = TRUE`, methylation values
+#'     genes in normal tissues. If `values_only = TRUE`, methylation values
 #'     are returned instead.
 #'
 #' @export
@@ -37,7 +37,7 @@
 #' normal_tissues_mean_methylation(c("MAGEA1", "MAGEA2", "MAGEA3", "MAGEA4"))
 #' normal_tissues_mean_methylation(c("MAGEA1", "MAGEA2", "MAGEA3", "MAGEA4"),
 #'     na.omit = FALSE)
-normal_tissues_mean_methylation <- function(genes = NULL, return = FALSE,
+normal_tissues_mean_methylation <- function(genes = NULL, values_only = FALSE,
                                             na.omit = TRUE) {
     suppressMessages({
         database <- CTdata::CT_mean_methylation_in_tissues()
@@ -73,7 +73,7 @@ normal_tissues_mean_methylation <- function(genes = NULL, return = FALSE,
         column_names_side = "bottom",
         row_names_side = "right")
 
-    if (return) {
+    if (values_only) {
         return(mat)
     }
 

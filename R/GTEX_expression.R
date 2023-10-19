@@ -9,12 +9,12 @@
 #' @param units `character(1)` with expression values unit.  Can be
 #'     `"TPM"` (default) or `"log_TPM"` (log(TPM + 1)).
 #'
-#' @param return `logical(1)`. If `TRUE`, the function will return the
+#' @param values_only `logical(1)`. If `TRUE`, the function will return the
 #'     expression values in all samples instead of the
 #'     heatmap. Default is `FALSE`.
 #'
 #' @return A heatmap of selected genes expression in normal tissues.
-#'     If `return = TRUE`, expression values are returned instead.
+#'     If `values_only = TRUE`, expression values are returned instead.
 #'
 #' @export
 #'
@@ -26,7 +26,8 @@
 #' @examples
 #' GTEX_expression(units = "log_TPM")
 #' GTEX_expression(genes = c("MAGEA1", "MAGEA3"), units = "log_TPM")
-GTEX_expression <- function(genes = NULL, units = c("TPM", "log_TPM"), return = FALSE) {
+GTEX_expression <- function(genes = NULL, units = c("TPM", "log_TPM"), 
+                            values_only = FALSE) {
     
   suppressMessages({
     database <- CTdata::GTEX_data()
@@ -56,7 +57,7 @@ GTEX_expression <- function(genes = NULL, units = c("TPM", "log_TPM"), return = 
         column_names_gp = gpar(fontsize = 10),
         clustering_method_rows = "ward.D")
 
-    if (return) {
+    if (values_only) {
         return(mat)
     }
 

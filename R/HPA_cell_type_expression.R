@@ -16,12 +16,12 @@
 #' @param scale_lims `vector of length 2` setting the lower and upper limits
 #' of the heatmap colorbar.
 #'
-#' @param return `logical(1)`. If `TRUE`, the function will return the
+#' @param values_only `logical(1)`. If `TRUE`, the function will return the
 #'     SummarizedExperiment instead of the heatmap. Default is `FALSE`.
 #'
 #' @return A heatmap of selected CT genes expression in
 #' different human cell types.
-#' If `return = TRUE`, a SummarizedExperiment instead of the heatmap
+#' If `values_only = TRUE`, a SummarizedExperiment instead of the heatmap
 #'     is returned instead.
 #'
 #' @export
@@ -36,14 +36,14 @@
 #'
 #' HPA_cell_type_expression(
 #'     genes = NULL, units = "scaled", scale_lims = NULL,
-#'     return = FALSE)
+#'     values_only = FALSE)
 #' HPA_cell_type_expression(
 #'     genes = c("MAGEA1", "MAGEA3", "MAGEA4"),
 #'     units = "TPM", scale_lims = c(0, 50),
-#'     return = FALSE)
+#'     values_only = FALSE)
 HPA_cell_type_expression <- function(genes = NULL, 
                                      units = c("scaled", "TPM", "log_TPM"),
-                                     scale_lims = NULL, return = FALSE) {
+                                     scale_lims = NULL, values_only = FALSE) {
     suppressMessages({
         database <- CTdata::scRNAseq_HPA()
         CT_genes <- CTdata::CT_genes()
@@ -96,7 +96,7 @@ HPA_cell_type_expression <- function(genes = NULL,
         top_annotation = column_ha_group,
         heatmap_legend_param = legends_param)
 
-    if (return) {
+    if (values_only) {
         return(database)
     }
 

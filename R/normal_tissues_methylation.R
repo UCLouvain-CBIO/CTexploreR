@@ -12,12 +12,12 @@
 #' @param nt_down Number of nucleotides downstream the TSS to analyse
 #' (by default 200, maximum value 5000)
 #'
-#' @param return Boolean (FALSE by default). If set to TRUE, the function will
+#' @param values_only Boolean (FALSE by default). If set to TRUE, the function will
 #' return the methylation values of all cytosines in the promoter instead of
 #' the heatmap.
 #'
 #' @return Heatmap of the methylation of CpGs located in a Cancer-Testis (CT)
-#' promoter, in normal tissues. If return = TRUE, methylation values are
+#' promoter, in normal tissues. If `values_only` = TRUE, methylation values are
 #' returned instead.
 #'
 #' @export
@@ -36,7 +36,7 @@
 #' @examples
 #' normal_tissues_methylation(gene = "TDRD1", 1000, 0)
 normal_tissues_methylation <- function(gene, nt_up = 1000, nt_down = 200,
-                                       return = FALSE) {
+                                       values_only = FALSE) {
     suppressMessages({
         database <- CTdata::CT_methylation_in_tissues()
         CT_genes <- CTdata::CT_genes()
@@ -122,7 +122,7 @@ normal_tissues_methylation <- function(gene, nt_up = 1000, nt_down = 200,
         column_names_side = "bottom",
         row_names_side = "left")
 
-    if (return) {
+    if (values_only) {
         return(mat)
     }
 

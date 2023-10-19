@@ -19,11 +19,11 @@
 #' of the heatmap colorbar. By default, the lower limit is 0, and the upper
 #' limit corresponds to the third quartile of the logcounts values.
 #'
-#' @param return `logical(1)`. If `TRUE`, the function will return the
+#' @param values_only `logical(1)`. If `TRUE`, the function will return the
 #'     SingleCellExperiment instead of the heatmap. Default is `FALSE`.
 #'
 #' @return A heatmap of selected CT genes expression in single cells from adult
-#'     testis. If `return = TRUE`, a SingleCellExperiment instead of the
+#'     testis. If `values_only = TRUE`, a SingleCellExperiment instead of the
 #'     heatmap is returned instead.
 #'
 #' @export
@@ -44,7 +44,7 @@ testis_expression <- function(
               "Early_spermatocyte", "Late_spermatocyte", "Round_spermatid", 
               "Elongated_spermatid", "Sperm1", "Sperm2", "Macrophage", 
               "Endothelial", "Myoid", "Sertoli", "Leydig"), 
-    genes = NULL, scale_lims = NULL, return = FALSE) {
+    genes = NULL, scale_lims = NULL, values_only = FALSE) {
   
     suppressMessages({
         database <- CTdata::testis_sce()
@@ -128,7 +128,7 @@ testis_expression <- function(
         top_annotation = top_annot,
         heatmap_legend_param = legends_param)
 
-    if (return) {
+    if (values_only) {
         return(database)
     }
 

@@ -16,12 +16,12 @@
 #' @param units `character(1)` with expression values unit.  Can be
 #'     `"TPM"` (default) or `"log_TPM"` (log(TPM + 1)).
 #'
-#' @param return `logical(1)`. If `TRUE`, the function will return the
+#' @param values_only `logical(1)`. If `TRUE`, the function will return the
 #'     expression values in all samples instead of the
 #'     heatmap. Default is `FALSE`.
 #'
 #' @return A heatmap of selected CT genes expression in TCGA samples.
-#'     If `return = TRUE`, TPM expression data is returned instead.
+#'     If `values_only = TRUE`, TPM expression data is returned instead.
 #'
 #' @export
 #'
@@ -37,7 +37,7 @@
 #'     units = "log_TPM")
 #' }
 TCGA_expression <- function(tumor = "all", genes = NULL,
-                            units = c("TPM", "log_TPM"), return = FALSE) {
+                            units = c("TPM", "log_TPM"), values_only = FALSE) {
     suppressMessages({
         database <- CTdata::TCGA_TPM()
         CT_genes <- CTdata::CT_genes()
@@ -104,7 +104,7 @@ TCGA_expression <- function(tumor = "all", genes = NULL,
         heatmap_legend_param = legends_param,
         top_annotation = annot)
 
-    if (return) {
+    if (values_only) {
         return(mat)
     }
 

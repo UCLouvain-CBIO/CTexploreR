@@ -12,7 +12,7 @@
 #'     `CTdata::DAC_treated_cells_multimapping` or
 #'     `DAC_treated_cells`. Default is `TRUE`.
 #'
-#' @param return `logical(1)`. If `TRUE`, the function will return the
+#' @param values_only `logical(1)`. If `TRUE`, the function will return the
 #'     gene normalised logcounts in all samples instead of the
 #'     heatmap. Default is `FALSE`.
 #'
@@ -29,7 +29,7 @@
 #' or not to allow or not counting multi-mapping reads.
 #'
 #' @return A heatmap of selected genes in cells treated or not by a
-#'     demethylating agent. If return is `TRUE`, gene normalised
+#'     demethylating agent. If `values_only` is `TRUE`, gene normalised
 #'     logcounts are returned instead.
 #'
 #' @export
@@ -43,7 +43,8 @@
 #' DAC_induction(genes = c("MAGEA1", "MAGEA3", "MAGEA4", "MAGEA6", "CTAG1A"))
 #' DAC_induction(genes = c("MAGEA1", "MAGEA3", "MAGEA4", "MAGEA6", "CTAG1A",
 #'     multimapping = FALSE))
-DAC_induction <- function(genes = NULL, multimapping = TRUE, return = FALSE) {
+DAC_induction <- function(genes = NULL, multimapping = TRUE, 
+                          values_only = FALSE) {
     
   suppressMessages({
     CT_genes <- CTdata::CT_genes()
@@ -89,7 +90,7 @@ DAC_induction <- function(genes = NULL, multimapping = TRUE, return = FALSE) {
         row_names_gp = gpar(fontsize = fontsize),
         top_annotation = c(column_ha_cell, column_ha_treatment))
 
-    if (return) {
+    if (values_only) {
         return(mat)
     }
     return(h)

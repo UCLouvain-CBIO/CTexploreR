@@ -24,11 +24,11 @@
 #' @param units `character(1)` with expression values unit. Can be
 #'     "TPM" (default) or "log_TPM" (log(TPM + 1))
 #'
-#' @param return `logical(1)`. If `TRUE`, values are returned instead
+#' @param values_only `logical(1)`. If `TRUE`, values are returned instead
 #'     of the heatmap (`FALSE` by default).
 #'
 #' @return A heatmap of selected genes in CCLE cell lines from
-#'     specified type.  If `return` is `TRUE`, expression values are
+#'     specified type.  If `values_only` is `TRUE`, expression values are
 #'     returned instead.
 #'
 #' @export
@@ -47,7 +47,7 @@
 #' }
 CCLE_expression <- function(genes = NULL, type = NULL, 
                             units = c("TPM", "log_TPM"),
-                            return = FALSE) {
+                            values_only = FALSE) {
     suppressMessages({
         database <- CTdata::CCLE_data()
         CT_genes <- CTdata::CT_genes()
@@ -104,7 +104,7 @@ CCLE_expression <- function(genes = NULL, type = NULL,
         heatmap_legend_param = legends_param,
         top_annotation = c(column_ha_type))
 
-    if (return) {
+    if (values_only) {
         return(mat)
     }
     return(h)

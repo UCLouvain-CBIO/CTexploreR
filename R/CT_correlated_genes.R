@@ -12,7 +12,7 @@
 #'     absolute correlation coefficient (Pearson) higher than this
 #'     threshold will be highlighted.
 #'
-#' @param return `logical(1)`, `FALSE` by default. If `TRUE`, the
+#' @param values_only `logical(1)`, `FALSE` by default. If `TRUE`, the
 #'     function will return the correlation coefficients with all
 #'     genes instead of the plot.
 #'
@@ -20,7 +20,7 @@
 #'     coefficients (Pearson) between genes and the specified CT gene
 #'     (entered as input). Genes with a correlation coefficient above
 #'     threshold are colored in red if they are CT genes or in blue,
-#'     if not. If `return = TRUE`, all correlations coefficients are
+#'     if not. If `values_only = TRUE`, all correlations coefficients are
 #'     returned instead.
 #'
 #' @export
@@ -36,7 +36,7 @@
 #' CT_correlated_genes(gene = "MAGEA3")
 #' }
 CT_correlated_genes <- function(gene, corr_thr = 0.5,
-                                return = FALSE) {
+                                values_only = FALSE) {
     suppressMessages({
         corr_matrix <- CTdata::CCLE_correlation_matrix()
         CT_genes <- CTdata::CT_genes()
@@ -87,7 +87,7 @@ CT_correlated_genes <- function(gene, corr_thr = 0.5,
         ylab("Correlation coefficient") +
         ylim(-1, 1)
 
-    if (return) {
+    if (values_only) {
         return(tmp)
     }
 
