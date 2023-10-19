@@ -35,7 +35,7 @@
 #'
 #' @examples
 #' normal_tissues_methylation(gene = "TDRD1", 1000, 0)
-normal_tissues_methylation <- function(gene, nt_up = NULL, nt_down = NULL,
+normal_tissues_methylation <- function(gene, nt_up = 1000, nt_down = 200,
                                        return = FALSE) {
     suppressMessages({
         database <- CTdata::CT_methylation_in_tissues()
@@ -58,21 +58,17 @@ normal_tissues_methylation <- function(gene, nt_up = NULL, nt_down = NULL,
         filter(.data$external_gene_name == gene) |>
         pull(.data$transcription_start_site)
     
-    if (is.null(nt_up)) {
-      nt_up <- 1000
-    } else { if (nt_up > 5000) {
+    if (nt_up > 5000) {
       nt_up <- 5000
       warning("Replacing `nt_up` value by 5000, the maximum number of 
       nucleotides upstream the TSS analysable")
-    }}
+    }
     
-    if (is.null(nt_down)) {
-      nt_down <- 200
-    } else { if (nt_down > 5000) {
+    if (nt_down > 5000) {
       nt_down <- 5000
       warning("Replacing `nt_down` value by 5000, the maximum number of 
       nucleotides downstream the TSS analysable")
-    }}
+    }
 
     if (strand == 1) {
         promoter_gr <- GRanges(seqnames = paste0("chr", chr),
