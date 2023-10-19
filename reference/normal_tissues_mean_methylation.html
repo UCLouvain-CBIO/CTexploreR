@@ -64,7 +64,11 @@ TSS.</p>
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">normal_tissues_mean_methylation</span><span class="op">(</span>genes <span class="op">=</span> <span class="cn">NULL</span>, return <span class="op">=</span> <span class="cn">FALSE</span>, na.omit <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">normal_tissues_mean_methylation</span><span class="op">(</span></span>
+<span>  genes <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  values_only <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  na.omit <span class="op">=</span> <span class="cn">TRUE</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -74,7 +78,7 @@ TSS.</p>
 value, <code>NULL</code>, takes all CT genes.</p></dd>
 
 
-<dt>return</dt>
+<dt>values_only</dt>
 <dd><p><code>logical(1)</code>, <code>FALSE</code> by default. If <code>TRUE</code>, the
 function will return the methylation values in all samples
 instead of the heatmap.</p></dd>
@@ -92,7 +96,7 @@ methylation values are missing.</p></dd>
     
 
 <p>Heatmap of mean promoter methylation of Cancer-Testis (CT)
-genes in normal tissues. If <code>return = TRUE</code>, methylation values
+genes in normal tissues. If <code>values_only = TRUE</code>, methylation values
 are returned instead.</p>
     </div>
 

@@ -68,9 +68,9 @@ which multimapping reads are not discarded.</p>
     <div id="ref-usage">
     <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">normal_tissue_expression_multimapping</span><span class="op">(</span></span>
 <span>  genes <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  multimapping <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  units <span class="op">=</span> <span class="st">"TPM"</span>,</span>
-<span>  return <span class="op">=</span> <span class="cn">FALSE</span></span>
+<span>  multimapping <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  units <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"TPM"</span>, <span class="st">"log_TPM"</span><span class="op">)</span>,</span>
+<span>  values_only <span class="op">=</span> <span class="cn">FALSE</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
 
@@ -84,7 +84,7 @@ value, <code>NULL</code>, takes all CT genes.</p></dd>
 <dt>multimapping</dt>
 <dd><p><code>logical(1)</code> that specifies if returned
 expression values must take into account or not multi-mapped
-reads</p></dd>
+reads. TRUE by default.</p></dd>
 
 
 <dt>units</dt>
@@ -92,7 +92,7 @@ reads</p></dd>
 <code>"TPM"</code> (default) or <code>"log_TPM"</code> (log(TPM + 1)).</p></dd>
 
 
-<dt>return</dt>
+<dt>values_only</dt>
 <dd><p><code>logical(1)</code>. If <code>TRUE</code>, the function will return the
 expression values in all samples instead of the
 heatmap. Default is <code>FALSE</code>.</p></dd>
@@ -104,7 +104,7 @@ heatmap. Default is <code>FALSE</code>.</p></dd>
 
 <p>A heatmap of selected gene expression values in a set of
 normal tissues calculated by counting or discarding
-multi-mapped reads.  If <code>return = TRUE</code>, gene expression values
+multi-mapped reads.  If <code>values_only = TRUE</code>, gene expression values
 are returned instead.</p>
     </div>
     <div id="details">

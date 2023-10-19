@@ -65,7 +65,7 @@ a Cancer-Testis (CT) gene in TCGA samples.</p>
 <span>  nt_down <span class="op">=</span> <span class="fl">200</span>,</span>
 <span>  min_probe_number <span class="op">=</span> <span class="fl">3</span>,</span>
 <span>  include_normal_tissues <span class="op">=</span> <span class="cn">FALSE</span>,</span>
-<span>  return <span class="op">=</span> <span class="cn">FALSE</span></span>
+<span>  values_only <span class="op">=</span> <span class="cn">FALSE</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
 
@@ -105,7 +105,7 @@ the function will include normal peritumoral tissues in addition to
 tumoral samples. Default is <code>FALSE</code>.</p></dd>
 
 
-<dt>return</dt>
+<dt>values_only</dt>
 <dd><p><code>logical(1)</code>. If <code>TRUE</code>, the function will return the
 methylation and expression values in TCGA samples instead of the
 heatmap. Default is <code>FALSE</code>.</p></dd>
@@ -118,7 +118,7 @@ heatmap. Default is <code>FALSE</code>.</p></dd>
 <p>A scatter plot representing for each TCGA sample, gene expression
 and mean methylation values of probe(s) located in its promoter region
 (defined as 1000 nucleotides upstream TSS and 200 nucleotides downstream
-TSS by default). If return = TRUE, methylation and expression values
+TSS by default). If <code>values_only = TRUE</code>, methylation and expression values
 are returned in a tibble instead.</p>
     </div>
     <div id="details">

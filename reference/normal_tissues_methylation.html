@@ -60,7 +60,12 @@ CpGs position (related to TSS).</p>
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">normal_tissues_methylation</span><span class="op">(</span><span class="va">gene</span>, nt_up <span class="op">=</span> <span class="cn">NULL</span>, nt_down <span class="op">=</span> <span class="cn">NULL</span>, return <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">normal_tissues_methylation</span><span class="op">(</span></span>
+<span>  <span class="va">gene</span>,</span>
+<span>  nt_up <span class="op">=</span> <span class="fl">1000</span>,</span>
+<span>  nt_down <span class="op">=</span> <span class="fl">200</span>,</span>
+<span>  values_only <span class="op">=</span> <span class="cn">FALSE</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -79,7 +84,7 @@ CpGs position (related to TSS).</p>
 (by default 200, maximum value 5000)</p></dd>
 
 
-<dt>return</dt>
+<dt>values_only</dt>
 <dd><p>Boolean (FALSE by default). If set to TRUE, the function will
 return the methylation values of all cytosines in the promoter instead of
 the heatmap.</p></dd>
@@ -90,7 +95,7 @@ the heatmap.</p></dd>
     
 
 <p>Heatmap of the methylation of CpGs located in a Cancer-Testis (CT)
-promoter, in normal tissues. If return = TRUE, methylation values are
+promoter, in normal tissues. If <code>values_only</code> = TRUE, methylation values are
 returned instead.</p>
     </div>
 

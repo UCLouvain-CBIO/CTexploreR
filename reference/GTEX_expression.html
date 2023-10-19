@@ -58,7 +58,7 @@
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">GTEX_expression</span><span class="op">(</span>genes <span class="op">=</span> <span class="cn">NULL</span>, units <span class="op">=</span> <span class="st">"TPM"</span>, return <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">GTEX_expression</span><span class="op">(</span>genes <span class="op">=</span> <span class="cn">NULL</span>, units <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"TPM"</span>, <span class="st">"log_TPM"</span><span class="op">)</span>, values_only <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -73,7 +73,7 @@ value, <code>NULL</code>, takes all CT genes.</p></dd>
 <code>"TPM"</code> (default) or <code>"log_TPM"</code> (log(TPM + 1)).</p></dd>
 
 
-<dt>return</dt>
+<dt>values_only</dt>
 <dd><p><code>logical(1)</code>. If <code>TRUE</code>, the function will return the
 expression values in all samples instead of the
 heatmap. Default is <code>FALSE</code>.</p></dd>
@@ -84,7 +84,7 @@ heatmap. Default is <code>FALSE</code>.</p></dd>
     
 
 <p>A heatmap of selected genes expression in normal tissues.
-If <code>return = TRUE</code>, expression values are returned instead.</p>
+If <code>values_only = TRUE</code>, expression values are returned instead.</p>
     </div>
 
     <div id="ref-examples">

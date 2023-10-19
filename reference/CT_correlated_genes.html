@@ -64,7 +64,7 @@ if not.</p>
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">CT_correlated_genes</span><span class="op">(</span><span class="va">gene</span>, corr_thr <span class="op">=</span> <span class="fl">0.5</span>, return <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">CT_correlated_genes</span><span class="op">(</span><span class="va">gene</span>, corr_thr <span class="op">=</span> <span class="fl">0.5</span>, values_only <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -79,7 +79,7 @@ absolute correlation coefficient (Pearson) higher than this
 threshold will be highlighted.</p></dd>
 
 
-<dt>return</dt>
+<dt>values_only</dt>
 <dd><p><code>logical(1)</code>, <code>FALSE</code> by default. If <code>TRUE</code>, the
 function will return the correlation coefficients with all
 genes instead of the plot.</p></dd>
@@ -93,7 +93,7 @@ genes instead of the plot.</p></dd>
 coefficients (Pearson) between genes and the specified CT gene
 (entered as input). Genes with a correlation coefficient above
 threshold are colored in red if they are CT genes or in blue,
-if not. If <code>return = TRUE</code>, all correlations coefficients are
+if not. If <code>values_only = TRUE</code>, all correlations coefficients are
 returned instead.</p>
     </div>
 
