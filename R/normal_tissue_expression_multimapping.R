@@ -15,7 +15,7 @@
 #'
 #' @param multimapping `logical(1)` that specifies if returned
 #'     expression values must take into account or not multi-mapped
-#'     reads
+#'     reads. TRUE by default.
 #'
 #' @param units `character(1)` with expression values unit.  Can be
 #'     `"TPM"` (default) or `"log_TPM"` (log(TPM + 1)).
@@ -66,17 +66,16 @@
 #'     genes = c("GAGE13", "CT45A6", "NXF2", "SSX2", "CTAG1A",
 #'     "MAGEA3", "MAGEA6"), multimapping = TRUE)
 normal_tissue_expression_multimapping <- function(genes = NULL,
-                                                  multimapping = NULL,
-                                                  units = "TPM",
+                                                  multimapping = TRUE,
+                                                  units = c("TPM", "log_TPM"),
                                                   return = FALSE) {
-    if (is.null(multimapping)) {
-        stop("multimapping parameter should be set to TRUE/FALSE")
-    }
 
     suppressMessages({
         CT_genes <- CTdata::CT_genes()
         database <- CTdata::normal_tissues_multimapping_data()
     })
+    
+    units <- match.arg(units)
 
     database <- subset_database(genes, database)
     
@@ -89,16 +88,12 @@ normal_tissue_expression_multimapping <- function(genes = NULL,
     }
     rownames(mat) <- rowData(database)$external_gene_name
 
-    name <- "TPM"
-    if (units == "log_TPM") {
-        mat <- log1p(mat)
-        name <- "log_TPM"
-    }
+    if (units == "log_TPM") mat <- log1p(mat)
 
     fontsize <- set_fontsize(mat)
 
     h <- Heatmap(mat,
-        name = name,
+        name = units,
         col = colorRamp2(seq(0, max(mat), length = 11), legend_colors),
         column_title = title,
         cluster_rows = TRUE,
