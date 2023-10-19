@@ -41,12 +41,15 @@
 #'     genes = c("MAGEA1", "MAGEA3", "MAGEA4"),
 #'     units = "TPM", scale_lims = c(0, 50),
 #'     return = FALSE)
-HPA_cell_type_expression <- function(genes = NULL, units = "scaled",
+HPA_cell_type_expression <- function(genes = NULL, 
+                                     units = c("scaled", "TPM", "log_TPM"),
                                      scale_lims = NULL, return = FALSE) {
     suppressMessages({
         database <- CTdata::scRNAseq_HPA()
         CT_genes <- CTdata::CT_genes()
     })
+  
+    units <- match.arg(units)
   
     database <- subset_database(genes, database)
 

@@ -26,27 +26,26 @@
 #' @examples
 #' GTEX_expression(units = "log_TPM")
 #' GTEX_expression(genes = c("MAGEA1", "MAGEA3"), units = "log_TPM")
-GTEX_expression <- function(genes = NULL, units = "TPM", return = FALSE) {
+GTEX_expression <- function(genes = NULL, units = c("TPM", "log_TPM"), return = FALSE) {
     
   suppressMessages({
     database <- CTdata::GTEX_data()
     CT_genes <- CTdata::CT_genes()
     })
+  
+    units <- match.arg(units)
 
     database <- subset_database(genes, database)
 
     mat <- assay(database)
     rownames(mat) <- rowData(database)$external_gene_name
-    name <- "TPM"
-    if (units == "log_TPM") {
-        mat <- log1p(mat)
-        name <- "log_TPM"
-    }
+    
+    if (units == "log_TPM") mat <- log1p(mat)
 
     fontsize <- set_fontsize(mat)
 
     h <- Heatmap(mat,
-        name = name,
+        name = units,
         column_title = "Gene Expression in normal tissues (GTEx)",
         col = colorRamp2(seq(0, max(mat), length = 11), legend_colors),
         cluster_rows = TRUE,

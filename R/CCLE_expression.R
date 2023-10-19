@@ -45,12 +45,15 @@
 #'     genes = c("MAGEA1", "MAGEA3", "MAGEA4", "MAGEA6", "MAGEA10"),
 #'     type = c("Skin", "Lung"), units = "log_TPM")
 #' }
-CCLE_expression <- function(genes = NULL, type = NULL, units = "TPM",
+CCLE_expression <- function(genes = NULL, type = NULL, 
+                            units = c("TPM", "log_TPM"),
                             return = FALSE) {
     suppressMessages({
         database <- CTdata::CCLE_data()
         CT_genes <- CTdata::CT_genes()
     })
+  
+    units <- match.arg(units)
 
     database$type <- tolower(database$type)
     valid_tumor_types <- unique(database$type)
@@ -64,11 +67,7 @@ CCLE_expression <- function(genes = NULL, type = NULL, units = "TPM",
     mat <- assay(database)
     rownames(mat) <- rowData(database)$external_gene_name
 
-    name <- "TPM"
-    if (units == "log_TPM") {
-        mat <- log1p(mat)
-        name <- "log_TPM"
-    }
+    if (units == "log_TPM") mat <- log1p(mat)
 
     df_col <- data.frame(
         "cell_line" = colData(database)$cell_line_name,
@@ -90,7 +89,7 @@ CCLE_expression <- function(genes = NULL, type = NULL, units = "TPM",
     if (length(type) >= 10 | is.null(type)) label_fontsize <- 0
 
     h <- Heatmap(mat[, rownames(df_col), drop = FALSE],
-        name = name,
+        name = units,
         column_title = "Gene Expression in tumor cell lines (CCLE)",
         column_split = factor(df_col$type),
         col = colorRamp2(seq(0, max(mat), length = 11),legend_colors),
