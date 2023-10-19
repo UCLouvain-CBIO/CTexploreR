@@ -90,8 +90,6 @@ DAC_induction <- function(genes = NULL, multimapping = TRUE,
         row_names_gp = gpar(fontsize = fontsize),
         top_annotation = c(column_ha_cell, column_ha_treatment))
 
-    if (values_only) {
-        return(mat)
-    }
-    return(h)
+    ifelse(values_only, return(mat), return(h))
+
 }

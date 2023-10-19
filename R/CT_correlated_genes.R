@@ -87,9 +87,5 @@ CT_correlated_genes <- function(gene, corr_thr = 0.5,
         ylab("Correlation coefficient") +
         ylim(-1, 1)
 
-    if (values_only) {
-        return(tmp)
-    }
-
-    return(p)
+    ifelse(values_only, return(tmp), return(p))
 }

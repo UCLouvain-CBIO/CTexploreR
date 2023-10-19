@@ -98,9 +98,5 @@ TCGA_methylation_expression_correlation <- function(
             scale_colour_manual(values = TCGA_colors) +
             xlim(0, 1)
 
-    if (values_only) {
-        return(methylation_expression)
-    }
-
-    return(p)
+    ifelse(values_only, return(methylation_expression), return(p))
 }

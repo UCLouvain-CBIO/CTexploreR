@@ -104,9 +104,5 @@ TCGA_expression <- function(tumor = "all", genes = NULL,
         heatmap_legend_param = legends_param,
         top_annotation = annot)
 
-    if (values_only) {
-        return(mat)
-    }
-
-    return(h)
+    ifelse(values_only, return(mat), return(h))
 }

@@ -104,9 +104,5 @@ normal_tissue_expression_multimapping <- function(genes = NULL,
         column_names_gp = gpar(fontsize = 6),
         clustering_method_rows = "ward.D")
 
-    if (values_only) {
-        return(mat)
-    }
-
-    return(h)
+    ifelse(values_only, return(mat), return(h))
 }

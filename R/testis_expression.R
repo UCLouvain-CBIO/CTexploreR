@@ -128,11 +128,7 @@ testis_expression <- function(
         top_annotation = top_annot,
         heatmap_legend_param = legends_param)
 
-    if (values_only) {
-        return(database)
-    }
-
-    return(h)
+    ifelse(values_only, return(database), return(h))
 }
 
 

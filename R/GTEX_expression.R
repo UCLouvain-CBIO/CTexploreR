@@ -57,9 +57,5 @@ GTEX_expression <- function(genes = NULL, units = c("TPM", "log_TPM"),
         column_names_gp = gpar(fontsize = 10),
         clustering_method_rows = "ward.D")
 
-    if (values_only) {
-        return(mat)
-    }
-
-    return(h)
+    ifelse(values_only, return(mat), return(h))
 }

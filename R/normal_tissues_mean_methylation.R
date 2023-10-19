@@ -73,9 +73,5 @@ normal_tissues_mean_methylation <- function(genes = NULL, values_only = FALSE,
         column_names_side = "bottom",
         row_names_side = "right")
 
-    if (values_only) {
-        return(mat)
-    }
-
-    return(h)
+    ifelse(values_only, return(mat), return(h))
 }

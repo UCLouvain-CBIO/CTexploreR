@@ -96,9 +96,5 @@ HPA_cell_type_expression <- function(genes = NULL,
         top_annotation = column_ha_group,
         heatmap_legend_param = legends_param)
 
-    if (values_only) {
-        return(database)
-    }
-
-    return(h)
+    ifelse(values_only, return(database), return(h))
 }

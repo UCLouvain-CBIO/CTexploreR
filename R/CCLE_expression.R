@@ -104,8 +104,5 @@ CCLE_expression <- function(genes = NULL, type = NULL,
         heatmap_legend_param = legends_param,
         top_annotation = c(column_ha_type))
 
-    if (values_only) {
-        return(mat)
-    }
-    return(h)
+    ifelse(values_only, return(mat), return(h))
 }
