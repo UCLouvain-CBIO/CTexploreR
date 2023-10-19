@@ -39,33 +39,39 @@
 #' testis_expression(cells = "germ_cells",
 #'                   genes = c("MAGEA1", "MAGEA3", "MAGEA4"))
 #' }
-testis_expression <- function(cells = "all", genes = NULL,
-                              scale_lims = NULL, return = FALSE) {
+testis_expression <- function(
+    cells = c("all", "germ_cells", "somatic_cells", "SSC", "Spermatogonia",
+              "Early_spermatocyte", "Late_spermatocyte", "Round_spermatid", 
+              "Elongated_spermatid", "Sperm1", "Sperm2", "Macrophage", 
+              "Endothelial", "Myoid", "Sertoli", "Leydig"), 
+    genes = NULL, scale_lims = NULL, return = FALSE) {
+  
     suppressMessages({
         database <- CTdata::testis_sce()
         CT_genes <- CTdata::CT_genes()
     })
-
+  
+    cells <- match.arg(cells, several.ok = TRUE)
+  
     germ_cells <- c("SSC", "Spermatogonia", "Early_spermatocyte",
-        "Late_spermatocyte", "Round_spermatid", "Elongated_spermatid",
-        "Sperm1", "Sperm2")
-
+                  "Late_spermatocyte", "Round_spermatid", "Elongated_spermatid",
+                  "Sperm1", "Sperm2")
+  
     somatic_cells <- c("Macrophage", "Endothelial",
-        "Myoid", "Sertoli", "Leydig")
-
-    valid_cell_names <- c("germ_cells", "somatic_cells", "all", germ_cells,
-        somatic_cells)
-    cells <- check_names(cells, valid_cell_names)
-
-    if (all(cells %in% c("germ_cells"))) {
-        database <- database[, database$type %in% germ_cells]
-    } else if ((all(cells %in% c("somatic_cells")))) {
-        database <- database[, database$type %in% somatic_cells]
-    } else if (all(cells %in% c(germ_cells, somatic_cells))) {
-        database <- database[, database$type %in% cells]
+                     "Myoid", "Sertoli", "Leydig")
+  
+    if (length(cells) > 1){
+      stopifnot("`cells` parameter can be set to 'all', 'germ_cells', 
+      'somatic_cells', or any combination of testis cell type" 
+              = all(cells %in% c(germ_cells, somatic_cells)))
+    } else {
+      cells <- switch(cells, 
+                    "germ_cells" = germ_cells, 
+                    "somatic_cells" = somatic_cells,
+                    "all" = c(germ_cells, somatic_cells))
     }
-
-    database <- subset_database(genes, database)
+    
+    database <- subset_database(genes, database[, database$type %in% cells])
 
     mat <- SingleCellExperiment::logcounts(database)
 
@@ -127,3 +133,6 @@ testis_expression <- function(cells = "all", genes = NULL,
 
     return(h)
 }
+
+
+
