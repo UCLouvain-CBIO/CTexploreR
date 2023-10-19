@@ -4,7 +4,12 @@
 \alias{normal_tissues_methylation}
 \title{Methylation of CpGs located in Cancer-Testis promoters in normal tissues}
 \usage{
-normal_tissues_methylation(gene, nt_up = NULL, nt_down = NULL, return = FALSE)
+normal_tissues_methylation(
+  gene,
+  nt_up = 1000,
+  nt_down = 200,
+  values_only = FALSE
+)
 }
 \arguments{
 \item{gene}{Name of selected CT gene}
@@ -15,13 +20,13 @@ normal_tissues_methylation(gene, nt_up = NULL, nt_down = NULL, return = FALSE)
 \item{nt_down}{Number of nucleotides downstream the TSS to analyse
 (by default 200, maximum value 5000)}
 
-\item{return}{Boolean (FALSE by default). If set to TRUE, the function will
+\item{values_only}{Boolean (FALSE by default). If set to TRUE, the function will
 return the methylation values of all cytosines in the promoter instead of
 the heatmap.}
 }
 \value{
 Heatmap of the methylation of CpGs located in a Cancer-Testis (CT)
-promoter, in normal tissues. If return = TRUE, methylation values are
+promoter, in normal tissues. If \code{values_only} = TRUE, methylation values are
 returned instead.
 }
 \description{

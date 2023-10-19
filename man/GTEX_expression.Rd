@@ -4,7 +4,7 @@
 \alias{GTEX_expression}
 \title{Gene expression in normal tissues (GTEx)}
 \usage{
-GTEX_expression(genes = NULL, units = "TPM", return = FALSE)
+GTEX_expression(genes = NULL, units = c("TPM", "log_TPM"), values_only = FALSE)
 }
 \arguments{
 \item{genes}{\code{character} nameing the selected genes. The default
@@ -13,13 +13,13 @@ value, \code{NULL}, takes all CT genes.}
 \item{units}{\code{character(1)} with expression values unit.  Can be
 \code{"TPM"} (default) or \code{"log_TPM"} (log(TPM + 1)).}
 
-\item{return}{\code{logical(1)}. If \code{TRUE}, the function will return the
+\item{values_only}{\code{logical(1)}. If \code{TRUE}, the function will return the
 expression values in all samples instead of the
 heatmap. Default is \code{FALSE}.}
 }
 \value{
 A heatmap of selected genes expression in normal tissues.
-If \code{return = TRUE}, expression values are returned instead.
+If \code{values_only = TRUE}, expression values are returned instead.
 }
 \description{
 Plots an expression heatmap of genes in normal tissues

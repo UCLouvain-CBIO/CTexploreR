@@ -7,9 +7,9 @@ without multimapping}
 \usage{
 normal_tissue_expression_multimapping(
   genes = NULL,
-  multimapping = NULL,
-  units = "TPM",
-  return = FALSE
+  multimapping = TRUE,
+  units = c("TPM", "log_TPM"),
+  values_only = FALSE
 )
 }
 \arguments{
@@ -18,19 +18,19 @@ value, \code{NULL}, takes all CT genes.}
 
 \item{multimapping}{\code{logical(1)} that specifies if returned
 expression values must take into account or not multi-mapped
-reads}
+reads. TRUE by default.}
 
 \item{units}{\code{character(1)} with expression values unit.  Can be
 \code{"TPM"} (default) or \code{"log_TPM"} (log(TPM + 1)).}
 
-\item{return}{\code{logical(1)}. If \code{TRUE}, the function will return the
+\item{values_only}{\code{logical(1)}. If \code{TRUE}, the function will return the
 expression values in all samples instead of the
 heatmap. Default is \code{FALSE}.}
 }
 \value{
 A heatmap of selected gene expression values in a set of
 normal tissues calculated by counting or discarding
-multi-mapped reads.  If \code{return = TRUE}, gene expression values
+multi-mapped reads.  If \code{values_only = TRUE}, gene expression values
 are returned instead.
 }
 \description{

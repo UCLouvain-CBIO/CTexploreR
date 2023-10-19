@@ -4,7 +4,12 @@
 \alias{TCGA_expression}
 \title{Gene expression in TCGA tumors}
 \usage{
-TCGA_expression(tumor = "all", genes = NULL, units = "TPM", return = FALSE)
+TCGA_expression(
+  tumor = "all",
+  genes = NULL,
+  units = c("TPM", "log_TPM"),
+  values_only = FALSE
+)
 }
 \arguments{
 \item{tumor}{\code{character} defining the TCGA tumor type. Can be one
@@ -17,13 +22,13 @@ value, \code{NULL}, takes all CT genes.}
 \item{units}{\code{character(1)} with expression values unit.  Can be
 \code{"TPM"} (default) or \code{"log_TPM"} (log(TPM + 1)).}
 
-\item{return}{\code{logical(1)}. If \code{TRUE}, the function will return the
+\item{values_only}{\code{logical(1)}. If \code{TRUE}, the function will return the
 expression values in all samples instead of the
 heatmap. Default is \code{FALSE}.}
 }
 \value{
 A heatmap of selected CT genes expression in TCGA samples.
-If \code{return = TRUE}, TPM expression data is returned instead.
+If \code{values_only = TRUE}, TPM expression data is returned instead.
 }
 \description{
 Plots a heatmap of genes expression in TCGA samples (peritumoral

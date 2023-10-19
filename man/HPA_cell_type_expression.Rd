@@ -6,9 +6,9 @@
 \usage{
 HPA_cell_type_expression(
   genes = NULL,
-  units = "scaled",
+  units = c("scaled", "TPM", "log_TPM"),
   scale_lims = NULL,
-  return = FALSE
+  values_only = FALSE
 )
 }
 \arguments{
@@ -22,13 +22,13 @@ values). Default is \code{"scaled"}.}
 \item{scale_lims}{\verb{vector of length 2} setting the lower and upper limits
 of the heatmap colorbar.}
 
-\item{return}{\code{logical(1)}. If \code{TRUE}, the function will return the
+\item{values_only}{\code{logical(1)}. If \code{TRUE}, the function will return the
 SummarizedExperiment instead of the heatmap. Default is \code{FALSE}.}
 }
 \value{
 A heatmap of selected CT genes expression in
 different human cell types.
-If \code{return = TRUE}, a SummarizedExperiment instead of the heatmap
+If \code{values_only = TRUE}, a SummarizedExperiment instead of the heatmap
 is returned instead.
 }
 \description{
@@ -40,9 +40,9 @@ on scRNAseq data obtained from the Human Protein Atlas
 
 HPA_cell_type_expression(
     genes = NULL, units = "scaled", scale_lims = NULL,
-    return = FALSE)
+    values_only = FALSE)
 HPA_cell_type_expression(
     genes = c("MAGEA1", "MAGEA3", "MAGEA4"),
     units = "TPM", scale_lims = c(0, 50),
-    return = FALSE)
+    values_only = FALSE)
 }

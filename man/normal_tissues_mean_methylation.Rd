@@ -4,13 +4,17 @@
 \alias{normal_tissues_mean_methylation}
 \title{Promoter methylation of Cancer-Testis genes in normal tissues}
 \usage{
-normal_tissues_mean_methylation(genes = NULL, return = FALSE, na.omit = TRUE)
+normal_tissues_mean_methylation(
+  genes = NULL,
+  values_only = FALSE,
+  na.omit = TRUE
+)
 }
 \arguments{
 \item{genes}{\code{character} nameing the selected genes. The default
 value, \code{NULL}, takes all CT genes.}
 
-\item{return}{\code{logical(1)}, \code{FALSE} by default. If \code{TRUE}, the
+\item{values_only}{\code{logical(1)}, \code{FALSE} by default. If \code{TRUE}, the
 function will return the methylation values in all samples
 instead of the heatmap.}
 
@@ -21,7 +25,7 @@ methylation values are missing.}
 }
 \value{
 Heatmap of mean promoter methylation of Cancer-Testis (CT)
-genes in normal tissues. If \code{return = TRUE}, methylation values
+genes in normal tissues. If \code{values_only = TRUE}, methylation values
 are returned instead.
 }
 \description{

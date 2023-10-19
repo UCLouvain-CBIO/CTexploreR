@@ -4,7 +4,12 @@
 \alias{CCLE_expression}
 \title{Gene expression in CCLE Tumors}
 \usage{
-CCLE_expression(genes = NULL, type = NULL, units = "TPM", return = FALSE)
+CCLE_expression(
+  genes = NULL,
+  type = NULL,
+  units = c("TPM", "log_TPM"),
+  values_only = FALSE
+)
 }
 \arguments{
 \item{genes}{\code{character} nameing the selected genes. The default
@@ -20,12 +25,12 @@ be plotted. Allowed cell lines are "Ovarian", "Leukemia",
 \item{units}{\code{character(1)} with expression values unit. Can be
 "TPM" (default) or "log_TPM" (log(TPM + 1))}
 
-\item{return}{\code{logical(1)}. If \code{TRUE}, values are returned instead
+\item{values_only}{\code{logical(1)}. If \code{TRUE}, values are returned instead
 of the heatmap (\code{FALSE} by default).}
 }
 \value{
 A heatmap of selected genes in CCLE cell lines from
-specified type.  If \code{return} is \code{TRUE}, expression values are
+specified type.  If \code{values_only} is \code{TRUE}, expression values are
 returned instead.
 }
 \description{

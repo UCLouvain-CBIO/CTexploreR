@@ -5,10 +5,12 @@
 \title{Gene expression in testis cells}
 \usage{
 testis_expression(
-  cells = "all",
+  cells = c("all", "germ_cells", "somatic_cells", "SSC", "Spermatogonia",
+    "Early_spermatocyte", "Late_spermatocyte", "Round_spermatid", "Elongated_spermatid",
+    "Sperm1", "Sperm2", "Macrophage", "Endothelial", "Myoid", "Sertoli", "Leydig"),
   genes = NULL,
   scale_lims = NULL,
-  return = FALSE
+  values_only = FALSE
 )
 }
 \arguments{
@@ -25,12 +27,12 @@ value, \code{NULL}, takes all CT genes.}
 of the heatmap colorbar. By default, the lower limit is 0, and the upper
 limit corresponds to the third quartile of the logcounts values.}
 
-\item{return}{\code{logical(1)}. If \code{TRUE}, the function will return the
+\item{values_only}{\code{logical(1)}. If \code{TRUE}, the function will return the
 SingleCellExperiment instead of the heatmap. Default is \code{FALSE}.}
 }
 \value{
 A heatmap of selected CT genes expression in single cells from adult
-testis. If \code{return = TRUE}, a SingleCellExperiment instead of the
+testis. If \code{values_only = TRUE}, a SingleCellExperiment instead of the
 heatmap is returned instead.
 }
 \description{

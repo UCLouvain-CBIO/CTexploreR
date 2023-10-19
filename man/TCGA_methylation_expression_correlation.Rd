@@ -12,7 +12,7 @@ TCGA_methylation_expression_correlation(
   nt_down = 200,
   min_probe_number = 3,
   include_normal_tissues = FALSE,
-  return = FALSE
+  values_only = FALSE
 )
 }
 \arguments{
@@ -38,7 +38,7 @@ to calculate its mean methylation level. Default is 3.}
 the function will include normal peritumoral tissues in addition to
 tumoral samples. Default is \code{FALSE}.}
 
-\item{return}{\code{logical(1)}. If \code{TRUE}, the function will return the
+\item{values_only}{\code{logical(1)}. If \code{TRUE}, the function will return the
 methylation and expression values in TCGA samples instead of the
 heatmap. Default is \code{FALSE}.}
 }
@@ -46,7 +46,7 @@ heatmap. Default is \code{FALSE}.}
 A scatter plot representing for each TCGA sample, gene expression
 and mean methylation values of probe(s) located in its promoter region
 (defined as 1000 nucleotides upstream TSS and 200 nucleotides downstream
-TSS by default). If return = TRUE, methylation and expression values
+TSS by default). If \code{values_only = TRUE}, methylation and expression values
 are returned in a tibble instead.
 }
 \description{

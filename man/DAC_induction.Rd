@@ -4,7 +4,7 @@
 \alias{DAC_induction}
 \title{Gene expression in cells treated or not by a demethylating agent}
 \usage{
-DAC_induction(genes = NULL, multimapping = TRUE, return = FALSE)
+DAC_induction(genes = NULL, multimapping = TRUE, values_only = FALSE)
 }
 \arguments{
 \item{genes}{\code{character} nameing the selected genes. The default
@@ -15,13 +15,13 @@ multi-mapped gene expression dataset
 \code{CTdata::DAC_treated_cells_multimapping} or
 \code{DAC_treated_cells}. Default is \code{TRUE}.}
 
-\item{return}{\code{logical(1)}. If \code{TRUE}, the function will return the
+\item{values_only}{\code{logical(1)}. If \code{TRUE}, the function will return the
 gene normalised logcounts in all samples instead of the
 heatmap. Default is \code{FALSE}.}
 }
 \value{
 A heatmap of selected genes in cells treated or not by a
-demethylating agent. If return is \code{TRUE}, gene normalised
+demethylating agent. If \code{values_only} is \code{TRUE}, gene normalised
 logcounts are returned instead.
 }
 \description{

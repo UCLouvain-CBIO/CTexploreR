@@ -4,7 +4,7 @@
 \alias{CT_correlated_genes}
 \title{Gene correlations in CCLE cancer cell lines}
 \usage{
-CT_correlated_genes(gene, corr_thr = 0.5, return = FALSE)
+CT_correlated_genes(gene, corr_thr = 0.5, values_only = FALSE)
 }
 \arguments{
 \item{gene}{CT gene selected}
@@ -13,7 +13,7 @@ CT_correlated_genes(gene, corr_thr = 0.5, return = FALSE)
 absolute correlation coefficient (Pearson) higher than this
 threshold will be highlighted.}
 
-\item{return}{\code{logical(1)}, \code{FALSE} by default. If \code{TRUE}, the
+\item{values_only}{\code{logical(1)}, \code{FALSE} by default. If \code{TRUE}, the
 function will return the correlation coefficients with all
 genes instead of the plot.}
 }
@@ -22,7 +22,7 @@ A plot where each dots represent the correlation
 coefficients (Pearson) between genes and the specified CT gene
 (entered as input). Genes with a correlation coefficient above
 threshold are colored in red if they are CT genes or in blue,
-if not. If \code{return = TRUE}, all correlations coefficients are
+if not. If \code{values_only = TRUE}, all correlations coefficients are
 returned instead.
 }
 \description{
