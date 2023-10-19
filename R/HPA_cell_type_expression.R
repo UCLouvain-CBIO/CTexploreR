@@ -30,7 +30,7 @@
 #' @importFrom ComplexHeatmap Heatmap HeatmapAnnotation
 #' @importFrom grid gpar
 #' @importFrom circlize colorRamp2
-#' @importFrom Biobase rowMax
+#' @importFrom MatrixGenerics rowMaxs
 #'
 #' @examples
 #'
@@ -76,7 +76,7 @@ HPA_cell_type_expression <- function(genes = NULL,
 
     if (units == "log_TPM") mat <- log1p(mat)
     if (units == "scaled") mat <- na.omit(t(scale(t(mat))))
-    if (is.null(scale_lims)) scale_lims <- c(0, rowMax(mat))
+    if (is.null(scale_lims)) scale_lims <- c(0, rowMaxs(mat))
 
     h <- Heatmap(mat[, rownames(df_col), drop = FALSE],
         name = units,

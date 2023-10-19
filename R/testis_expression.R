@@ -32,7 +32,7 @@
 #' @importFrom ComplexHeatmap Heatmap HeatmapAnnotation
 #' @importFrom grid gpar
 #' @importFrom circlize colorRamp2
-#' @importFrom Biobase rowMax
+#' @importFrom MatrixGenerics rowMaxs
 #'
 #' @examples
 #' \dontrun{
