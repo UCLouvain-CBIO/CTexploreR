@@ -80,6 +80,9 @@ TCGA_methylation_expression_correlation <- function(
 
     ## Evaluate correlation only if the gene is expressed (TPM >= 1)
     ## in at least 1% of the samples
+    
+    cor <- ''
+    
     if (quantile(methylation_expression$TPM, 0.99) < 1) {
       message("Too few positive samples to estimate a correlation for ", gene)
       cor <- NA
