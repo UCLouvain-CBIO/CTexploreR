@@ -60,15 +60,16 @@ testis_expression <- function(
     somatic_cells <- c("Macrophage", "Endothelial",
                      "Myoid", "Sertoli", "Leydig")
   
-    if (length(cells) > 1){
+    if ("all" %in% cells) { 
+      cells <- c(germ_cells, somatic_cells) 
+    } else if (length(cells) > 1) {
       stopifnot("`cells` parameter can be set to 'all', 'germ_cells', 
-      'somatic_cells', or any combination of testis cell type" 
-              = all(cells %in% c(germ_cells, somatic_cells)))
-    } else {
+        'somatic_cells', or any combination of testis cell type" 
+                = all(cells %in% c(germ_cells, somatic_cells)))
+    } else if (!cells %in% c(germ_cells, somatic_cells)) {
       cells <- switch(cells, 
-                    "germ_cells" = germ_cells, 
-                    "somatic_cells" = somatic_cells,
-                    "all" = c(germ_cells, somatic_cells))
+                      "germ_cells" = germ_cells, 
+                      "somatic_cells" = somatic_cells)
     }
     
     database <- subset_database(genes, database[, database$type %in% cells])
@@ -101,7 +102,7 @@ testis_expression <- function(
 
     fontsize <- set_fontsize(mat)
 
-    if (is.null(scale_lims)) scale_lims <- c(0, quantile(rowMax(mat), 0.75))
+    if (is.null(scale_lims)) scale_lims <- c(0, quantile(rowMaxs(mat), 0.75))
 
     if (any(database$type %in% germ_cells) &
         any(database$type %in% somatic_cells)) {
@@ -133,6 +134,5 @@ testis_expression <- function(
 
     return(h)
 }
-
 
 
