@@ -1,5 +1,9 @@
 # CTexploreR 0.99
 
+## CTexploreR 0.99.5
+
+- Address Bioc review comments.
+
 ## CTexploreR 0.99.4
 
 - Don't run some examples to save time. These functions are
