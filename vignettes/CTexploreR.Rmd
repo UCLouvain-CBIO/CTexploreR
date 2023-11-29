@@ -503,6 +503,22 @@ TCGA_methylation_expression_correlation(
     gene = "LIN28A")
 ```
 
+# Interactive heatmaps
+
+CTexploreR's heatmaps are compatible with the `InteractiveComplexHeatmap` 
+package. This allows the navigate in the last heatmap generated, search a 
+specific gene as well as creating subsets to facilitate data exploration. 
+More info about `InteractiveComplexHeatmap` available 
+[here](https://jokergoo.github.io/InteractiveComplexHeatmap/).
+
+```{r, eval = FALSE}
+BiocManager::install("InteractiveComplexHeatmap")
+library(InteractiveComplexHeatmap)
+
+GTEX_expression(testis_specific$external_gene_name, units = "log_TPM")
+htShiny()
+```
+
 
 # Bibliography
 

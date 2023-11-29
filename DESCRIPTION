@@ -1,6 +1,6 @@
 Package: CTexploreR
 Title: Explores Cancer Testis Genes
-Version: 0.99.5
+Version: 0.99.6
 Authors@R:
     c(person(given = "Axelle",
            family = "Loriot",
@@ -61,7 +61,8 @@ Suggests:
     BiocStyle,
     knitr,
     rmarkdown,
-    testthat (>= 3.0.0)
+    testthat (>= 3.0.0),
+    InteractiveComplexHeatmap
 biocViews: Transcriptomics,
            Epigenetics,
            DifferentialExpression,

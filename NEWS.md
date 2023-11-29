@@ -1,5 +1,9 @@
 # CTexploreR 0.99
 
+## CTexploreR 0.99.6
+
+- Added `InteractiveComplexHeatmap` to vignette
+
 ## CTexploreR 0.99.5
 
 - Address Bioc review comments.
