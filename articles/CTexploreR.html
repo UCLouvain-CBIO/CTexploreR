@@ -33,7 +33,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">CTexploreR</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.99.5</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.99.6</span>
       </span>
     </div>
 
@@ -765,6 +765,21 @@ methylation in TCGA samples.</p>
 </div>
 </div>
 <div class="section level2">
+<h2 id="interactive-heatmaps">Interactive heatmaps<a class="anchor" aria-label="anchor" href="#interactive-heatmaps"></a>
+</h2>
+<p>CTexploreR’s heatmaps are compatible with the
+<code>InteractiveComplexHeatmap</code> package. This allows the navigate
+in the last heatmap generated, search a specific gene as well as
+creating subsets to facilitate data exploration. More info about
+<code>InteractiveComplexHeatmap</code> available <a href="https://jokergoo.github.io/InteractiveComplexHeatmap/" class="external-link">here</a>.</p>
+<div class="sourceCode" id="cb39"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu">BiocManager</span><span class="fu">::</span><span class="fu"><a href="https://bioconductor.github.io/BiocManager/reference/install.html" class="external-link">install</a></span><span class="op">(</span><span class="st">"InteractiveComplexHeatmap"</span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/jokergoo/InteractiveComplexHeatmap" class="external-link">InteractiveComplexHeatmap</a></span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="../reference/GTEX_expression.html">GTEX_expression</a></span><span class="op">(</span><span class="va">testis_specific</span><span class="op">$</span><span class="va">external_gene_name</span>, units <span class="op">=</span> <span class="st">"log_TPM"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/InteractiveComplexHeatmap/man/htShiny.html" class="external-link">htShiny</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+</div>
+<div class="section level2">
 <h2 id="bibliography">Bibliography<a class="anchor" aria-label="anchor" href="#bibliography"></a>
 </h2>
 <p>Aguet, F., Anand, S., Ardlie, K. G., Gabriel, S., Getz, G. A.,
@@ -814,7 +829,7 @@ cancer types. Nature Communications, 7, 10499.</p>
 <div class="section level2">
 <h2 class="unnumbered" id="session-information">Session information<a class="anchor" aria-label="anchor" href="#session-information"></a>
 </h2>
-<pre><code><span><span class="co">## R Under development (unstable) (2023-11-02 r85465)</span></span>
+<pre><code><span><span class="co">## R Under development (unstable) (2023-11-22 r85609)</span></span>
 <span><span class="co">## Platform: x86_64-pc-linux-gnu</span></span>
 <span><span class="co">## Running under: Ubuntu 22.04.3 LTS</span></span>
 <span><span class="co">## </span></span>
@@ -841,9 +856,9 @@ cancer types. Nature Communications, 7, 10499.</p>
 <span><span class="co">##  [1] SingleCellExperiment_1.25.0 SummarizedExperiment_1.33.0</span></span>
 <span><span class="co">##  [3] Biobase_2.63.0              GenomicRanges_1.55.1       </span></span>
 <span><span class="co">##  [5] GenomeInfoDb_1.39.1         IRanges_2.37.0             </span></span>
-<span><span class="co">##  [7] S4Vectors_0.41.1            BiocGenerics_0.49.1        </span></span>
+<span><span class="co">##  [7] S4Vectors_0.41.2            BiocGenerics_0.49.1        </span></span>
 <span><span class="co">##  [9] MatrixGenerics_1.15.0       matrixStats_1.1.0          </span></span>
-<span><span class="co">## [11] CTexploreR_0.99.5           CTdata_1.3.0               </span></span>
+<span><span class="co">## [11] CTexploreR_0.99.6           CTdata_1.3.0               </span></span>
 <span><span class="co">## [13] BiocStyle_2.31.0           </span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## loaded via a namespace (and not attached):</span></span>
@@ -852,7 +867,7 @@ cancer types. Nature Communications, 7, 10499.</p>
 <span><span class="co">##   [5] clue_0.3-65                   GetoptLong_1.0.5             </span></span>
 <span><span class="co">##   [7] compiler_4.4.0                RSQLite_2.3.3                </span></span>
 <span><span class="co">##   [9] png_0.1-8                     systemfonts_1.0.5            </span></span>
-<span><span class="co">##  [11] vctrs_0.6.4                   stringr_1.5.0                </span></span>
+<span><span class="co">##  [11] vctrs_0.6.4                   stringr_1.5.1                </span></span>
 <span><span class="co">##  [13] pkgconfig_2.0.3               shape_1.4.6                  </span></span>
 <span><span class="co">##  [15] crayon_1.5.2                  fastmap_1.1.1                </span></span>
 <span><span class="co">##  [17] magick_2.8.1                  dbplyr_2.4.0                 </span></span>
@@ -865,17 +880,17 @@ cancer types. Nature Communications, 7, 10499.</p>
 <span><span class="co">##  [31] jsonlite_1.8.7                blob_1.2.4                   </span></span>
 <span><span class="co">##  [33] highr_0.10                    later_1.3.1                  </span></span>
 <span><span class="co">##  [35] DelayedArray_0.29.0           interactiveDisplayBase_1.41.0</span></span>
-<span><span class="co">##  [37] parallel_4.4.0                cluster_2.1.4                </span></span>
-<span><span class="co">##  [39] R6_2.5.1                      bslib_0.5.1                  </span></span>
-<span><span class="co">##  [41] stringi_1.7.12                RColorBrewer_1.1-3           </span></span>
+<span><span class="co">##  [37] parallel_4.4.0                cluster_2.1.5                </span></span>
+<span><span class="co">##  [39] R6_2.5.1                      bslib_0.6.1                  </span></span>
+<span><span class="co">##  [41] stringi_1.8.2                 RColorBrewer_1.1-3           </span></span>
 <span><span class="co">##  [43] jquerylib_0.1.4               Rcpp_1.0.11                  </span></span>
 <span><span class="co">##  [45] bookdown_0.36                 iterators_1.0.14             </span></span>
-<span><span class="co">##  [47] knitr_1.45                    Matrix_1.6-2                 </span></span>
+<span><span class="co">##  [47] knitr_1.45                    Matrix_1.6-3                 </span></span>
 <span><span class="co">##  [49] httpuv_1.6.12                 tidyselect_1.2.0             </span></span>
 <span><span class="co">##  [51] abind_1.4-5                   yaml_2.3.7                   </span></span>
 <span><span class="co">##  [53] doParallel_1.0.17             codetools_0.2-19             </span></span>
 <span><span class="co">##  [55] curl_5.1.0                    lattice_0.22-5               </span></span>
-<span><span class="co">##  [57] tibble_3.2.1                  shiny_1.7.5.1                </span></span>
+<span><span class="co">##  [57] tibble_3.2.1                  shiny_1.8.0                  </span></span>
 <span><span class="co">##  [59] withr_2.5.2                   KEGGREST_1.43.0              </span></span>
 <span><span class="co">##  [61] evaluate_0.23                 desc_1.4.2                   </span></span>
 <span><span class="co">##  [63] BiocFileCache_2.11.1          circlize_0.4.15              </span></span>
@@ -885,15 +900,15 @@ cancer types. Nature Communications, 7, 10499.</p>
 <span><span class="co">##  [71] generics_0.1.3                rprojroot_2.0.4              </span></span>
 <span><span class="co">##  [73] RCurl_1.98-1.13               ggplot2_3.4.4                </span></span>
 <span><span class="co">##  [75] BiocVersion_3.19.1            munsell_0.5.0                </span></span>
-<span><span class="co">##  [77] scales_1.2.1                  xtable_1.8-4                 </span></span>
+<span><span class="co">##  [77] scales_1.3.0                  xtable_1.8-4                 </span></span>
 <span><span class="co">##  [79] glue_1.6.2                    tools_4.4.0                  </span></span>
 <span><span class="co">##  [81] AnnotationHub_3.11.0          fs_1.6.3                     </span></span>
 <span><span class="co">##  [83] grid_4.4.0                    tidyr_1.3.0                  </span></span>
 <span><span class="co">##  [85] AnnotationDbi_1.65.2          colorspace_2.1-0             </span></span>
 <span><span class="co">##  [87] GenomeInfoDbData_1.2.11       cli_3.6.1                    </span></span>
 <span><span class="co">##  [89] rappdirs_0.3.3                textshaping_0.3.7            </span></span>
-<span><span class="co">##  [91] fansi_1.0.5                   S4Arrays_1.3.0               </span></span>
-<span><span class="co">##  [93] ComplexHeatmap_2.19.0         dplyr_1.1.3                  </span></span>
+<span><span class="co">##  [91] fansi_1.0.5                   S4Arrays_1.3.1               </span></span>
+<span><span class="co">##  [93] ComplexHeatmap_2.19.0         dplyr_1.1.4                  </span></span>
 <span><span class="co">##  [95] gtable_0.3.4                  sass_0.4.7                   </span></span>
 <span><span class="co">##  [97] digest_0.6.33                 ggrepel_0.9.4                </span></span>
 <span><span class="co">##  [99] SparseArray_1.3.1             farver_2.1.1                 </span></span>
