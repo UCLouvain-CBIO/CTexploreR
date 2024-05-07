@@ -1,3 +1,19 @@
+# CTexploreR 1.1
+
+## CTexploreR 1.1.1
+
+- Nothing yet
+
+## CTexploreR 1.1.0
+
+- New devel
+
+# CTexploreR 1.0
+
+## CTexploreR 1.0.0
+
+- New release Bioc 3.19
+
 # CTexploreR 0.99
 
 ## CTexploreR 0.99.6

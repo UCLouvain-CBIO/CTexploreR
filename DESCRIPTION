@@ -1,6 +1,6 @@
 Package: CTexploreR
 Title: Explores Cancer Testis Genes
-Version: 0.99.6
+Version: 1.1.1
 Authors@R:
     c(person(given = "Axelle",
            family = "Loriot",
@@ -38,7 +38,7 @@ Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.2.3
 Depends:
     R (>= 4.3),
-    CTdata
+    CTdata (>= 1.5.1)
 Imports:
     BiocGenerics,
     ComplexHeatmap,
