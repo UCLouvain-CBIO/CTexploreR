@@ -7,17 +7,21 @@
 HPA_cell_type_expression(
   genes = NULL,
   units = c("scaled", "TPM", "log_TPM"),
+  include_CTP = FALSE,
   scale_lims = NULL,
   values_only = FALSE
 )
 }
 \arguments{
 \item{genes}{\code{character} nameing the selected genes. The default
-value, \code{NULL}, takes all CT genes.}
+value, \code{NULL}, takes all CT (specific) genes.}
 
 \item{units}{\code{character(1)} with expression values unit.  Can be
 \code{"TPM"}, \code{"log_TPM"} (log(TPM + 1)) or \code{"scaled"} (scaled TPM
 values). Default is \code{"scaled"}.}
+
+\item{include_CTP}{\code{logical(1)} If \code{TRUE}, CTP genes are included.
+(\code{FALSE} by default).}
 
 \item{scale_lims}{\verb{vector of length 2} setting the lower and upper limits
 of the heatmap colorbar.}

@@ -10,8 +10,11 @@
 #'     of "SKCM", "LUAD", "LUSC", "COAD", "ESCA", "BRCA", "HNSC", or
 #'     "all" (default).
 #'
-#' @param genes `character` nameing the selected genes. The default
-#'     value, `NULL`, takes all CT genes.
+#' @param genes `character` naming the selected genes. The default
+#'     value, `NULL`, takes all CT (specific) genes.
+#'     
+#' @param include_CTP `logical(1)` If `TRUE`, CTP genes are included.
+#' (`FALSE` by default).
 #'
 #' @param units `character(1)` with expression values unit.  Can be
 #'     `"TPM"` (default) or `"log_TPM"` (log(TPM + 1)).
@@ -37,10 +40,10 @@
 #'     units = "log_TPM")
 #' }
 TCGA_expression <- function(tumor = "all", genes = NULL,
+                            include_CTP = FALSE,
                             units = c("TPM", "log_TPM"), values_only = FALSE) {
     suppressMessages({
         database <- CTdata::TCGA_TPM()
-        CT_genes <- CTdata::CT_genes()
     })
     
     units <- match.arg(units)
@@ -55,7 +58,7 @@ TCGA_expression <- function(tumor = "all", genes = NULL,
     database$type[database$shortLetterCode == "NT"] <- "Peritumoral"
     database <- database[, order(database$tumor, database$type)]
 
-    database <- subset_database(genes, database)
+    database <- subset_database(genes, database, include_CTP)
 
     ## Peritumoral samples are displayed only when a single type of tumor asked
     if ("all" %in% tumor | length(tumor) > 1) {

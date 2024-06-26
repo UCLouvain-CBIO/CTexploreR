@@ -1,13 +1,16 @@
-#' Promoter methylation of Cancer-Testis genes in normal tissues
+#' Promoter methylation of any gene in normal tissues
 #'
 #' @description Plots a heatmap of mean promoter methylation levels of
-#'     Cancer-Testis (CT) genes in normal tissues. Methylation levels
+#'     any genes in normal tissues. Methylation levels
 #'     in tissues correspond to the mean methylation of CpGs located
 #'     in range of 1000 pb upstream and 200 pb downstream from gene
 #'     TSS.
 #'
-#' @param genes `character` nameing the selected genes. The default
-#'     value, `NULL`, takes all CT genes.
+#' @param genes `character` naming the selected genes. The default
+#'     value, `NULL`, takes all CT (specific) genes.
+#'     
+#' @param include_CTP `logical(1)` If `TRUE`, CTP genes are included.
+#' (`FALSE` by default).
 #'
 #' @param values_only `logical(1)`, `FALSE` by default. If `TRUE`, the
 #'     function will return the methylation values in all samples
@@ -18,8 +21,8 @@
 #'     default). Note that no gene clustering will be done when
 #'     methylation values are missing.
 #'
-#' @return Heatmap of mean promoter methylation of Cancer-Testis (CT)
-#'     genes in normal tissues. If `values_only = TRUE`, methylation values
+#' @return Heatmap of mean promoter methylation of any
+#'     gene in normal tissues. If `values_only = TRUE`, methylation values
 #'     are returned instead.
 #'
 #' @export
@@ -37,15 +40,16 @@
 #' normal_tissues_mean_methylation(c("MAGEA1", "MAGEA2", "MAGEA3", "MAGEA4"))
 #' normal_tissues_mean_methylation(c("MAGEA1", "MAGEA2", "MAGEA3", "MAGEA4"),
 #'     na.omit = FALSE)
-normal_tissues_mean_methylation <- function(genes = NULL, values_only = FALSE,
+normal_tissues_mean_methylation <- function(genes = NULL, 
+                                            include_CTP = FALSE, 
+                                            values_only = FALSE,
                                             na.omit = TRUE) {
     suppressMessages({
-        database <- CTdata::CT_mean_methylation_in_tissues()
-        CT_genes <- CTdata::CT_genes()
+        database <- CTdata::mean_methylation_in_tissues()
     })
 
     rowData(database)$external_gene_name <- rownames(database)
-    database <- subset_database(genes, database)
+    database <- subset_database(genes, database, include_CTP)
     
     if (na.omit) {
         mat <- na.omit(assay(database))

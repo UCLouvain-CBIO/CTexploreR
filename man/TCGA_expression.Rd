@@ -7,6 +7,7 @@
 TCGA_expression(
   tumor = "all",
   genes = NULL,
+  include_CTP = FALSE,
   units = c("TPM", "log_TPM"),
   values_only = FALSE
 )
@@ -16,8 +17,11 @@ TCGA_expression(
 of "SKCM", "LUAD", "LUSC", "COAD", "ESCA", "BRCA", "HNSC", or
 "all" (default).}
 
-\item{genes}{\code{character} nameing the selected genes. The default
-value, \code{NULL}, takes all CT genes.}
+\item{genes}{\code{character} naming the selected genes. The default
+value, \code{NULL}, takes all CT (specific) genes.}
+
+\item{include_CTP}{\code{logical(1)} If \code{TRUE}, CTP genes are included.
+(\code{FALSE} by default).}
 
 \item{units}{\code{character(1)} with expression values unit.  Can be
 \code{"TPM"} (default) or \code{"log_TPM"} (log(TPM + 1)).}

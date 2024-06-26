@@ -4,16 +4,24 @@
 \alias{DAC_induction}
 \title{Gene expression in cells treated or not by a demethylating agent}
 \usage{
-DAC_induction(genes = NULL, multimapping = TRUE, values_only = FALSE)
+DAC_induction(
+  genes = NULL,
+  multimapping = TRUE,
+  include_CTP = FALSE,
+  values_only = FALSE
+)
 }
 \arguments{
 \item{genes}{\code{character} nameing the selected genes. The default
-value, \code{NULL}, takes all CT genes.}
+value, \code{NULL}, takes all CT specific genes.}
 
 \item{multimapping}{\code{logical(1)} defining whether to use
 multi-mapped gene expression dataset
 \code{CTdata::DAC_treated_cells_multimapping} or
 \code{DAC_treated_cells}. Default is \code{TRUE}.}
+
+\item{include_CTP}{\code{logical(1)} If \code{TRUE}, CTP genes are included.
+(\code{FALSE} by default).}
 
 \item{values_only}{\code{logical(1)}. If \code{TRUE}, the function will return the
 gene normalised logcounts in all samples instead of the

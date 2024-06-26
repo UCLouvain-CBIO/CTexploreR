@@ -2,17 +2,21 @@
 % Please edit documentation in R/normal_tissues_mean_methylation.R
 \name{normal_tissues_mean_methylation}
 \alias{normal_tissues_mean_methylation}
-\title{Promoter methylation of Cancer-Testis genes in normal tissues}
+\title{Promoter methylation of any gene in normal tissues}
 \usage{
 normal_tissues_mean_methylation(
   genes = NULL,
+  include_CTP = FALSE,
   values_only = FALSE,
   na.omit = TRUE
 )
 }
 \arguments{
-\item{genes}{\code{character} nameing the selected genes. The default
-value, \code{NULL}, takes all CT genes.}
+\item{genes}{\code{character} naming the selected genes. The default
+value, \code{NULL}, takes all CT (specific) genes.}
+
+\item{include_CTP}{\code{logical(1)} If \code{TRUE}, CTP genes are included.
+(\code{FALSE} by default).}
 
 \item{values_only}{\code{logical(1)}, \code{FALSE} by default. If \code{TRUE}, the
 function will return the methylation values in all samples
@@ -24,13 +28,13 @@ default). Note that no gene clustering will be done when
 methylation values are missing.}
 }
 \value{
-Heatmap of mean promoter methylation of Cancer-Testis (CT)
-genes in normal tissues. If \code{values_only = TRUE}, methylation values
+Heatmap of mean promoter methylation of any
+gene in normal tissues. If \code{values_only = TRUE}, methylation values
 are returned instead.
 }
 \description{
 Plots a heatmap of mean promoter methylation levels of
-Cancer-Testis (CT) genes in normal tissues. Methylation levels
+any genes in normal tissues. Methylation levels
 in tissues correspond to the mean methylation of CpGs located
 in range of 1000 pb upstream and 200 pb downstream from gene
 TSS.

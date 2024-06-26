@@ -4,14 +4,17 @@
 \alias{subset_database}
 \title{Subset databases}
 \usage{
-subset_database(variable = NULL, data)
+subset_database(variable = NULL, data, include_CTP = FALSE)
 }
 \arguments{
 \item{variable}{\code{character()} containing the names genes to keep in the
-data}
+data. The default value, \code{NULL}, takes CT (specific) genes}
 
 \item{data}{\verb{Summarized Experiment} or \code{SingleCellExperiment} object
 with valid variable names.}
+
+\item{include_CTP}{\code{logical(1)} If \code{TRUE}, CTP genes are included.
+(\code{FALSE} by default).}
 }
 \value{
 A \verb{Summarized Experiment} or \code{SingleCellExperiment} object with

@@ -5,7 +5,7 @@
 #' Plots an expression heatmap of genes in CCLE tumor cell lines.
 #'
 #' @param genes `character` nameing the selected genes. The default
-#'     value, `NULL`, takes all CT genes.
+#'     value, `NULL`, takes all CT (specific) genes.
 #'
 #' @param type `character` describing the tumor cell line(s) type to
 #'     be plotted. Allowed cell lines are "Ovarian", "Leukemia",
@@ -24,6 +24,9 @@
 #' @param units `character(1)` with expression values unit. Can be
 #'     "TPM" (default) or "log_TPM" (log(TPM + 1))
 #'
+#' @param include_CTP `logical(1)` If `TRUE`, CTP genes are included.
+#' (`FALSE` by default).
+#' 
 #' @param values_only `logical(1)`. If `TRUE`, values are returned instead
 #'     of the heatmap (`FALSE` by default).
 #'
@@ -47,10 +50,10 @@
 #' }
 CCLE_expression <- function(genes = NULL, type = NULL, 
                             units = c("TPM", "log_TPM"),
+                            include_CTP = FALSE,
                             values_only = FALSE) {
     suppressMessages({
         database <- CTdata::CCLE_data()
-        CT_genes <- CTdata::CT_genes()
     })
   
     units <- match.arg(units)
@@ -62,7 +65,7 @@ CCLE_expression <- function(genes = NULL, type = NULL,
     stopifnot("No valid tumor type entered" = length(type) > 0)
     database <- database[, database$type %in% type]
 
-    database <- subset_database(genes, database)
+    database <- subset_database(genes, database, include_CTP)
 
     mat <- assay(database)
     rownames(mat) <- rowData(database)$external_gene_name

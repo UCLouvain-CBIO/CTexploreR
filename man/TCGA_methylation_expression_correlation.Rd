@@ -2,7 +2,7 @@
 % Please edit documentation in R/TCGA_methylation_expression_correlation.R
 \name{TCGA_methylation_expression_correlation}
 \alias{TCGA_methylation_expression_correlation}
-\title{Methylation-Expression correlation of Cancer-Testis genes in TCGA
+\title{Methylation-Expression correlation of any genes in TCGA
 samples}
 \usage{
 TCGA_methylation_expression_correlation(
@@ -51,7 +51,7 @@ are returned in a tibble instead.
 }
 \description{
 Plots the correlation between methylation and expression values of
-a Cancer-Testis (CT) gene in TCGA samples.
+a gene in TCGA samples.
 }
 \details{
 The coefficient of correlation is set to \code{NA} if no probes

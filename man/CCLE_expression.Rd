@@ -8,12 +8,13 @@ CCLE_expression(
   genes = NULL,
   type = NULL,
   units = c("TPM", "log_TPM"),
+  include_CTP = FALSE,
   values_only = FALSE
 )
 }
 \arguments{
 \item{genes}{\code{character} nameing the selected genes. The default
-value, \code{NULL}, takes all CT genes.}
+value, \code{NULL}, takes all CT (specific) genes.}
 
 \item{type}{\code{character()} describing the tumor cell line(s) type to
 be plotted. Allowed cell lines are "Ovarian", "Leukemia",
@@ -24,6 +25,9 @@ be plotted. Allowed cell lines are "Ovarian", "Leukemia",
 
 \item{units}{\code{character(1)} with expression values unit. Can be
 "TPM" (default) or "log_TPM" (log(TPM + 1))}
+
+\item{include_CTP}{\code{logical(1)} If \code{TRUE}, CTP genes are included.
+(\code{FALSE} by default).}
 
 \item{values_only}{\code{logical(1)}. If \code{TRUE}, values are returned instead
 of the heatmap (\code{FALSE} by default).}

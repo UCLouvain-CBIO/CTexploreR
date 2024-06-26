@@ -1,10 +1,10 @@
-#' Methylation-Expression correlation of Cancer-Testis genes in TCGA
+#' Methylation-Expression correlation of any genes in TCGA
 #' samples
 #'
 #' @description
 #'
 #' Plots the correlation between methylation and expression values of
-#' a Cancer-Testis (CT) gene in TCGA samples.
+#' a gene in TCGA samples.
 #'
 #' @param gene `character` selected gene.
 #'

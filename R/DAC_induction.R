@@ -5,7 +5,10 @@
 #'     5-Aza-2'-Deoxycytidine (DAC), a demethylating agent.
 #'
 #' @param genes `character` nameing the selected genes. The default
-#'     value, `NULL`, takes all CT genes.
+#'     value, `NULL`, takes all CT specific genes.
+#'  
+#' @param include_CTP `logical(1)` If `TRUE`, CTP genes are included.
+#' (`FALSE` by default).
 #'
 #' @param multimapping `logical(1)` defining whether to use
 #'     multi-mapped gene expression dataset
@@ -44,10 +47,10 @@
 #' DAC_induction(genes = c("MAGEA1", "MAGEA3", "MAGEA4", "MAGEA6", "CTAG1A",
 #'     multimapping = FALSE))
 DAC_induction <- function(genes = NULL, multimapping = TRUE, 
+                          include_CTP = FALSE,
                           values_only = FALSE) {
     
   suppressMessages({
-    CT_genes <- CTdata::CT_genes()
     if (multimapping) {
       database <- CTdata::DAC_treated_cells_multimapping()
       } else {
@@ -55,7 +58,7 @@ DAC_induction <- function(genes = NULL, multimapping = TRUE,
         }
     })
 
-    database <- subset_database(genes, database)
+    database <- subset_database(genes, database, include_CTP)
 
     mat <- assay(database, "log1p")
     rownames(mat) <- rowData(database)$external_gene_name

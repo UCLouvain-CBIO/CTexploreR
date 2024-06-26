@@ -4,14 +4,22 @@
 \alias{GTEX_expression}
 \title{Gene expression in normal tissues (GTEx)}
 \usage{
-GTEX_expression(genes = NULL, units = c("TPM", "log_TPM"), values_only = FALSE)
+GTEX_expression(
+  genes = NULL,
+  units = c("TPM", "log_TPM"),
+  include_CTP = FALSE,
+  values_only = FALSE
+)
 }
 \arguments{
 \item{genes}{\code{character} nameing the selected genes. The default
-value, \code{NULL}, takes all CT genes.}
+value, \code{NULL}, takes all CT (specific) genes.}
 
 \item{units}{\code{character(1)} with expression values unit.  Can be
 \code{"TPM"} (default) or \code{"log_TPM"} (log(TPM + 1)).}
+
+\item{include_CTP}{\code{logical(1)} If \code{TRUE}, CTP genes are included.
+(\code{FALSE} by default).}
 
 \item{values_only}{\code{logical(1)}. If \code{TRUE}, the function will return the
 expression values in all samples instead of the

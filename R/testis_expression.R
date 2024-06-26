@@ -13,7 +13,10 @@
 #' "Sperm2", "Macrophage", "Endothelial", "Myoid", "Sertoli", "Leydig".
 #'
 #' @param genes `character` nameing the selected genes. The default
-#'     value, `NULL`, takes all CT genes.
+#'     value, `NULL`, takes all CT (specific) genes.
+#'     
+#' @param include_CTP `logical(1)` If `TRUE`, CTP genes are included.
+#' (`FALSE` by default).
 #'
 #' @param scale_lims `vector of length 2` setting the lower and upper limits
 #' of the heatmap colorbar. By default, the lower limit is 0, and the upper
@@ -44,11 +47,10 @@ testis_expression <- function(
               "Early_spermatocyte", "Late_spermatocyte", "Round_spermatid", 
               "Elongated_spermatid", "Sperm1", "Sperm2", "Macrophage", 
               "Endothelial", "Myoid", "Sertoli", "Leydig"), 
-    genes = NULL, scale_lims = NULL, values_only = FALSE) {
+    genes = NULL, include_CTP = FALSE, scale_lims = NULL, values_only = FALSE) {
   
     suppressMessages({
         database <- CTdata::testis_sce()
-        CT_genes <- CTdata::CT_genes()
     })
   
     cells <- match.arg(cells, several.ok = TRUE)
@@ -72,7 +74,8 @@ testis_expression <- function(
                       "somatic_cells" = somatic_cells)
     }
     
-    database <- subset_database(genes, database[, database$type %in% cells])
+    database <- subset_database(genes, database[, database$type %in% cells], 
+                                include_CTP)
 
     mat <- SingleCellExperiment::logcounts(database)
 

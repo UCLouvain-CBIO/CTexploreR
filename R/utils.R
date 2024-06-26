@@ -42,8 +42,11 @@ check_names <- function(variable, valid_vector) {
 #' to only keep these genes' data.
 #'
 #' @param variable `character()` containing the names genes to keep in the
-#' data
+#' data. The default value, `NULL`, takes CT (specific) genes
 #'
+#' @param include_CTP `logical(1)` If `TRUE`, CTP genes are included.
+#' (`FALSE` by default).
+#' 
 #' @param data `Summarized Experiment` or `SingleCellExperiment` object
 #' with valid variable names.
 #'
@@ -53,8 +56,13 @@ check_names <- function(variable, valid_vector) {
 #' @examples
 #'
 #'   CTexploreR:::subset_database(variable = "MAGEA1", data = CTdata::GTEX_data())
-subset_database <- function(variable = NULL, data) {
-  if (is.null(variable)) variable <- CTdata::CT_genes()$external_gene_name
+subset_database <- function(variable = NULL, data, include_CTP = FALSE) {
+  CT_genes <- CTdata::CT_genes()
+  if (is.null(variable) & include_CTP) 
+    variable <- CT_genes$external_gene_name
+  if (is.null(variable) & !include_CTP) 
+    variable <- CT_genes[CT_genes$CT_gene_type == "CT_gene", 
+                         ]$external_gene_name
   valid_gene_names <- unique(rowData(data)$external_gene_name)
   genes <- check_names(variable, valid_gene_names)
   database_subseted <- data[rowData(data)$external_gene_name %in% genes, ]
@@ -110,9 +118,9 @@ prepare_TCGA_methylation_expression <- function(tumor = "all",
                                                 nt_down = NULL,
                                                 include_normal_tissues = FALSE){
   suppressMessages({
-    CT_genes <- CTdata::CT_genes()
+    all_genes <- CTdata::all_genes()
     TPM <- CTdata::TCGA_TPM()
-    met <- CTdata::TCGA_CT_methylation()
+    met <- CTdata::TCGA_methylation()
   })
 
   TPM$type <- sub("TCGA-", "", TPM$project_id)
@@ -125,7 +133,7 @@ prepare_TCGA_methylation_expression <- function(tumor = "all",
     met <- met[, met$type %in% type]
   }
 
-  valid_gene_names <- CT_genes$external_gene_name
+  valid_gene_names <- all_genes$external_gene_name
   valid_gene_names <- valid_gene_names[valid_gene_names %in%
                                          rowData(TPM)$external_gene_name]
   gene <- check_names(gene, valid_gene_names)
@@ -147,7 +155,7 @@ prepare_TCGA_methylation_expression <- function(tumor = "all",
   ## Create a Grange corresponding to promoter region
   ## Calculates mean methylation value of promoter probe(s) in each sample
   gene_promoter_gr <- makeGRangesFromDataFrame(
-    CT_genes |>
+    all_genes |>
       dplyr::filter(.data$external_gene_name == gene) |>
       dplyr::select(
         "ensembl_gene_id", "external_gene_name",

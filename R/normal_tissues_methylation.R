@@ -1,10 +1,10 @@
-#' Methylation of CpGs located in Cancer-Testis promoters in normal tissues
+#' Methylation of CpGs located in promoters in normal tissues
 #'
 #' @description Plots a heatmap of the methylation of CpGs located in a
-#' Cancer-Testis (CT) promoter, in normal tissues. X-axis corresponds to the
+#'  promoter, in normal tissues. X-axis corresponds to the
 #' CpGs position (related to TSS).
 #'
-#' @param gene Name of selected CT gene
+#' @param gene Name of selected gene
 #'
 #' @param nt_up Number of nucleotides upstream the TSS to analyse
 #' (by default 1000, maximum value 5000)
@@ -12,11 +12,11 @@
 #' @param nt_down Number of nucleotides downstream the TSS to analyse
 #' (by default 200, maximum value 5000)
 #'
-#' @param values_only Boolean (FALSE by default). If set to TRUE, the function will
-#' return the methylation values of all cytosines in the promoter instead of
-#' the heatmap.
+#' @param values_only Boolean (FALSE by default). If set to TRUE, the function 
+#' will return the methylation values of all cytosines in the promoter instead 
+#' of the heatmap.
 #'
-#' @return Heatmap of the methylation of CpGs located in a Cancer-Testis (CT)
+#' @return Heatmap of the methylation of CpGs located in a 
 #' promoter, in normal tissues. If `values_only` = TRUE, methylation values are
 #' returned instead.
 #'
@@ -39,22 +39,22 @@ normal_tissues_methylation <- function(gene, nt_up = 1000, nt_down = 200,
                                        values_only = FALSE) {
     suppressMessages({
         database <- CTdata::CT_methylation_in_tissues()
-        CT_genes <- CTdata::CT_genes()
+        all_genes <- CTdata::all_genes()
     })
 
-    if (!gene %in% CT_genes$external_gene_name) {
+    if (!gene %in% all_genes$external_gene_name) {
         stop(gene, " is not in the CT database")
     }
 
-    chr <- CT_genes |>
+    chr <- all_genes |>
         filter(.data$external_gene_name == gene) |>
         pull(.data$chr)
 
-    strand <- CT_genes |>
+    strand <- all_genes |>
         filter(.data$external_gene_name == gene) |>
         pull(.data$strand)
 
-    TSS <- CT_genes |>
+    TSS <- all_genes |>
         filter(.data$external_gene_name == gene) |>
         pull(.data$transcription_start_site)
     

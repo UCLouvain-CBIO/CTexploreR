@@ -4,8 +4,11 @@
 #'     (GTEx database).
 #'
 #' @param genes `character` nameing the selected genes. The default
-#'     value, `NULL`, takes all CT genes.
+#'     value, `NULL`, takes all CT (specific) genes.
 #'
+#' @param include_CTP `logical(1)` If `TRUE`, CTP genes are included.
+#' (`FALSE` by default).
+#' 
 #' @param units `character(1)` with expression values unit.  Can be
 #'     `"TPM"` (default) or `"log_TPM"` (log(TPM + 1)).
 #'
@@ -27,16 +30,15 @@
 #' GTEX_expression(units = "log_TPM")
 #' GTEX_expression(genes = c("MAGEA1", "MAGEA3"), units = "log_TPM")
 GTEX_expression <- function(genes = NULL, units = c("TPM", "log_TPM"), 
-                            values_only = FALSE) {
+                            include_CTP = FALSE, values_only = FALSE) {
     
   suppressMessages({
     database <- CTdata::GTEX_data()
-    CT_genes <- CTdata::CT_genes()
     })
   
     units <- match.arg(units)
 
-    database <- subset_database(genes, database)
+    database <- subset_database(genes, database, include_CTP)
 
     mat <- assay(database)
     rownames(mat) <- rowData(database)$external_gene_name

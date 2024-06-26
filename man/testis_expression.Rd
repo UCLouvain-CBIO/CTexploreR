@@ -9,6 +9,7 @@ testis_expression(
     "Early_spermatocyte", "Late_spermatocyte", "Round_spermatid", "Elongated_spermatid",
     "Sperm1", "Sperm2", "Macrophage", "Endothelial", "Myoid", "Sertoli", "Leydig"),
   genes = NULL,
+  include_CTP = FALSE,
   scale_lims = NULL,
   values_only = FALSE
 )
@@ -21,7 +22,10 @@ combination of "SSC", "Spermatogonia", "Early_spermatocyte",
 "Sperm2", "Macrophage", "Endothelial", "Myoid", "Sertoli", "Leydig".}
 
 \item{genes}{\code{character} nameing the selected genes. The default
-value, \code{NULL}, takes all CT genes.}
+value, \code{NULL}, takes all CT (specific) genes.}
+
+\item{include_CTP}{\code{logical(1)} If \code{TRUE}, CTP genes are included.
+(\code{FALSE} by default).}
 
 \item{scale_lims}{\verb{vector of length 2} setting the lower and upper limits
 of the heatmap colorbar. By default, the lower limit is 0, and the upper

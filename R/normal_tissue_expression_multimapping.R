@@ -11,7 +11,10 @@
 #' which multimapping reads are not discarded.
 #'
 #' @param genes `character` nameing the selected genes. The default
-#'     value, `NULL`, takes all CT genes.
+#'     value, `NULL`, takes all CT (specific) genes.
+#'
+#' @param include_CTP `logical(1)` If `TRUE`, CTP genes are included.
+#' (`FALSE` by default).
 #'
 #' @param multimapping `logical(1)` that specifies if returned
 #'     expression values must take into account or not multi-mapped
@@ -66,18 +69,18 @@
 #'     genes = c("GAGE13", "CT45A6", "NXF2", "SSX2", "CTAG1A",
 #'     "MAGEA3", "MAGEA6"), multimapping = TRUE)
 normal_tissue_expression_multimapping <- function(genes = NULL,
+                                                  include_CTP = FALSE,
                                                   multimapping = TRUE,
                                                   units = c("TPM", "log_TPM"),
                                                   values_only = FALSE) {
 
     suppressMessages({
-        CT_genes <- CTdata::CT_genes()
         database <- CTdata::normal_tissues_multimapping_data()
     })
     
     units <- match.arg(units)
 
-    database <- subset_database(genes, database)
+    database <- subset_database(genes, database, include_CTP)
     
     if (multimapping) {
         mat <- assay(database, "TPM_with_multimapping")

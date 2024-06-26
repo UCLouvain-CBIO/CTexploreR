@@ -7,7 +7,10 @@
 #' (https://www.proteinatlas.org)
 #'
 #' @param genes `character` nameing the selected genes. The default
-#'     value, `NULL`, takes all CT genes.
+#'     value, `NULL`, takes all CT (specific) genes.
+#'     
+#' @param include_CTP `logical(1)` If `TRUE`, CTP genes are included.
+#' (`FALSE` by default).  
 #'
 #' @param units `character(1)` with expression values unit.  Can be
 #'     `"TPM"`, `"log_TPM"` (log(TPM + 1)) or `"scaled"` (scaled TPM
@@ -43,15 +46,15 @@
 #'     values_only = FALSE)
 HPA_cell_type_expression <- function(genes = NULL, 
                                      units = c("scaled", "TPM", "log_TPM"),
+                                     include_CTP = FALSE, 
                                      scale_lims = NULL, values_only = FALSE) {
     suppressMessages({
         database <- CTdata::scRNAseq_HPA()
-        CT_genes <- CTdata::CT_genes()
     })
   
     units <- match.arg(units)
   
-    database <- subset_database(genes, database)
+    database <- subset_database(genes, database, include_CTP)
 
     ## Use gene names instead of ENSEMBL IDs
     mat <- SummarizedExperiment::assay(database)
