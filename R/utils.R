@@ -244,13 +244,13 @@ set_fontsize <- function(matrix) {
 #'
 #' @format
 #'
-#' A `tibble` object with 298 rows and 36 columns.
+#' A `tibble` object with 280 rows and 47 columns.
 #'
 #' - Rows correspond to CT genes
 #'
 #' - Columns give CT genes characteristics
 #'
-#' @return A tibble of all 298 CT genes with their characteristics
+#' @return A tibble of all 280 CT and CTP genes with their characteristics
 #'
 #' @details
 #'
@@ -272,6 +272,40 @@ set_fontsize <- function(matrix) {
 CT_genes <- CTdata::CT_genes()
 
 
+#' All genes description table
+#'
+#' @description
+#'
+#' All genes description, imported from `CTdata`
+#'
+#' @format
+#'
+#' A `tibble` object with 24488 rows and 47 columns.
+#'
+#' - Rows correspond to CT genes
+#'
+#' - Columns give CT genes characteristics
+#'
+#' @return A tibble of all 24 488 genes with their characteristics
+#'
+#' @details
+#'
+#' See `CTdata::all_genes` documentation for details
+#'
+#' @source
+#'
+#' See `scripts/make_all_genes.R` in `CTdata` for details on how this
+#' list was created.
+#'
+#' @export
+#'
+#' @name all_genes
+#'
+#' @examples
+#' all_genes
+#'
+#' @docType data
+all_genes <- CTdata::all_genes()
 
 
 ## Heatmaps legend parameters
