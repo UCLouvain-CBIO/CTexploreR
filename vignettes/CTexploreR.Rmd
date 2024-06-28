@@ -88,8 +88,8 @@ BiocManager::install("UCLouvain-CBIO/CTexploreR")
 # CT genes
 
 The central element of `CTexploreR` is the list of
-`r nrow(CTexploreR::CT_genes)` CT genes (see table below) selected based on
-their expression in normal and tumoral tissues (selection details in the next
+`r nrow(CTexploreR::CT_genes)` CT and CTP genes (see table below) selected based
+on their expression in normal and tumoral tissues (selection details in the next
 section). The table also summarises their main characteristics.
 
 
@@ -114,7 +114,7 @@ In order to generate the list of CT genes, we followed a specific
 selection procedure (see figure below).
 
 ```{r ctselection, results='markup', echo=FALSE, fig.align='center', out.width = '100%'}
-knitr::include_graphics("./figs/CT_selection.svg")
+knitr::include_graphics("./figs/Figure_CT.png")
 ```
 
 ## Testis-specific expression
@@ -138,24 +138,13 @@ testis-specific expression (expression at least 10x higher in testis than in
 any somatic tissues when multimapping was allowed) were selected, and flagged
 as testis-specific in `multimapping_analysis` column.
 
-The expression of the selected testis-specific or testis-preferential genes was
-further analysed in somatic cell types using scRNAseq data of normal tissues
-from the Human Protein Atlas (Uhlén et al., 2015). The aim was to ensure that
-the selected genes are not expressed in any specific somatic cell type, as the
-GTEx selection was based on bulk RNAseq data.
 
+Additionally, as our selection procedure is based on bulk RNAseq data, we wanted
+to ensure that the selected genes are not expressed in rare populations of 
+somatic cells. We used the Single Cell Type Atlas classification from the 
+Human Protein Atlas (Uhlén et al., 2015) to exclude the ones that were flagged 
+as specific of any somatic cell type.
 
-## Germline-specific expression
-
-We also used the single cell RNA-Seq data from the adult human testis
-transcriptional cell atlas (Guo et al., 2018) to ensure to select
-germline-specific genes but not genes that would be specific of any somatic cell
-type of the testis.
-
-For each gene, the testis cell type has been determined as the cell type showing
-the highest mean expression for that gene. This allowed us to remove the genes
-for which this cell type corresponds to a testis somatic cell type (macrophage,
-endothelial, myoid, Sertoli or Leydig cells).
 
 
 ## Activation in cancer cell lines and TCGA tumors
@@ -167,24 +156,29 @@ testis-specific and testis-preferential genes those that are activated in
 cancers.
 
 In the `CCLE_category` and `TCGA_category` columns, genes are tagged as
-"activated" when they are highly expressed in at least one cancer cell line/
-sample (TPM >= 10). However genes that were found to be expressed in all -or
+"activated" when they are highly expressed in at one percent of cancer cell 
+line/sample (TPM >= 1). However genes that were found to be expressed in all -or
 almost all-cancer cell lines/samples were removed, as this probably reflects a
 constitutive  expression rather than a true activation. We filtered out genes
 that were not completely repressed in at least 20 % of cancer cell lines/samples
-(TPM <= 0.1).
+(TPM <= 0.5). We also made use of the normal peritumoral samples available in 
+TCGA data to remove from our selection genes that were already detected in a 
+significant fraction of these cells.
 
 
 ## IGV visualisation
 
 All selected CT genes were visualised on IGV (Thorvaldsdóttir et al., 2013)
 using a RNA-seq alignment from testis, to ensure that expression in testis
-really corresponded to the canonical transcript. For some genes for which the
-canonical transcript did not correspond to the transcript that we could see in
-the testis sample, we manually modified the `external_transcript_name`
-accordingly, to ensure that the TSS and the promoter region are correctly
-defined. This is particularly important for methylation analysis that must be
-focused on true promoter regions.
+really corresponded to the canonical transcript. The aim was initially to 
+identify precisely the transcription start site of each gene, but unexpectedly 
+we observed that for some genes, the reads were not properly aligned on exons, 
+but were instead spread across a wide genomic region spanning the genes. These 
+genes, flagged as "unclear" in `IGV_backbone` column, were removed from the 
+CT_gene category, as their expression values in GTEX, TCGA and CCLE might 
+reflect a poorly defined transcription in these regions and are hence likely 
+unreliable.
+
 
 ## Regulation by methylation
 
@@ -195,8 +189,7 @@ Genes flagged as `TRUE` in `regulated_by_methylation` column correspond to
   (5-Aza-2′-Deoxycytidine)).
 
 * Genes that have a highly methylated promoter in normal somatic
-  tissues but less methylated in germ cells (WGBS analysis of a set of
-  normal tissues).
+  tissues (WGBS analysis of a set of normal tissues).
 
 For some genes showing a strong activation in cells treated with
 5-Aza-2′-Deoxycytidine, methylation analysis was not possible due to
@@ -211,7 +204,7 @@ For details about functions, see their respective manual pages. For all
 functions, an option `values_only` can  be set to `TRUE` in order to get the values
 instead of the visualisation.
 
-All expression visualisation functions can be used on all GTEx genes, not only
+All visualisation functions can be used on all GTEx genes, not only
 on Cancer-Testis genes, as the data they refer to contains all genes.
 
 ## Expression in normal healthy tissues
@@ -233,7 +226,7 @@ and have thus been characterized using multimapping (see below).
 ```{r}
 testis_specific <- dplyr::filter(
     CT_genes,
-    testis_specificity == "testis_specific")
+    CT_gene_type  == "CT_gene")
 GTEX_expression(testis_specific$external_gene_name, units = "log_TPM")
 ```
 
@@ -243,7 +236,7 @@ tissues, always with a strong testis signal.
 
 ```{r}
 testis_preferential <- dplyr::filter(
-    CT_genes, testis_specificity == "testis_preferential")
+    CT_genes, CT_gene_type  == "CTP_gene")
 GTEX_expression(testis_preferential$external_gene_name, units = "log_TPM")
 ```
 
@@ -279,20 +272,17 @@ that genes mainly expressed in an early stage of spermatogenesis aren't
 expressed later and vice-versa.
 
 ```{r}
-early_CT <-
-    dplyr::filter(CT_genes, testis_cell_type %in%
-                    c("SSC", "Spermatogonia", "Early_spermatocyte"))
+X_CT <-
+    dplyr::filter(CT_genes, X_linked)
 
-testis_expression(early_CT$external_gene_name,
+testis_expression(X_CT$external_gene_name,
                   cells = "germ_cells")
 
 
-late_CT <-
-    dplyr::filter(CT_genes, testis_cell_type %in%
-                    c("Late_spermatocyte", "Round_spermatocyte",
-                      "Sperm1", "Sperm2"))
+notX_CT <-
+    dplyr::filter(CT_genes, !X_linked)
 
-testis_expression(late_CT$external_gene_name,
+testis_expression(notX_CT$external_gene_name,
                   cells = "germ_cells")
 ```
 
