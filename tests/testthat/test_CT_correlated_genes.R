@@ -5,7 +5,7 @@ test_that("CT_correlated_genes() works", {
     ## CT_genes column specifies if genes are CT genes
     res <- CT_correlated_genes(c("MAGEA3"), values_only = TRUE)
     expect_true(inherits(res, "data.frame"))
-    expect_equal(nrow(res), 24327)
+    expect_equal(nrow(res), 24473)
     expect_identical(res$external_gene_name[1], "MAGEA3")
     expect_true(all(res$external_gene_name[res$CT_gene] %in%
                       CT_genes$external_gene_name))

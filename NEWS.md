@@ -2,7 +2,8 @@
 
 ## CTexploreR 1.1.1
 
-- Nothing yet
+- Adaptation due to updates in CTdata : adding all genes to functions, choice
+to include CT preferential
 
 ## CTexploreR 1.1.0
 

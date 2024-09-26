@@ -12,11 +12,12 @@ test_that("subset_database() works", {
                    sort(var))
   expect_equal(nrow(res), 2)
   
-  ## Check no variable gives CT_genes
+  ## Check no variable gives strict CT_genes
   res_no <- CTexploreR:::subset_database(data = dataset)
   expect_identical(rowData(res_no)$external_gene_name,
-                   CT_genes$external_gene_name)
-  expect_equal(nrow(res_no), nrow(CT_genes))
+                   CT_genes[CT_genes$CT_gene_type == "CT_gene", 
+                            "external_gene_name", drop = TRUE])
+  expect_equal(nrow(res_no), nrow(CT_genes[CT_genes$CT_gene_type == "CT_gene", ]))
   
   ## Check when fake gene name gives nothing + warning
   var_fake <- c("not_existing")

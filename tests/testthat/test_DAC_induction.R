@@ -19,9 +19,9 @@ test_that("DAC_induction() works", {
   res_no_mm <- DAC_induction("MAGEA3", multimapping = FALSE, values_only = TRUE)
   expect_gt(sum(res_mm), sum(res_no_mm)) 
   
-  ## Check that all CT_genes are returned if no gene is specified
+  ## Check that only strict CT_genes are returned if no gene is specified
   res <- DAC_induction(values_only = TRUE)
-  expect_equal(nrow(res), 298)
+  expect_equal(nrow(res), 146)
   
   ## Test that the function returns a heatmap
   ## res <- DAC_induction(c("MAGEA1", "MAGEA3"))
