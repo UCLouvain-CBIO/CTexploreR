@@ -1,6 +1,6 @@
-pandoc: '3.3'
+pandoc: '3.4'
 pkgdown: 2.1.1.9000
-pkgdown_sha: 0a18bc718640aee7160a0ebbcdef5ecaae2ac4a4
+pkgdown_sha: 0cb9d38d1dc25946f01ee7500be9665985d8784e
 articles:
   CTexploreR: CTexploreR.html
-last_built: 2024-09-26T18:58Z
+last_built: 2024-09-30T17:03Z
