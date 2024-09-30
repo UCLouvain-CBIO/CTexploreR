@@ -38,7 +38,7 @@
 normal_tissues_methylation <- function(gene, nt_up = 1000, nt_down = 200,
                                        values_only = FALSE) {
     suppressMessages({
-        database <- CTdata::CT_methylation_in_tissues()
+        database <- CTdata::methylation_in_tissues()
         all_genes <- CTdata::all_genes()
     })
 

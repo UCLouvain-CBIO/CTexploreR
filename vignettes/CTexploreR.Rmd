@@ -60,9 +60,6 @@ represents an up-to-date reference database for CT genes and can be used as a
 starting point for further investigations related to these genes.
 
 
-
-
-
 # Installation
 
 To install the package:
