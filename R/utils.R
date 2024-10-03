@@ -375,3 +375,32 @@ cell_type_colors <- c(
     "Mesenchymal_cells" = "peachpuff",
     "Pigment_cells" = "palegreen2", "Myoid" = "gray54",
     "Specialized_epithelial_cells" = "indianred1")
+
+sex_colors <- c("F" = "deeppink", "M"= "steelblue")
+
+Fetal_cell_colors = c("F_PGC" = "pink",
+                      "F_GC" = "pink3",
+                      "F_oogonia" = "palevioletred3",
+                      "F_oocyte" = "mediumorchid4",
+                      "M_PGC" = "lightblue1",
+                      "M_GC" = "steelblue3",
+                      "M_pre_spermatogonia" = "blue")
+
+oocytes_colors <- c("Growing oocytes" = "mediumpurple1",
+                    "Fully grown oocytes" ="lightgreen",
+                    "Metaphase I" = "mediumvioletred",
+                    "Metaphase II" = "mediumpurple4")
+
+hESC_colors <- c("H7" = "salmon",
+                 "H9" ="steelblue",
+                 "H1" = "gray",
+                 "HUES64" = "lightgoldenrod1")
+
+Petropoulos_colors <- c("Morula E3" = "lightblue1",
+                 "Blastocyst E4" ="lightblue3",
+                 "Blastocyst E5" = "dodgerblue1",
+                 "Blastocyst E6" = "dodgerblue4",
+                 "Blastocyst E7" = "navy")
+
+genotype_colors <- c("XX" = "pink", "XY"= "blue", "NA" = "gray")
+
