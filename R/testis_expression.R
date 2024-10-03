@@ -26,8 +26,8 @@
 #'     SingleCellExperiment instead of the heatmap. Default is `FALSE`.
 #'
 #' @return A heatmap of selected CT genes expression in single cells from adult
-#'     testis. If `values_only = TRUE`, a SingleCellExperiment instead of the
-#'     heatmap is returned instead.
+#'     testis. If `values_only = TRUE`, a SingleCellExperiment is returned 
+#'     instead.
 #'
 #' @export
 #'
