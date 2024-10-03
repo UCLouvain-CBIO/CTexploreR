@@ -404,3 +404,9 @@ Petropoulos_colors <- c("Morula E3" = "lightblue1",
 
 genotype_colors <- c("XX" = "pink", "XY"= "blue", "NA" = "gray")
 
+fetal_time_colors <- colorRamp2(
+  seq(6, 21, length = 6),                 
+  c( "cyan", "cyan3", "dodgerblue", "dodgerblue3", "mediumpurple", "magenta4" ))
+
+fetal_type_colors <- c("FGC" = "lightgreen", "Soma" = "gray")
+
