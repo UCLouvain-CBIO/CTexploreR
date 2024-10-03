@@ -115,34 +115,35 @@ embryo_expression <- function(
       units <- "log_FPKM"
     })
   }
-    
-    database <- subset_database(genes, database, include_CTP)
-    mat <- log1p(assay(database))
-
-    fontsize <- set_fontsize(mat)
-    if (is.null(scale_lims)) scale_lims <- c(0, quantile(rowMaxs(mat), 0.75))
-
-    h <- Heatmap(mat[, rownames(df_col), drop = FALSE],
-        name = units,
-        column_title = paste0("Expression in early embryos (scRNAseq, ", dataset, " dataset)"),
-        column_split = df_col$stage,
-        show_column_names = FALSE,
-        show_column_dend = FALSE,
-        clustering_method_rows = "ward.D",
-        clustering_method_columns = "ward.D",
-        cluster_rows = TRUE,
-        cluster_columns = FALSE,
-        show_row_dend = FALSE,
-        row_names_gp = gpar(fontsize = fontsize),
-        col = colorRamp2(seq(scale_lims[1], scale_lims[2], length = 11),
-                         legend_colors),
-        top_annotation = c(column_ha_sex, column_ha_stage),
-        heatmap_legend_param = legends_param)
-
-    ifelse(values_only, return(database), return(h))
-    }
   
-    
+  database <- subset_database(genes, database, include_CTP)
+  mat <- log1p(assay(database))
   
+  fontsize <- set_fontsize(mat)
+  if (is.null(scale_lims)) scale_lims <- c(0, quantile(rowMaxs(mat), 0.75))
+  
+  h <- Heatmap(mat[, rownames(df_col), drop = FALSE],
+               name = units,
+               column_title = paste0("Expression in early embryos (scRNAseq, ", 
+                                     dataset, " dataset)"),
+               column_split = df_col$stage,
+               show_column_names = FALSE,
+               show_column_dend = FALSE,
+               clustering_method_rows = "ward.D",
+               clustering_method_columns = "ward.D",
+               cluster_rows = TRUE,
+               cluster_columns = FALSE,
+               show_row_dend = FALSE,
+               row_names_gp = gpar(fontsize = fontsize),
+               col = colorRamp2(seq(scale_lims[1], scale_lims[2], length = 11),
+                                legend_colors),
+               top_annotation = c(column_ha_sex, column_ha_stage),
+               heatmap_legend_param = legends_param)
+  
+  ifelse(values_only, return(database), return(h))
 }
+
+
+
+
 
