@@ -402,11 +402,18 @@ Petropoulos_colors <- c("Morula E3" = "lightblue1",
                  "Blastocyst E6" = "dodgerblue4",
                  "Blastocyst E7" = "navy")
 
-genotype_colors <- c("XX" = "pink", "XY"= "blue", "NA" = "gray")
+genotype_colors <- c("XX" = "pink", "XY"= "blue", "NA" = "gray", 
+                     "X" = "pink4", "Y" = "blue4", "XXX"= "deeppink", "NA" = "gray")
 
 fetal_time_colors <- colorRamp2(
   seq(6, 21, length = 6),                 
   c( "cyan", "cyan3", "dodgerblue", "dodgerblue3", "mediumpurple", "magenta4" ))
 
 fetal_type_colors <- c("FGC" = "lightgreen", "Soma" = "gray")
+
+embryo_stage_col <- c("GV Oocyte" = "mediumvioletred", "MII Oocyte" = "brown4", 
+               "Sperm" = "palegreen2", "Zygote" = "lightgoldenrod1", 
+               "2-cell" = "ivory2", "4-cell" = "lightslateblue", 
+               "8-cell" = "plum2", "Morula" = "deepskyblue",
+               "Blastocyst" = "sienna1",  "Post-implantation" = "peachpuff")
 
