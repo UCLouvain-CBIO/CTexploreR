@@ -36,8 +36,8 @@ SingleCellExperiment instead of the heatmap. Default is \code{FALSE}.}
 }
 \value{
 A heatmap of selected CT genes expression in single cells from adult
-testis. If \code{values_only = TRUE}, a SingleCellExperiment instead of the
-heatmap is returned instead.
+testis. If \code{values_only = TRUE}, a SingleCellExperiment is returned
+instead.
 }
 \description{
 Plots a heatmap of genes expression in the different types of testis cells,
