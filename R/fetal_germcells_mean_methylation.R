@@ -38,9 +38,7 @@ fetal_germcell_mean_methylation <- function(genes = NULL,
                                             include_CTP = FALSE, 
                                             values_only = FALSE) {
     suppressMessages({
-        #database <- CTdata::mean_methylation_in_FGC()
-        load("/storage/research/dduv/cbio-lg/cluster/Packages/CTdata/eh_data/mean_methylation_in_FGC.rda")
-        database <- mean_methylation_in_FGC
+        database <- CTdata::mean_methylation_in_FGC()
     })
 
     database <- subset_database(genes, database, include_CTP)
