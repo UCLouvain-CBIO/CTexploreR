@@ -8,6 +8,9 @@
 #' Petropoulos et al., Cell 2016) or from "Zhu" scRNAseq dataset ("Single-cell 
 #' DNA methylome sequencing of human preimplantation embryos". Zhu et al. 
 #' Nat genetics 2018)
+#' 
+#' @param dataset `character`. Indicates which scRNAseq dataset to use.
+#' Either Petropoulos or Zhu, no default. 
 #'
 #' @param genes `character` nameing the selected genes. The default
 #'     value, `NULL`, takes all CT (specific) genes.

@@ -24,7 +24,7 @@
 #' @export
 #'
 #' @importFrom ComplexHeatmap Heatmap
-#' @importFrom grid gpar
+#' @importFrom grid gpar unit
 #' @importFrom circlize colorRamp2
 #' @importFrom grDevices colorRampPalette
 #' @importFrom stats na.omit

@@ -10,7 +10,7 @@
 #' @param genes `character` naming the selected genes. The default
 #'     value, `NULL`, takes all CT (specific) genes.
 #'     
-#' @param cells `character` defining the cell types to be plotted.
+#' @param stage `character` defining the cell types to be plotted.
 #' Can be "GV Oocyte", "MII Oocyte", "Sperm", "Zygote", "2-cell", 
 #' "4-cell", "8-cell", "Morula", "Blastocyst", "Post-implantation".
 #'     
@@ -28,7 +28,7 @@
 #' @export
 #'
 #' @importFrom ComplexHeatmap Heatmap
-#' @importFrom grid gpar
+#' @importFrom grid gpar unit
 #' @importFrom circlize colorRamp2
 #' @importFrom grDevices colorRampPalette
 #' @importFrom SummarizedExperiment rowData<- assay
@@ -36,7 +36,7 @@
 #'
 #' @examples
 #' embryos_mean_methylation()
-#' embryos_mean_methylation(c("MAGEA1", "MAGEA3", "MAGEA4", "MAGEC2", "MAGEB16),
+#' embryos_mean_methylation(c("MAGEA1", "MAGEA3", "MAGEA4", "MAGEC2", "MAGEB16"),
 #' stage = c( "MII Oocyte", "Sperm", "Zygote", "2-cell", "4-cell", "8-cell", 
 #' "Morula"))
 embryos_mean_methylation <- function(genes = NULL, 

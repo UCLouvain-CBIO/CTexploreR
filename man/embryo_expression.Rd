@@ -13,6 +13,9 @@ embryo_expression(
 )
 }
 \arguments{
+\item{dataset}{\code{character}. Indicates which scRNAseq dataset to use.
+Either Petropoulos or Zhu, no default.}
+
 \item{genes}{\code{character} nameing the selected genes. The default
 value, \code{NULL}, takes all CT (specific) genes.}
 
