@@ -1,5 +1,11 @@
 # CTexploreR 1.1
 
+## CTexploreR 1.1.2
+
+- Created functions to visualise expression in fetal germ cells, oocytes, hESC
+and early embryos. 
+- Created functions to visualise methylation in fetal germ cells, hESC and embryo
+
 ## CTexploreR 1.1.1
 
 - Adaptation due to updates in CTdata : adding all genes to functions, choice
