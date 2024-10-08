@@ -3,7 +3,7 @@
 #' @description Plots an expression heatmap of genes in normal tissues
 #'     (GTEx database).
 #'
-#' @param genes `character` nameing the selected genes. The default
+#' @param genes `character` naming the selected genes. The default
 #'     value, `NULL`, takes all CT (specific) genes.
 #'
 #' @param include_CTP `logical(1)` If `TRUE`, CTP genes are included.

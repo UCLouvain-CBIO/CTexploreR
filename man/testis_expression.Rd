@@ -21,7 +21,7 @@ combination of "SSC", "Spermatogonia", "Early_spermatocyte",
 "Late_spermatocyte", "Round_spermatid", "Elongated_spermatid", "Sperm1",
 "Sperm2", "Macrophage", "Endothelial", "Myoid", "Sertoli", "Leydig".}
 
-\item{genes}{\code{character} nameing the selected genes. The default
+\item{genes}{\code{character} naming the selected genes. The default
 value, \code{NULL}, takes all CT (specific) genes.}
 
 \item{include_CTP}{\code{logical(1)} If \code{TRUE}, CTP genes are included.

@@ -13,7 +13,7 @@ HPA_cell_type_expression(
 )
 }
 \arguments{
-\item{genes}{\code{character} nameing the selected genes. The default
+\item{genes}{\code{character} naming the selected genes. The default
 value, \code{NULL}, takes all CT (specific) genes.}
 
 \item{units}{\code{character(1)} with expression values unit.  Can be

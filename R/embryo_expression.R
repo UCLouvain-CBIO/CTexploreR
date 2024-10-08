@@ -12,7 +12,7 @@
 #' @param dataset `character`. Indicates which scRNAseq dataset to use.
 #' Either Petropoulos or Zhu, no default. 
 #'
-#' @param genes `character` nameing the selected genes. The default
+#' @param genes `character` naming the selected genes. The default
 #'     value, `NULL`, takes all CT (specific) genes.
 #'     
 #' @param include_CTP `logical(1)` If `TRUE`, CTP genes are included.

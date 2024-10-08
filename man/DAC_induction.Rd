@@ -12,7 +12,7 @@ DAC_induction(
 )
 }
 \arguments{
-\item{genes}{\code{character} nameing the selected genes. The default
+\item{genes}{\code{character} naming the selected genes. The default
 value, \code{NULL}, takes all CT specific genes.}
 
 \item{multimapping}{\code{logical(1)} defining whether to use

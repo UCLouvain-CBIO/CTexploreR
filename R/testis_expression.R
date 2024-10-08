@@ -12,7 +12,7 @@
 #' "Late_spermatocyte", "Round_spermatid", "Elongated_spermatid", "Sperm1",
 #' "Sperm2", "Macrophage", "Endothelial", "Myoid", "Sertoli", "Leydig".
 #'
-#' @param genes `character` nameing the selected genes. The default
+#' @param genes `character` naming the selected genes. The default
 #'     value, `NULL`, takes all CT (specific) genes.
 #'     
 #' @param include_CTP `logical(1)` If `TRUE`, CTP genes are included.

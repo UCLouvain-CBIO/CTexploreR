@@ -7,7 +7,7 @@
 #' oocytes using single-cell multi-omics sequencing"
 #' (Yan et al. Cell Stem Cell 2021)
 #'
-#' @param genes `character` nameing the selected genes. The default
+#' @param genes `character` naming the selected genes. The default
 #'     value, `NULL`, takes all CT (specific) genes.
 #'     
 #' @param include_CTP `logical(1)` If `TRUE`, CTP genes are included.

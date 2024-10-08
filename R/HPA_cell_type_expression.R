@@ -6,7 +6,7 @@
 #' on scRNAseq data obtained from the Human Protein Atlas
 #' (https://www.proteinatlas.org)
 #'
-#' @param genes `character` nameing the selected genes. The default
+#' @param genes `character` naming the selected genes. The default
 #'     value, `NULL`, takes all CT (specific) genes.
 #'     
 #' @param include_CTP `logical(1)` If `TRUE`, CTP genes are included.

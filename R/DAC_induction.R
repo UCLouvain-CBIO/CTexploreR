@@ -4,7 +4,7 @@
 #'     (log-transformed) in a selection of cells treated or not by
 #'     5-Aza-2'-Deoxycytidine (DAC), a demethylating agent.
 #'
-#' @param genes `character` nameing the selected genes. The default
+#' @param genes `character` naming the selected genes. The default
 #'     value, `NULL`, takes all CT specific genes.
 #'  
 #' @param include_CTP `logical(1)` If `TRUE`, CTP genes are included.

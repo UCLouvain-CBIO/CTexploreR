@@ -6,7 +6,7 @@
 #' using scRNAseq data from "Single-cell roadmap of human gonadal development"
 #' (Garcia-Alonso, Nature 2022)
 #'
-#' @param genes `character` nameing the selected genes. The default
+#' @param genes `character` naming the selected genes. The default
 #'     value, `NULL`, takes all CT (specific) genes.
 #'     
 #' @param include_CTP `logical(1)` If `TRUE`, CTP genes are included.

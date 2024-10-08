@@ -4,7 +4,7 @@
 #'
 #' Plots an expression heatmap of genes in CCLE tumor cell lines.
 #'
-#' @param genes `character` nameing the selected genes. The default
+#' @param genes `character` naming the selected genes. The default
 #'     value, `NULL`, takes all CT (specific) genes.
 #'
 #' @param type `character` describing the tumor cell line(s) type to
