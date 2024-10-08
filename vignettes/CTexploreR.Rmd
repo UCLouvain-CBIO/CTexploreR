@@ -202,9 +202,12 @@ functions, an option `values_only` can  be set to `TRUE` in order to get the val
 instead of the visualisation.
 
 All visualisation functions can be used on all GTEx genes, not only
-on Cancer-Testis genes, as the data they refer to contains all genes.
+on Cancer-Testis genes, as the data they refer to contains all genes. By default, if no genes are specified in a function, only strict CT genes will 
+be used. If one wants all 280 CT genes to be used, an option `include_CTP` can
+be set to `TRUE` to also use CT preferential genes.
 
-## Expression in normal healthy tissues
+
+## Expression in normal healthy adult tissues
 
 ### `GTEX_expression()`
 
@@ -264,9 +267,10 @@ normal_tissue_expression_multimapping(
 Allows to visualise gene expression in all different testis cell type, somatic
 or germ, using data from the adult human testis transcriptional cell atlas.
 
-Using the testis cell type defined for each CT genes, we visualise clearly
-that genes mainly expressed in an early stage of spermatogenesis aren't
-expressed later and vice-versa.
+Using CT genes localisation on the X chromosome, we can see that they tend to 
+be expressed in th early stages of spermatogenesis when located on the X.
+We also visualise clearly that genes mainly expressed in an early stage of 
+spermatogenesis aren't expressed later and vice-versa.
 
 ```{r}
 X_CT <-
@@ -283,6 +287,19 @@ testis_expression(notX_CT$external_gene_name,
                   cells = "germ_cells")
 ```
 
+### `oocytes_expression()`
+
+Allows to visualise gene expression oocytes at different stage, using scRNA-seq
+data form "Decoding dynamic epigenetic landscapes in human oocytes using 
+single-cell multi-omics sequencing" (Yan et al. Cell Stem Cell 2021)
+
+We can here again compare the expression of CT genes that are located or not 
+on the X chromosome. Showing a lesser expression of X-linked genes in oocytes.
+
+```{r}
+oocytes_expression(X_CT$external_gene_name)
+oocytes_expression(notX_CT$external_gene_name)
+```
 
 
 ### `HPA_cell_type_expression()`
@@ -297,6 +314,55 @@ Visualising all CT_genes, the specificity to germ cells only is quite clear.
 HPA_cell_type_expression(units = "scaled")
 ```
 
+## Expression in fetal cells
+
+No analysis was added to the `all_genes` and `CT_genes` tables using these 
+datasets. 
+
+### `embryo_expression()`
+
+Allows to visualise gene expression in human early embryos using two different 
+scRNA-seq datasets.
+
+* Single-Cell RNA-Seq Reveals Lineage and X Chromosome Dynamics in Human 
+  Preimplantation Embryos, Petropoulos et al., Cell 2016
+  
+This dataset contains different stages of blastocysts and morula. 
+  
+```{r}
+embryo_expression(dataset = "Petropoulos", include_CTP = FALSE)
+```
+  
+  
+* Single-cell DNA methylome sequencing of human preimplantation embryos, 
+  Zhu et al. Nat genetics 2018
+  
+This dataset only contains blastocyst stage.
+  
+```{r}
+embryo_expression(dataset = "Zhu", include_CTP = FALSE)
+```
+
+### `fetal_germcells_expression()`
+
+Allows to visualise gene expression in fetal germ cells the scRNA-seq dataset
+from "Single-cell roadmap of human gonadal development" (Garcia-Alonso, 
+Nature 2022).
+
+```{r}
+fetal_germcells_expression(include_CTP = FALSE, ncells_max = 100)
+```
+
+
+### `hESC_expression()`
+
+Allows to visualise gene expression in human embryonic stem cells, using
+scRNAseq data downloaded from Encode database.
+
+```{r}
+hESC_expression(include_CTP = FALSE, units = "log_TPM",
+                values_only = FALSE)
+```
 
 
 ## Expression in cancer cells and samples
@@ -468,6 +534,54 @@ normal_tissues_mean_methylation(
     genes =
         not_controlled_by_methylation$external_gene_name)
 ```
+
+### `embryos_mean_methylation()`
+
+Gives the mean methylation level of CpGs located in each promoter region
+of any genes in early embryos, using WGSB data from ("Single-cell
+DNA methylome sequencing of human preimplantation embryos". Zhu et al. 
+Nat genetics 2018). Methylation levels in tissues correspond 
+to the mean methylation of CpGs located in range of 1000 pb upstream and 
+500 pb downstream from gene TSS.
+
+Can be used to explore well known CT genes methylation in embryos as below.
+
+```{r}
+embryos_mean_methylation(c("MAGEA1", "MAGEA3", "MAGEA4", "MAGEC2", "MAGEB16"),
+                         stage = c( "MII Oocyte", "Sperm", "Zygote", "2-cell",
+                                    "4-cell", "8-cell",  "Morula"))
+```
+
+
+### `fetal_germcells_mean_methylation()`
+
+Allows to visualise mean promoter methylation levels ofany genes in fetal germ
+cells, using WGSB data from "Dissecting the epigenomic dynamics of human fetal
+germ cell development at single-cell resolution" (Li et al. 2021). Methylation
+levels in tissues correspond to the mean methylation of CpGs located in range of
+1000 pb upstream and 500 pb downstream from gene TSS.
+
+Can be used to explore well known CT genes methylation in fetal germ cells, as
+below.
+
+```{r}
+fetal_germcell_mean_methylation(c("MAGEA1", "MAGEA3", "MAGEA4", "MAGEC2"))
+```
+
+
+### `hESC_mean_methylation()`
+
+Allows to visualise mean promoter methylation levels of any genes in human 
+embryonic cell lines. WGBS methylation data was downloaded from Encode. 
+Methylation levels in tissues correspond to the mean methylation of CpGs located
+in range of 1000 pb upstream and 200 pb downstream from gene TSS.
+
+Here used on strict CT genes. 
+
+```{r}
+hESC_mean_methylation()
+```
+
 
 ### `TCGA_methylation_expression_correlation()`
 
