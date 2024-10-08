@@ -38,7 +38,7 @@ Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.3.2
 Depends:
     R (>= 4.3),
-    CTdata (>= 1.5.2)
+    CTdata (>= 1.5.3)
 Imports:
     BiocGenerics,
     ComplexHeatmap,
