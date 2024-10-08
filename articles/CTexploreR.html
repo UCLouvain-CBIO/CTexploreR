@@ -561,10 +561,13 @@ all functions, an option <code>values_only</code> can be set to
 <code>TRUE</code> in order to get the values instead of the
 visualisation.</p>
 <p>All visualisation functions can be used on all GTEx genes, not only
-on Cancer-Testis genes, as the data they refer to contains all
-genes.</p>
+on Cancer-Testis genes, as the data they refer to contains all genes. By
+default, if no genes are specified in a function, only strict CT genes
+will be used. If one wants all 280 CT genes to be used, an option
+<code>include_CTP</code> can be set to <code>TRUE</code> to also use CT
+preferential genes.</p>
 <div class="section level3">
-<h3 id="expression-in-normal-healthy-tissues">Expression in normal healthy tissues<a class="anchor" aria-label="anchor" href="#expression-in-normal-healthy-tissues"></a>
+<h3 id="expression-in-normal-healthy-adult-tissues">Expression in normal healthy adult tissues<a class="anchor" aria-label="anchor" href="#expression-in-normal-healthy-adult-tissues"></a>
 </h3>
 <div class="section level4">
 <h4 id="gtex_expression">
@@ -640,9 +643,11 @@ observed. This allowed their determination as testis-specific genes.</p>
 <p>Allows to visualise gene expression in all different testis cell
 type, somatic or germ, using data from the adult human testis
 transcriptional cell atlas.</p>
-<p>Using the testis cell type defined for each CT genes, we visualise
-clearly that genes mainly expressed in an early stage of spermatogenesis
-aren’t expressed later and vice-versa.</p>
+<p>Using CT genes localisation on the X chromosome, we can see that they
+tend to be expressed in th early stages of spermatogenesis when located
+on the X. We also visualise clearly that genes mainly expressed in an
+early stage of spermatogenesis aren’t expressed later and
+vice-versa.</p>
 <div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">X_CT</span> <span class="op">&lt;-</span></span>
 <span>    <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">CT_genes</span>, <span class="va">X_linked</span><span class="op">)</span></span>
@@ -683,6 +688,39 @@ aren’t expressed later and vice-versa.</p>
 <p><img src="CTexploreR_files/figure-html/unnamed-chunk-4-2.png" width="700"></p>
 </div>
 <div class="section level4">
+<h4 id="oocytes_expression">
+<code>oocytes_expression()</code><a class="anchor" aria-label="anchor" href="#oocytes_expression"></a>
+</h4>
+<p>Allows to visualise gene expression oocytes at different stage, using
+scRNA-seq data form “Decoding dynamic epigenetic landscapes in human
+oocytes using single-cell multi-omics sequencing” (Yan et al. Cell Stem
+Cell 2021)</p>
+<p>We can here again compare the expression of CT genes that are located
+or not on the X chromosome. Showing a lesser expression of X-linked
+genes in oocytes.</p>
+<div class="sourceCode" id="cb29"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/oocytes_expression.html">oocytes_expression</a></span><span class="op">(</span><span class="va">X_CT</span><span class="op">$</span><span class="va">external_gene_name</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## see ?CTdata and browseVignettes('CTdata') for documentation</span></span></code></pre>
+<pre><code><span><span class="co">## loading from cache</span></span></code></pre>
+<pre><code><span><span class="co">## Warning: 4 out of 82 names invalid: PPP4R3C, XAGE1A, TEX13C, MAGEA4-AS1.</span></span>
+<span><span class="co">## See the manual page for valid types.</span></span></code></pre>
+<p><img src="CTexploreR_files/figure-html/unnamed-chunk-5-1.png" width="700"></p>
+<div class="sourceCode" id="cb33"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/oocytes_expression.html">oocytes_expression</a></span><span class="op">(</span><span class="va">notX_CT</span><span class="op">$</span><span class="va">external_gene_name</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## see ?CTdata and browseVignettes('CTdata') for documentation</span></span>
+<span><span class="co">## loading from cache</span></span></code></pre>
+<pre><code><span><span class="co">## Warning: 52 out of 198 names invalid: KAZN-AS1, LRRC52-AS1, ZC3H11B, THORLNC,</span></span>
+<span><span class="co">## LINC02377, LINC02241, LINC02228, LINC03004, SEC61G-DT, ZNF722,</span></span>
+<span><span class="co">## GTF2I-AS1, LINC02663, LINC02750, FAM230C, CBY2, GARIN2, GOLGA6L7,</span></span>
+<span><span class="co">## CDRT15, CHCT1, LINC02864, TSPY9, DHCR24-DT, LINC03102, SPMIP3,</span></span>
+<span><span class="co">## C2orf74-AS1, NECTIN3-AS1, CFAP92, LINC02901, TMEM270, ERVW-1, GARIN1B,</span></span>
+<span><span class="co">## LLCFC1, ZNF775-AS1, PPP1R3B-DT, DNAJC5B, MIR3150BHG, C10orf55, CHKA-DT,</span></span>
+<span><span class="co">## UVRAG-DT, RB1-DT, CCDC196, INSYN1-AS1, POLG-DT, TEKT5, KCTD19,</span></span>
+<span><span class="co">## APPBP2-DT, MARCHF10, TUBB8B, SPMAP2, SAXO5, EFCAB8, FAM230I.</span></span>
+<span><span class="co">## See the manual page for valid types.</span></span></code></pre>
+<p><img src="CTexploreR_files/figure-html/unnamed-chunk-5-2.png" width="700"></p>
+</div>
+<div class="section level4">
 <h4 id="hpa_cell_type_expression">
 <code>HPA_cell_type_expression()</code><a class="anchor" aria-label="anchor" href="#hpa_cell_type_expression"></a>
 </h4>
@@ -691,7 +729,7 @@ type, comparing different somatic cells to germ cells, using data from
 the human proteome atlas.</p>
 <p>Visualising all CT_genes, the specificity to germ cells only is quite
 clear.</p>
-<div class="sourceCode" id="cb29"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb36"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/HPA_cell_type_expression.html">HPA_cell_type_expression</a></span><span class="op">(</span>units <span class="op">=</span> <span class="st">"scaled"</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## see ?CTdata and browseVignettes('CTdata') for documentation</span></span></code></pre>
 <pre><code><span><span class="co">## loading from cache</span></span></code></pre>
@@ -702,7 +740,87 @@ clear.</p>
 <span><span class="co">## LINC01193, LINC01413, FLJ36000, LINC00470, LINC02864, DSCR8,</span></span>
 <span><span class="co">## MAGEA4-AS1.</span></span>
 <span><span class="co">## See the manual page for valid types.</span></span></code></pre>
-<p><img src="CTexploreR_files/figure-html/unnamed-chunk-5-1.png" width="700"></p>
+<p><img src="CTexploreR_files/figure-html/unnamed-chunk-6-1.png" width="700"></p>
+</div>
+</div>
+<div class="section level3">
+<h3 id="expression-in-fetal-cells">Expression in fetal cells<a class="anchor" aria-label="anchor" href="#expression-in-fetal-cells"></a>
+</h3>
+<p>No analysis was added to the <code>all_genes</code> and
+<code>CT_genes</code> tables using these datasets.</p>
+<div class="section level4">
+<h4 id="embryo_expression">
+<code>embryo_expression()</code><a class="anchor" aria-label="anchor" href="#embryo_expression"></a>
+</h4>
+<p>Allows to visualise gene expression in human early embryos using two
+different scRNA-seq datasets.</p>
+<ul>
+<li>Single-Cell RNA-Seq Reveals Lineage and X Chromosome Dynamics in
+Human Preimplantation Embryos, Petropoulos et al., Cell 2016</li>
+</ul>
+<p>This dataset contains different stages of blastocysts and morula.</p>
+<div class="sourceCode" id="cb40"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/embryo_expression.html">embryo_expression</a></span><span class="op">(</span>dataset <span class="op">=</span> <span class="st">"Petropoulos"</span>, include_CTP <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## see ?CTdata and browseVignettes('CTdata') for documentation</span></span></code></pre>
+<pre><code><span><span class="co">## loading from cache</span></span></code></pre>
+<pre><code><span><span class="co">## Warning: 62 out of 146 names invalid: KAZN-AS1, LRRC52-AS1, ZC3H11B, THORLNC,</span></span>
+<span><span class="co">## LINC02475, LINC02377, LINC01511, LINC02241, LINC02228, LINC03004,</span></span>
+<span><span class="co">## SEC61G-DT, ZNF722, GTF2I-AS1, TEX48, LINC02663, LINC01518, LINC02750,</span></span>
+<span><span class="co">## MAJIN, TMEM132D-AS1, CBY2, GARIN2, GOLGA6L7, CHCT1, LINC02864, ZNF723,</span></span>
+<span><span class="co">## PPP4R3C, GAGE12E, GAGE2A, CENPVL2, CENPVL1, XAGE1A, XAGE1B, SSX2,</span></span>
+<span><span class="co">## SSX2B, CXorf49, CXorf49B, NXF2, CT47A12, CT47A11, CT47A1, TEX13C,</span></span>
+<span><span class="co">## CT45A6, CT45A7, CT45A8, CT45A9, CT45A10, SPANXB1, CXorf51B, MAGEA9B,</span></span>
+<span><span class="co">## MAGEA9, MAGEA4-AS1, MAGEA2, CTAG1A, CTAG1B, TSPY4, TSPY3, TSPY9, VCY,</span></span>
+<span><span class="co">## VCY1B, RBMY1B, RBMY1A1, RBMY1E.</span></span>
+<span><span class="co">## See the manual page for valid types.</span></span></code></pre>
+<p><img src="CTexploreR_files/figure-html/unnamed-chunk-7-1.png" width="700"></p>
+<ul>
+<li>Single-cell DNA methylome sequencing of human preimplantation
+embryos, Zhu et al. Nat genetics 2018</li>
+</ul>
+<p>This dataset only contains blastocyst stage.</p>
+<div class="sourceCode" id="cb44"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/embryo_expression.html">embryo_expression</a></span><span class="op">(</span>dataset <span class="op">=</span> <span class="st">"Zhu"</span>, include_CTP <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## see ?CTdata and browseVignettes('CTdata') for documentation</span></span></code></pre>
+<pre><code><span><span class="co">## loading from cache</span></span></code></pre>
+<pre><code><span><span class="co">## Warning: 36 out of 146 names invalid: KAZN-AS1, LRRC52-AS1, ZC3H11B, THORLNC,</span></span>
+<span><span class="co">## LINC02475, LINC02377, LINC02241, LINC02228, LINC03004, SEC61G-DT,</span></span>
+<span><span class="co">## ZNF722, GTF2I-AS1, TEX48, LINC02663, LINC02750, MAJIN, TMEM132D-AS1,</span></span>
+<span><span class="co">## CBY2, GARIN2, GOLGA6L7, CHCT1, LINC02864, ZNF723, PPP4R3C, CENPVL2,</span></span>
+<span><span class="co">## CENPVL1, XAGE1A, CXorf49B, CT47A12, CT47A11, TEX13C, CT45A3, CT45A9,</span></span>
+<span><span class="co">## CXorf51B, MAGEA4-AS1, TSPY9.</span></span>
+<span><span class="co">## See the manual page for valid types.</span></span></code></pre>
+<p><img src="CTexploreR_files/figure-html/unnamed-chunk-8-1.png" width="700"></p>
+</div>
+<div class="section level4">
+<h4 id="fetal_germcells_expression">
+<code>fetal_germcells_expression()</code><a class="anchor" aria-label="anchor" href="#fetal_germcells_expression"></a>
+</h4>
+<p>Allows to visualise gene expression in fetal germ cells the scRNA-seq
+dataset from “Single-cell roadmap of human gonadal development”
+(Garcia-Alonso, Nature 2022).</p>
+<div class="sourceCode" id="cb48"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/fetal_germcells_expression.html">fetal_germcells_expression</a></span><span class="op">(</span>include_CTP <span class="op">=</span> <span class="cn">FALSE</span>, ncells_max <span class="op">=</span> <span class="fl">100</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## see ?CTdata and browseVignettes('CTdata') for documentation</span></span></code></pre>
+<pre><code><span><span class="co">## loading from cache</span></span></code></pre>
+<pre><code><span><span class="co">## Warning: 16 out of 146 names invalid: NFIA-AS1, SLC7A11-AS1, GTF2I-AS1,</span></span>
+<span><span class="co">## SPATA31C2, TEX48, LINC02864, CXorf49B, CT47A12, CT47A11, CT47A1,</span></span>
+<span><span class="co">## CT45A6, CT45A7, CT45A8, CT45A9, TSPY9, RBMY1B.</span></span>
+<span><span class="co">## See the manual page for valid types.</span></span></code></pre>
+<p><img src="CTexploreR_files/figure-html/unnamed-chunk-9-1.png" width="700"></p>
+</div>
+<div class="section level4">
+<h4 id="hesc_expression">
+<code>hESC_expression()</code><a class="anchor" aria-label="anchor" href="#hesc_expression"></a>
+</h4>
+<p>Allows to visualise gene expression in human embryonic stem cells,
+using scRNAseq data downloaded from Encode database.</p>
+<div class="sourceCode" id="cb52"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/hESC_expression.html">hESC_expression</a></span><span class="op">(</span>include_CTP <span class="op">=</span> <span class="cn">FALSE</span>, units <span class="op">=</span> <span class="st">"log_TPM"</span>,</span>
+<span>                values_only <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## see ?CTdata and browseVignettes('CTdata') for documentation</span></span></code></pre>
+<pre><code><span><span class="co">## loading from cache</span></span></code></pre>
+<p><img src="CTexploreR_files/figure-html/unnamed-chunk-10-1.png" width="700"></p>
 </div>
 </div>
 <div class="section level3">
@@ -720,7 +838,7 @@ activated in tumoral cell lines.</p>
 than 5% of CCLE cell_lines are expressing each gene. A string signal is
 visible.</li>
 </ul>
-<div class="sourceCode" id="cb33"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb55"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">frequently_activated</span> <span class="op">&lt;-</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span></span>
 <span>    <span class="va">CT_genes</span>,</span>
 <span>    <span class="va">percent_of_positive_CCLE_cell_lines</span> <span class="op">&gt;=</span> <span class="fl">5</span><span class="op">)</span></span>
@@ -736,13 +854,13 @@ visible.</li>
 <span>    units <span class="op">=</span> <span class="st">"log_TPM"</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## see ?CTdata and browseVignettes('CTdata') for documentation</span></span></code></pre>
 <pre><code><span><span class="co">## loading from cache</span></span></code></pre>
-<p><img src="CTexploreR_files/figure-html/unnamed-chunk-6-1.png" width="700"></p>
+<p><img src="CTexploreR_files/figure-html/unnamed-chunk-11-1.png" width="700"></p>
 <ul>
 <li>Applied to CT genes not frequently activated in CCLE cell lines,
 more than 95% of cell lines are not expressing each genes. The lack of
 expression is very clear.</li>
 </ul>
-<div class="sourceCode" id="cb36"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb58"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">not_frequently_activated</span> <span class="op">&lt;-</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span></span>
 <span>    <span class="va">CT_genes</span>,</span>
 <span>    <span class="va">percent_of_negative_CCLE_cell_lines</span> <span class="op">&gt;=</span> <span class="fl">95</span><span class="op">)</span></span>
@@ -758,7 +876,7 @@ expression is very clear.</li>
 <span>    units <span class="op">=</span> <span class="st">"log_TPM"</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## see ?CTdata and browseVignettes('CTdata') for documentation</span></span></code></pre>
 <pre><code><span><span class="co">## loading from cache</span></span></code></pre>
-<p><img src="CTexploreR_files/figure-html/unnamed-chunk-7-1.png" width="700"></p>
+<p><img src="CTexploreR_files/figure-html/unnamed-chunk-12-1.png" width="700"></p>
 </div>
 <div class="section level4">
 <h4 id="ct_correlated_genes">
@@ -769,13 +887,13 @@ returns genes correlated (or anti-correlated) with specified CT
 gene.</p>
 <p>Here with MAGEA3, we can see all genes (CT or not) whose expression
 is correlated with it, like MAGEA6.</p>
-<div class="sourceCode" id="cb39"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb61"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/CT_correlated_genes.html">CT_correlated_genes</a></span><span class="op">(</span><span class="st">"MAGEA3"</span>, <span class="fl">0.3</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## Warning: Removed 4 rows containing missing values or values outside the scale range</span></span>
 <span><span class="co">## (`geom_point()`).</span></span></code></pre>
 <pre><code><span><span class="co">## Warning: ggrepel: 165 unlabeled data points (too many overlaps). Consider</span></span>
 <span><span class="co">## increasing max.overlaps</span></span></code></pre>
-<p><img src="CTexploreR_files/figure-html/unnamed-chunk-8-1.png" width="700"></p>
+<p><img src="CTexploreR_files/figure-html/unnamed-chunk-13-1.png" width="700"></p>
 </div>
 <div class="section level4">
 <h4 id="tcga_expression">
@@ -786,7 +904,7 @@ can thus for example compare with activation in CCLE cell lines.</p>
 <ul>
 <li>Applied to CT genes frequently activated in CCLE cell lines</li>
 </ul>
-<div class="sourceCode" id="cb42"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb64"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/TCGA_expression.html">TCGA_expression</a></span><span class="op">(</span></span>
 <span>    genes <span class="op">=</span> <span class="va">frequently_activated</span><span class="op">$</span><span class="va">external_gene_name</span>,</span>
 <span>    tumor <span class="op">=</span> <span class="st">"all"</span>,</span>
@@ -798,11 +916,11 @@ can thus for example compare with activation in CCLE cell lines.</p>
 <span><span class="co">## setting TRUE/FALSE to it.</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## Set `ht_opt$message = FALSE` to turn off this message.</span></span></code></pre>
-<p><img src="CTexploreR_files/figure-html/unnamed-chunk-9-1.png" width="700"></p>
+<p><img src="CTexploreR_files/figure-html/unnamed-chunk-14-1.png" width="700"></p>
 <ul>
 <li>Applied to CT genes not frequently activated in CCLE cell lines</li>
 </ul>
-<div class="sourceCode" id="cb46"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb68"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/TCGA_expression.html">TCGA_expression</a></span><span class="op">(</span></span>
 <span>    genes <span class="op">=</span> <span class="va">not_frequently_activated</span><span class="op">$</span><span class="va">external_gene_name</span>,</span>
 <span>    tumor <span class="op">=</span> <span class="st">"all"</span>,</span>
@@ -814,17 +932,17 @@ can thus for example compare with activation in CCLE cell lines.</p>
 <span><span class="co">## setting TRUE/FALSE to it.</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## Set `ht_opt$message = FALSE` to turn off this message.</span></span></code></pre>
-<p><img src="CTexploreR_files/figure-html/unnamed-chunk-10-1.png" width="700"></p>
+<p><img src="CTexploreR_files/figure-html/unnamed-chunk-15-1.png" width="700"></p>
 <p>When visualising only one tumor, there is a separation between
 tumoral and peritumoral tissue.</p>
-<div class="sourceCode" id="cb50"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb72"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/TCGA_expression.html">TCGA_expression</a></span><span class="op">(</span></span>
 <span>    genes <span class="op">=</span> <span class="va">frequently_activated</span><span class="op">$</span><span class="va">external_gene_name</span>,</span>
 <span>    tumor <span class="op">=</span> <span class="st">"LUAD"</span>,</span>
 <span>    units <span class="op">=</span> <span class="st">"log_TPM"</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## see ?CTdata and browseVignettes('CTdata') for documentation</span></span></code></pre>
 <pre><code><span><span class="co">## loading from cache</span></span></code></pre>
-<p><img src="CTexploreR_files/figure-html/unnamed-chunk-11-1.png" width="700"></p>
+<p><img src="CTexploreR_files/figure-html/unnamed-chunk-16-1.png" width="700"></p>
 </div>
 </div>
 <div class="section level3">
@@ -840,23 +958,23 @@ methylation or not</p>
 <ul>
 <li>Applied to genes controlled by methylation</li>
 </ul>
-<div class="sourceCode" id="cb53"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb75"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">controlled_by_methylation</span> <span class="op">&lt;-</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">CT_genes</span>, <span class="va">regulated_by_methylation</span><span class="op">)</span></span>
 <span><span class="fu"><a href="../reference/DAC_induction.html">DAC_induction</a></span><span class="op">(</span>genes <span class="op">=</span> <span class="va">controlled_by_methylation</span><span class="op">$</span><span class="va">external_gene_name</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## see ?CTdata and browseVignettes('CTdata') for documentation</span></span></code></pre>
 <pre><code><span><span class="co">## loading from cache</span></span></code></pre>
-<p><img src="CTexploreR_files/figure-html/unnamed-chunk-12-1.png" width="700"></p>
+<p><img src="CTexploreR_files/figure-html/unnamed-chunk-17-1.png" width="700"></p>
 <ul>
 <li>Applied to genes not controlled by methylation</li>
 </ul>
-<div class="sourceCode" id="cb56"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb78"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">not_controlled_by_methylation</span> <span class="op">&lt;-</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span></span>
 <span>    <span class="va">CT_genes</span>,</span>
 <span>    <span class="op">!</span><span class="va">regulated_by_methylation</span><span class="op">)</span></span>
 <span><span class="fu"><a href="../reference/DAC_induction.html">DAC_induction</a></span><span class="op">(</span>genes <span class="op">=</span> <span class="va">not_controlled_by_methylation</span><span class="op">$</span><span class="va">external_gene_name</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## see ?CTdata and browseVignettes('CTdata') for documentation</span></span></code></pre>
 <pre><code><span><span class="co">## loading from cache</span></span></code></pre>
-<p><img src="CTexploreR_files/figure-html/unnamed-chunk-13-1.png" width="700"></p>
+<p><img src="CTexploreR_files/figure-html/unnamed-chunk-18-1.png" width="700"></p>
 </div>
 <div class="section level4">
 <h4 id="normal_tissues_methylation">
@@ -870,15 +988,15 @@ methylation values are given CpG by CpG.</p>
 <ul>
 <li>Applied to a gene controlled by methylation</li>
 </ul>
-<div class="sourceCode" id="cb59"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb81"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/normal_tissues_methylation.html">normal_tissues_methylation</a></span><span class="op">(</span><span class="st">"MAGEB2"</span><span class="op">)</span></span></code></pre></div>
-<p><img src="CTexploreR_files/figure-html/unnamed-chunk-14-1.png" width="700"></p>
+<p><img src="CTexploreR_files/figure-html/unnamed-chunk-19-1.png" width="700"></p>
 <ul>
 <li>Applied to a gene not controlled by methylation</li>
 </ul>
-<div class="sourceCode" id="cb60"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb82"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/normal_tissues_methylation.html">normal_tissues_methylation</a></span><span class="op">(</span><span class="st">"LIN28A"</span><span class="op">)</span></span></code></pre></div>
-<p><img src="CTexploreR_files/figure-html/unnamed-chunk-15-1.png" width="700"></p>
+<p><img src="CTexploreR_files/figure-html/unnamed-chunk-20-1.png" width="700"></p>
 </div>
 <div class="section level4">
 <h4 id="normal_tissues_mean_methylation">
@@ -892,22 +1010,76 @@ group.</p>
 <ul>
 <li>Applied to genes controlled by methylation</li>
 </ul>
-<div class="sourceCode" id="cb61"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb83"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/normal_tissues_mean_methylation.html">normal_tissues_mean_methylation</a></span><span class="op">(</span></span>
 <span>    genes <span class="op">=</span> <span class="va">controlled_by_methylation</span><span class="op">$</span><span class="va">external_gene_name</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## see ?CTdata and browseVignettes('CTdata') for documentation</span></span></code></pre>
 <pre><code><span><span class="co">## loading from cache</span></span></code></pre>
-<p><img src="CTexploreR_files/figure-html/unnamed-chunk-16-1.png" width="700"></p>
+<p><img src="CTexploreR_files/figure-html/unnamed-chunk-21-1.png" width="700"></p>
 <ul>
 <li>Applied to genes not controlled by methylation</li>
 </ul>
-<div class="sourceCode" id="cb64"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb86"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/normal_tissues_mean_methylation.html">normal_tissues_mean_methylation</a></span><span class="op">(</span></span>
 <span>    genes <span class="op">=</span></span>
 <span>        <span class="va">not_controlled_by_methylation</span><span class="op">$</span><span class="va">external_gene_name</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## see ?CTdata and browseVignettes('CTdata') for documentation</span></span></code></pre>
 <pre><code><span><span class="co">## loading from cache</span></span></code></pre>
-<p><img src="CTexploreR_files/figure-html/unnamed-chunk-17-1.png" width="700"></p>
+<p><img src="CTexploreR_files/figure-html/unnamed-chunk-22-1.png" width="700"></p>
+</div>
+<div class="section level4">
+<h4 id="embryos_mean_methylation">
+<code>embryos_mean_methylation()</code><a class="anchor" aria-label="anchor" href="#embryos_mean_methylation"></a>
+</h4>
+<p>Gives the mean methylation level of CpGs located in each promoter
+region of any genes in early embryos, using WGSB data from (“Single-cell
+DNA methylome sequencing of human preimplantation embryos”. Zhu et al. 
+Nat genetics 2018). Methylation levels in tissues correspond to the mean
+methylation of CpGs located in range of 1000 pb upstream and 500 pb
+downstream from gene TSS.</p>
+<p>Can be used to explore well known CT genes methylation in embryos as
+below.</p>
+<div class="sourceCode" id="cb89"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/embryos_mean_methylation.html">embryos_mean_methylation</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"MAGEA1"</span>, <span class="st">"MAGEA3"</span>, <span class="st">"MAGEA4"</span>, <span class="st">"MAGEC2"</span>, <span class="st">"MAGEB16"</span><span class="op">)</span>,</span>
+<span>                         stage <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span> <span class="st">"MII Oocyte"</span>, <span class="st">"Sperm"</span>, <span class="st">"Zygote"</span>, <span class="st">"2-cell"</span>,</span>
+<span>                                    <span class="st">"4-cell"</span>, <span class="st">"8-cell"</span>,  <span class="st">"Morula"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## see ?CTdata and browseVignettes('CTdata') for documentation</span></span></code></pre>
+<pre><code><span><span class="co">## loading from cache</span></span></code></pre>
+<p><img src="CTexploreR_files/figure-html/unnamed-chunk-23-1.png" width="700"></p>
+</div>
+<div class="section level4">
+<h4 id="fetal_germcells_mean_methylation">
+<code>fetal_germcells_mean_methylation()</code><a class="anchor" aria-label="anchor" href="#fetal_germcells_mean_methylation"></a>
+</h4>
+<p>Allows to visualise mean promoter methylation levels ofany genes in
+fetal germ cells, using WGSB data from “Dissecting the epigenomic
+dynamics of human fetal germ cell development at single-cell resolution”
+(Li et al. 2021). Methylation levels in tissues correspond to the mean
+methylation of CpGs located in range of 1000 pb upstream and 500 pb
+downstream from gene TSS.</p>
+<p>Can be used to explore well known CT genes methylation in fetal germ
+cells, as below.</p>
+<div class="sourceCode" id="cb92"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/fetal_germcell_mean_methylation.html">fetal_germcell_mean_methylation</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"MAGEA1"</span>, <span class="st">"MAGEA3"</span>, <span class="st">"MAGEA4"</span>, <span class="st">"MAGEC2"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## see ?CTdata and browseVignettes('CTdata') for documentation</span></span></code></pre>
+<pre><code><span><span class="co">## loading from cache</span></span></code></pre>
+<p><img src="CTexploreR_files/figure-html/unnamed-chunk-24-1.png" width="700"></p>
+</div>
+<div class="section level4">
+<h4 id="hesc_mean_methylation">
+<code>hESC_mean_methylation()</code><a class="anchor" aria-label="anchor" href="#hesc_mean_methylation"></a>
+</h4>
+<p>Allows to visualise mean promoter methylation levels of any genes in
+human embryonic cell lines. WGBS methylation data was downloaded from
+Encode. Methylation levels in tissues correspond to the mean methylation
+of CpGs located in range of 1000 pb upstream and 200 pb downstream from
+gene TSS.</p>
+<p>Here used on strict CT genes.</p>
+<div class="sourceCode" id="cb95"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/hESC_mean_methylation.html">hESC_mean_methylation</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## see ?CTdata and browseVignettes('CTdata') for documentation</span></span></code></pre>
+<pre><code><span><span class="co">## loading from cache</span></span></code></pre>
+<p><img src="CTexploreR_files/figure-html/unnamed-chunk-25-1.png" width="700"></p>
 </div>
 <div class="section level4">
 <h4 id="tcga_methylation_expression_correlation">
@@ -918,19 +1090,19 @@ methylation in TCGA samples.</p>
 <ul>
 <li>Applied to a gene controlled by methylation</li>
 </ul>
-<div class="sourceCode" id="cb67"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb98"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/TCGA_methylation_expression_correlation.html">TCGA_methylation_expression_correlation</a></span><span class="op">(</span></span>
 <span>    tumor <span class="op">=</span> <span class="st">"all"</span>,</span>
 <span>    gene <span class="op">=</span> <span class="st">"TDRD1"</span><span class="op">)</span></span></code></pre></div>
-<p><img src="CTexploreR_files/figure-html/unnamed-chunk-18-1.png" width="700"></p>
+<p><img src="CTexploreR_files/figure-html/unnamed-chunk-26-1.png" width="700"></p>
 <ul>
 <li>Applied to a gene not controlled by methylation</li>
 </ul>
-<div class="sourceCode" id="cb68"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb99"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/TCGA_methylation_expression_correlation.html">TCGA_methylation_expression_correlation</a></span><span class="op">(</span></span>
 <span>    tumor <span class="op">=</span> <span class="st">"all"</span>,</span>
 <span>    gene <span class="op">=</span> <span class="st">"LIN28A"</span><span class="op">)</span></span></code></pre></div>
-<p><img src="CTexploreR_files/figure-html/unnamed-chunk-19-1.png" width="700"></p>
+<p><img src="CTexploreR_files/figure-html/unnamed-chunk-27-1.png" width="700"></p>
 </div>
 </div>
 </div>
@@ -942,7 +1114,7 @@ methylation in TCGA samples.</p>
 in the last heatmap generated, search a specific gene as well as
 creating subsets to facilitate data exploration. More info about
 <code>InteractiveComplexHeatmap</code> available <a href="https://jokergoo.github.io/InteractiveComplexHeatmap/" class="external-link">here</a>.</p>
-<div class="sourceCode" id="cb69"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb100"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">BiocManager</span><span class="fu">::</span><span class="fu"><a href="https://bioconductor.github.io/BiocManager/reference/install.html" class="external-link">install</a></span><span class="op">(</span><span class="st">"InteractiveComplexHeatmap"</span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/jokergoo/InteractiveComplexHeatmap" class="external-link">InteractiveComplexHeatmap</a></span><span class="op">)</span></span>
 <span></span>
@@ -1028,7 +1200,7 @@ cancer types. Nature Communications, 7, 10499.</p>
 <span><span class="co">##  [5] GenomeInfoDb_1.41.2         IRanges_2.39.2             </span></span>
 <span><span class="co">##  [7] S4Vectors_0.43.2            BiocGenerics_0.51.3        </span></span>
 <span><span class="co">##  [9] MatrixGenerics_1.17.0       matrixStats_1.4.1          </span></span>
-<span><span class="co">## [11] CTexploreR_1.1.2            CTdata_1.5.2               </span></span>
+<span><span class="co">## [11] CTexploreR_1.1.2            CTdata_1.5.3               </span></span>
 <span><span class="co">## [13] BiocStyle_2.33.1           </span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## loaded via a namespace (and not attached):</span></span>
@@ -1042,7 +1214,7 @@ cancer types. Nature Communications, 7, 10499.</p>
 <span><span class="co">## [22] ragg_1.3.3              purrr_1.0.2             bit_4.5.0              </span></span>
 <span><span class="co">## [25] xfun_0.48               zlibbioc_1.51.1         cachem_1.1.0           </span></span>
 <span><span class="co">## [28] jsonlite_1.8.9          blob_1.2.4              highr_0.11             </span></span>
-<span><span class="co">## [31] DelayedArray_0.31.12    parallel_4.4.1          cluster_2.1.6          </span></span>
+<span><span class="co">## [31] DelayedArray_0.31.14    parallel_4.4.1          cluster_2.1.6          </span></span>
 <span><span class="co">## [34] R6_2.5.1                bslib_0.8.0             RColorBrewer_1.1-3     </span></span>
 <span><span class="co">## [37] jquerylib_0.1.4         Rcpp_1.0.13             bookdown_0.40          </span></span>
 <span><span class="co">## [40] iterators_1.0.14        knitr_1.48              Matrix_1.7-0           </span></span>
@@ -1060,7 +1232,7 @@ cancer types. Nature Communications, 7, 10499.</p>
 <span><span class="co">## [76] GenomeInfoDbData_1.2.13 cli_3.6.3               rappdirs_0.3.3         </span></span>
 <span><span class="co">## [79] textshaping_0.4.0       fansi_1.0.6             S4Arrays_1.5.10        </span></span>
 <span><span class="co">## [82] ComplexHeatmap_2.21.1   dplyr_1.1.4             gtable_0.3.5           </span></span>
-<span><span class="co">## [85] sass_0.4.9              digest_0.6.37           SparseArray_1.5.41     </span></span>
+<span><span class="co">## [85] sass_0.4.9              digest_0.6.37           SparseArray_1.5.44     </span></span>
 <span><span class="co">## [88] ggrepel_0.9.6           farver_2.1.2            rjson_0.2.23           </span></span>
 <span><span class="co">## [91] htmlwidgets_1.6.4       memoise_2.0.1           htmltools_0.5.8.1      </span></span>
 <span><span class="co">## [94] pkgdown_2.1.1.9000      lifecycle_1.0.4         httr_1.4.7             </span></span>

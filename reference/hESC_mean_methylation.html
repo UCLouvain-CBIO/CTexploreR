@@ -64,7 +64,12 @@ and 200 pb downstream from gene TSS.</p>
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">hESC_mean_methylation</span><span class="op">(</span>genes <span class="op">=</span> <span class="cn">NULL</span>, include_CTP <span class="op">=</span> <span class="cn">FALSE</span>, values_only <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">hESC_mean_methylation</span><span class="op">(</span></span>
+<span>  genes <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  include_CTP <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  values_only <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  na.omit <span class="op">=</span> <span class="cn">TRUE</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -85,6 +90,13 @@ value, <code>NULL</code>, takes all CT (specific) genes.</p></dd>
 <dd><p><code>logical(1)</code>, <code>FALSE</code> by default. If <code>TRUE</code>, the
 function will return the methylation values in all samples
 instead of the heatmap.</p></dd>
+
+
+<dt id="arg-na-omit">na.omit<a class="anchor" aria-label="anchor" href="#arg-na-omit"></a></dt>
+<dd><p><code>logical(1)</code> specifying if genes with missing
+methylation values in some tissues should be removed (<code>TRUE</code> by
+default). Note that no gene clustering will be done when
+methylation values are missing.</p></dd>
 
 </dl></div>
     <div id="value">
