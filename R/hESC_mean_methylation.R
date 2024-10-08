@@ -15,6 +15,11 @@
 #' @param values_only `logical(1)`, `FALSE` by default. If `TRUE`, the
 #'     function will return the methylation values in all samples
 #'     instead of the heatmap.
+#'     
+#' @param na.omit `logical(1)` specifying if genes with missing
+#'     methylation values in some tissues should be removed (`TRUE` by
+#'     default). Note that no gene clustering will be done when
+#'     methylation values are missing.
 #'
 #' @return Heatmap of mean promoter methylation of any
 #'     gene in hESC. If `values_only = TRUE`, a SummarizedExperiment cobtaining
@@ -36,7 +41,8 @@
 #' }
 hESC_mean_methylation <- function(genes = NULL, 
                                   include_CTP = FALSE, 
-                                  values_only = FALSE) {
+                                  values_only = FALSE,
+                                  na.omit = TRUE) {
   suppressMessages({
     database <- CTdata::mean_methylation_in_hESC()
   })
@@ -44,7 +50,14 @@ hESC_mean_methylation <- function(genes = NULL,
   rowData(database)$external_gene_name <- rownames(database)
   database <- subset_database(genes, database, include_CTP)
   
-  mat <- assay(database)
+  if (na.omit) {
+    mat <- na.omit(assay(database))
+    clustering_option <- TRUE
+  } else {
+    mat <- assay(database)
+    clustering_option <- FALSE
+  }
+  
   fontsize <- set_fontsize(mat)
   
   h <- Heatmap(mat,
@@ -53,6 +66,7 @@ hESC_mean_methylation <- function(genes = NULL,
                col = colorRamp2(seq_len(100),
                                 colorRampPalette(c("moccasin", "dodgerblue4"))(100)),
                na_col = "gray80",
+               cluster_rows = clustering_option,
                cluster_columns = FALSE,
                show_row_names = TRUE,
                show_heatmap_legend = TRUE,

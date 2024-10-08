@@ -4,7 +4,12 @@
 \alias{hESC_mean_methylation}
 \title{Promoter methylation of any gene in hESC}
 \usage{
-hESC_mean_methylation(genes = NULL, include_CTP = FALSE, values_only = FALSE)
+hESC_mean_methylation(
+  genes = NULL,
+  include_CTP = FALSE,
+  values_only = FALSE,
+  na.omit = TRUE
+)
 }
 \arguments{
 \item{genes}{\code{character} naming the selected genes. The default
@@ -16,6 +21,11 @@ value, \code{NULL}, takes all CT (specific) genes.}
 \item{values_only}{\code{logical(1)}, \code{FALSE} by default. If \code{TRUE}, the
 function will return the methylation values in all samples
 instead of the heatmap.}
+
+\item{na.omit}{\code{logical(1)} specifying if genes with missing
+methylation values in some tissues should be removed (\code{TRUE} by
+default). Note that no gene clustering will be done when
+methylation values are missing.}
 }
 \value{
 Heatmap of mean promoter methylation of any
