@@ -1,5 +1,10 @@
 # CTexploreR 1.1
 
+## CTexploreR 1.1.3
+
+- Add pkgdown config.
+
+
 ## CTexploreR 1.1.2
 
 - Created functions to visualise expression in fetal germ cells,
