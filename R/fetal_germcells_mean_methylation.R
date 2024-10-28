@@ -32,9 +32,9 @@
 #' 
 #'
 #' @examples
-#' fetal_germcell_mean_methylation()
-#' fetal_germcell_mean_methylation(c("MAGEA1", "MAGEA3", "MAGEA4", "MAGEC2"))
-fetal_germcell_mean_methylation <- function(genes = NULL, 
+#' fetal_germcells_mean_methylation()
+#' fetal_germcells_mean_methylation(c("MAGEA1", "MAGEA3", "MAGEA4", "MAGEC2"))
+fetal_germcells_mean_methylation <- function(genes = NULL, 
                                             include_CTP = FALSE, 
                                             values_only = FALSE) {
     suppressMessages({

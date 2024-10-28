@@ -565,7 +565,7 @@ Can be used to explore well known CT genes methylation in fetal germ cells, as
 below.
 
 ```{r}
-fetal_germcell_mean_methylation(c("MAGEA1", "MAGEA3", "MAGEA4", "MAGEC2"))
+fetal_germcells_mean_methylation(c("MAGEA1", "MAGEA3", "MAGEA4", "MAGEC2"))
 ```
 
 
