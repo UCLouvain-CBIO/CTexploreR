@@ -3,6 +3,8 @@
 ## CTexploreR 1.1.3
 
 - Add pkgdown config.
+- Correcting typo in fetal_germcells_mean_methylation() function name
+- Adding tests for new functions
 
 
 ## CTexploreR 1.1.2
