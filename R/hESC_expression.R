@@ -3,7 +3,7 @@
 #' @description
 #'
 #' Plots a heatmap of genes expression in human embryonic stem cells,
-#' using scRNAseq data downloaded from Encode database.
+#' using RNAseq data downloaded from Encode database.
 #'
 #' @param genes `character` naming the selected genes. The default
 #'     value, `NULL`, takes all CT (specific) genes.

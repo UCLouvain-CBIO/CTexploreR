@@ -36,7 +36,7 @@ is returned instead.
 }
 \description{
 Plots a heatmap of genes expression in human embryonic stem cells,
-using scRNAseq data downloaded from Encode database.
+using RNAseq data downloaded from Encode database.
 }
 \examples{
 \dontrun{
