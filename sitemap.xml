@@ -14,7 +14,6 @@
 <url><loc>https://UCLouvain-CBIO.github.io/CTexploreR/reference/TCGA_expression.html</loc></url>
 <url><loc>https://UCLouvain-CBIO.github.io/CTexploreR/reference/TCGA_methylation_expression_correlation.html</loc></url>
 <url><loc>https://UCLouvain-CBIO.github.io/CTexploreR/reference/all_genes.html</loc></url>
-<url><loc>https://UCLouvain-CBIO.github.io/CTexploreR/reference/check_names.html</loc></url>
 <url><loc>https://UCLouvain-CBIO.github.io/CTexploreR/reference/embryo_expression.html</loc></url>
 <url><loc>https://UCLouvain-CBIO.github.io/CTexploreR/reference/embryos_mean_methylation.html</loc></url>
 <url><loc>https://UCLouvain-CBIO.github.io/CTexploreR/reference/fetal_germcells_expression.html</loc></url>
@@ -26,9 +25,7 @@
 <url><loc>https://UCLouvain-CBIO.github.io/CTexploreR/reference/normal_tissues_mean_methylation.html</loc></url>
 <url><loc>https://UCLouvain-CBIO.github.io/CTexploreR/reference/normal_tissues_methylation.html</loc></url>
 <url><loc>https://UCLouvain-CBIO.github.io/CTexploreR/reference/oocytes_expression.html</loc></url>
-<url><loc>https://UCLouvain-CBIO.github.io/CTexploreR/reference/prepare_TCGA_methylation_expression.html</loc></url>
 <url><loc>https://UCLouvain-CBIO.github.io/CTexploreR/reference/set_fontsize.html</loc></url>
-<url><loc>https://UCLouvain-CBIO.github.io/CTexploreR/reference/subset_database.html</loc></url>
 <url><loc>https://UCLouvain-CBIO.github.io/CTexploreR/reference/testis_expression.html</loc></url>
 </urlset>
 
